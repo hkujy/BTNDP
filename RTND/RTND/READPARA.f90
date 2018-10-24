@@ -1,0 +1,54 @@
+    !THE FUNCTION READ AND WRITE DEFAULT PARAMETERS FOR THE PROGRAM
+    SUBROUTINE READPARA
+    USE GRAPH
+    IMPLICIT NONE
+    INTEGER I
+    REAL*8::VALUE
+
+    OPEN(1,FILE='..\..\TESTNETWORK\PARA.TXT')
+    DO I = 1,4
+        READ(1,*) VALUE
+        IF (I==1) THEN
+            CONGESTION_N=VALUE
+        ENDIF
+        IF (I==2) THEN
+            !BS = VALUE
+        ENDIF
+        IF (I==3) THEN
+            CAPK=VALUE
+        ENDIF
+        IF (I==4) THEN
+            RIO = VALUE
+        ENDIF
+    ENDDO
+    CLOSE(1)
+    
+    OPEN(1,FILE='..\..\TESTNETWORK\BSVALUE.TXT')
+
+    DO I=1, NL
+        READ (1,*) BS(I)
+    ENDDO
+    CLOSE(1)
+    
+    OPEN(1,FILE='..\..\RESULTS\FORTRAN_BSVALUE.TXT' )
+    DO I=1,NL
+        WRITE(1,*) I,",",BS(I)
+    ENDDO
+    
+    CLOSE(1)
+    
+    
+    END SUBROUTINE
+
+    SUBROUTINE WRITEPARA
+    USE GRAPH
+    IMPLICIT NONE
+    INTEGER I
+    OPEN(1,FILE='..\..\RESULTS\FORTRAN_PARA.TXT',STATUS='OLD', POSITION='APPEND' )
+    
+    WRITE(1,'(I3, A, F6.2)') CASEINDEX, ', CONGESTION_PARA_N', CONGESTION_N
+    !WRITE(1,'(I3, A, F6.2)') CASEINDEX, ',', BS 
+    WRITE(1,'(I3, A, F6.2)') CASEINDEX, ', CAPACITY_K=', CAPK
+    WRITE(1,'(I3, A, F6.2)') CASEINDEX, ', RISK_RIO= ', RIO
+    
+    END SUBROUTINE 

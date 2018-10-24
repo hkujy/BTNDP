@@ -1,0 +1,197 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+10	.\DPMAIN.F90	/^10  CALL PROJECTION(X_BAR,X,FX,BETA,FIRSTOUT,LASTOUT)$/;"	l	file:
+10	.\RSPATH.F90	/^	10    CONTINUE$/;"	l	subroutine:RSP	file:
+10	.\SIMPLEXPROJECTION.f90	/^10		SET_I=0$/;"	l	subroutine:SIMPLEX_PROJECTION	file:
+10	.\SP.F90	/^	10    CONTINUE$/;"	l	subroutine:SP	file:
+10	.\SUBRSP.f90	/^	10    CONTINUE$/;"	l	subroutine:SUBRSP	file:
+100	.\RSPATH.F90	/^	100   CONTINUE$/;"	l	subroutine:RSP	file:
+100	.\SP.F90	/^	100   CONTINUE$/;"	l	subroutine:SP	file:
+100	.\SUBRSP.f90	/^	100   CONTINUE$/;"	l	subroutine:SUBRSP	file:
+1000	.\DPMAIN.F90	/^1000 CALL CPU_TIME(TIME_END)$/;"	l	file:
+1000	.\MayNotUseful\SAM.f90	/^1000	CALL CPU_TIME(TIME_END)$/;"	l	file:
+20	.\DPMAIN.F90	/^20  NUMERATOR=NORM_VALUE2(X,X_BAR,NL,NDEST)$/;"	l	file:
+20	.\RSPATH.F90	/^	20       Q(ENDQ) = ND$/;"	l	subroutine:RSP	file:
+20	.\SP.F90	/^	20       Q(ENDQ) = ND$/;"	l	subroutine:SP	file:
+20	.\SUBRSP.f90	/^	20       Q(ENDQ) = ND$/;"	l	subroutine:SUBRSP	file:
+201	.\RSPATH.F90	/^	201   N1 = Q(P)$/;"	l	subroutine:RSP	file:
+201	.\SP.F90	/^	201   N1 = Q(P)$/;"	l	subroutine:SP	file:
+201	.\SUBRSP.f90	/^	201   N1 = Q(P)$/;"	l	subroutine:SUBRSP	file:
+30	.\RSPATH.F90	/^	30       Q(ND) = Q(P)$/;"	l	subroutine:RSP	file:
+30	.\SP.F90	/^	30       Q(ND) = Q(P)$/;"	l	subroutine:SP	file:
+30	.\SUBRSP.f90	/^	30       Q(ND) = Q(P)$/;"	l	subroutine:SUBRSP	file:
+5	.\MayNotUseful\SAM.f90	/^5		CALL SELF_REGULATED_MSA(X0,X1,FX0,FX1,X2,NL,NDEST,BETA,TAU,LAMA,CONVERT,MSAERR)$/;"	l	file:
+5	.\UPDATESUB.f90	/^5	UECONVERGE = .TRUE.$/;"	l	subroutine:UPDATESUB	file:
+998	.\DPMAIN.F90	/^998    X=X_BAR$/;"	l	file:
+999	.\LOWERLEVEL.f90	/^999 WRITE(*,*) "DONE"$/;"	l	subroutine:LOWERLEVEL	file:
+ANODE	.\DEFINEVAR_TestNet.f90	/^    INTEGER::ANODE(/;"	v	module:DEFINE
+BACKANODE	.\DEFINEVAR_TestNet.f90	/^    INTEGER::BACKANODE(/;"	v	module:GRAPH
+BACKBNODE	.\DEFINEVAR_TestNet.f90	/^    INTEGER::BACKANODE(NL),BACKBNODE(/;"	v	module:GRAPH
+BACKTOFORWARD	.\DEFINEVAR_TestNet.f90	/^    INTEGER::BACKTOFORWARD(/;"	v	module:GRAPH
+BACKWARD_UPDATE_FX	.\BACKWARDUPDATE.F90	/^	SUBROUTINE BACKWARD_UPDATE_FX(/;"	s
+BACKWARD_UPDATE_FX__genmod	.\Debug\backward_update_fx__genmod.f90	/^        MODULE BACKWARD_UPDATE_FX__genmod$/;"	m
+BILEVEL	.\BILEVEL.f90	/^    PROGRAM BILEVEL$/;"	p
+BNODE	.\DEFINEVAR_TestNet.f90	/^    INTEGER::ANODE(NL),BNODE(/;"	v	module:DEFINE
+BS	.\DEFINEVAR_TestNet.f90	/^     REAL*8::BS(/;"	v	module:DEFINE
+CAL_FX	.\GETFX.f90	/^		SUBROUTINE CAL_FX(/;"	s
+CAL_FX__genmod	.\Debug\cal_fx__genmod.f90	/^        MODULE CAL_FX__genmod$/;"	m
+CAL_MSA_FX	.\MSAFX.F90	/^		SUBROUTINE CAL_MSA_FX(/;"	s
+CAL_MSA_FX__genmod	.\Debug\cal_msa_fx__genmod.f90	/^        MODULE CAL_MSA_FX__genmod$/;"	m
+CASEINDEX	.\DEFINEVAR_TestNet.f90	/^    INTEGER::CASEINDEX$/;"	v	module:DEFINE
+CLF	.\DEFINEVAR_TestNet.f90	/^    REAL*8::CLF(/;"	v	module:DEFINE
+CONGESTION_N	.\DEFINEVAR_TestNet.f90	/^    real*8::CONGESTION_N$/;"	v	module:DEFINE
+CONNECT	.\DEFINEVAR_TestNet.f90	/^    LOGICAL::CONNECT(/;"	v	module:DEFINE
+COUNTCONECT	.\CONNECT.F90	/^		SUBROUTINE COUNTCONECT$/;"	s
+COUNTCONECT__genmod	.\Debug\countconect__genmod.f90	/^        MODULE COUNTCONECT__genmod$/;"	m
+Capk	.\DEFINEVAR_TestNet.f90	/^    REAL*8::Capk$/;"	v	module:DEFINE
+CompeteSec	.\DEFINEVAR_TestNet.f90	/^    INTEGER::CompeteSec(/;"	v	module:DEFINE
+ConstPara	.\DEFINEVAR_TestNet.f90	/^    module ConstPara$/;"	m
+DEFINE	.\DEFINEVAR_TestNet.f90	/^    MODULE DEFINE$/;"	m
+DELFLOWEPS	.\DEFINEVAR_TestNet.f90	/^    REAL*8,PARAMETER::DELFLOWEPS /;"	v	module:ConstPara
+DEMAND	.\DEFINEVAR_TestNet.f90	/^    REAL*8::DEMAND(/;"	v	module:DEFINE
+DEST	.\DEFINEVAR_TestNet.f90	/^    INTEGER::DEST(/;"	v	module:DEFINE
+DIST	.\DEFINEVAR_TestNet.f90	/^    REAL*8 DIST(/;"	v	module:DEFINE
+DPMAIN	.\DPMAIN.F90	/^    SUBROUTINE DPMAIN(/;"	s
+DPMAIN__genmod	.\Debug\dpmain__genmod.f90	/^        MODULE DPMAIN__genmod$/;"	m
+ERROR_EUCLIDEAN_DISTANCE__genmod	.\Debug\error_euclidean_distance__genmod.f90	/^        MODULE ERROR_EUCLIDEAN_DISTANCE__genmod$/;"	m
+ERROR_Euclidean_distance	.\NCPERR.F90	/^		SUBROUTINE ERROR_Euclidean_distance(/;"	s
+FACT	.\LINKTIME.F90	/^    REAL*8 FUNCTION FACT(/;"	f
+FACT__genmod	.\Debug\fact__genmod.f90	/^        MODULE FACT__genmod$/;"	m
+FIRSTIN	.\DEFINEVAR_TestNet.f90	/^    INTEGER::FIRSTIN(/;"	v	module:GRAPH
+FIRSTOUT	.\BILEVEL.f90	/^    INTEGER:: FIRSTOUT(/;"	v	program:BILEVEL
+FLOW_EPS	.\DEFINEVAR_TestNet.f90	/^    REAL*8, PARAMETER::FLOW_EPS=/;"	v	module:ConstPara
+FORWARD_UPDATE_FLOW	.\FORWARDUPDATE.F90	/^		SUBROUTINE FORWARD_UPDATE_FLOW(/;"	s
+FORWARD_UPDATE_FLOW__genmod	.\Debug\forward_update_flow__genmod.f90	/^        MODULE FORWARD_UPDATE_FLOW__genmod$/;"	m
+FRE	.\DEFINEVAR_TestNet.f90	/^    REAL*8::FRE(/;"	v	module:DEFINE
+FX	.\DEFINEVAR_TestNet.f90	/^    REAL*8::FX(/;"	v	module:DEFINE
+GETORDER	.\TORDER.f90	/^	SUBROUTINE GETORDER(/;"	s
+GETORDER__genmod	.\Debug\getorder__genmod.f90	/^        MODULE GETORDER__genmod$/;"	m
+GET_SUM	.\SIMPLEXPROJECTION.f90	/^		REAL*8 FUNCTION GET_SUM(/;"	f
+GET_SUM__genmod	.\Debug\get_sum__genmod.f90	/^        MODULE GET_SUM__genmod$/;"	m
+GET_TOTALCOST__genmod	.\Debug\get_totalcost__genmod.f90	/^        MODULE GET_TOTALCOST__genmod$/;"	m
+GRAPH	.\DEFINEVAR_TestNet.f90	/^    MODULE GRAPH$/;"	m
+Get_TotalCost	.\BILEVEL.f90	/^    function Get_TotalCost(/;"	f
+Get_TotalCost	.\BILEVEL.f90	/^    real*8,external::Get_TotalCost$/;"	v	program:BILEVEL
+INF1	.\DEFINEVAR_TestNet.f90	/^    REAL*8, PARAMETER:: INF1=/;"	v	module:ConstPara
+INITIAL_X	.\INITIALSOL.F90	/^		SUBROUTINE INITIAL_X(/;"	s
+INITIAL_X__genmod	.\Debug\initial_x__genmod.f90	/^        MODULE INITIAL_X__genmod$/;"	m
+INPUTSEED	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::INPUTSEED /;"	v	module:ConstPara
+ISCONVERGE	.\DEFINEVAR_TestNet.f90	/^    LOGICAL ISCONVERGE$/;"	v	module:DEFINE
+LARGE	.\DEFINEVAR_TestNet.f90	/^    REAL*8, PARAMETER:: LARGE /;"	v	module:ConstPara
+LASTIN	.\DEFINEVAR_TestNet.f90	/^    INTEGER::FIRSTIN(NN),LASTIN(/;"	v	module:GRAPH
+LASTOUT	.\BILEVEL.f90	/^    INTEGER:: FIRSTOUT(NN), LASTOUT(/;"	v	program:BILEVEL
+LINE	.\DEFINEVAR_TestNet.f90	/^    INTEGER::LINE(/;"	v	module:DEFINE
+LINK_TIME	.\LINKTIME.F90	/^    SUBROUTINE LINK_TIME(/;"	s
+LINK_TIME__genmod	.\Debug\link_time__genmod.f90	/^        MODULE LINK_TIME__genmod$/;"	m
+LNDIST	.\DEFINEVAR_TestNet.f90	/^    REAL*8::LNDIST(/;"	v	module:DEFINE
+LOWERLEVEL	.\LOWERLEVEL.f90	/^    SUBROUTINE LOWERLEVEL(/;"	s
+LOWERLEVEL__genmod	.\Debug\lowerlevel__genmod.f90	/^        MODULE LOWERLEVEL__genmod$/;"	m
+LineStops	.\DEFINEVAR_TestNet.f90	/^    INTEGER::LineStops(/;"	v	module:DEFINE
+LocateCompete	.\DEFINEVAR_TestNet.f90	/^    INTEGER::LocateCompete(/;"	v	module:DEFINE
+LogFileNo	.\DEFINEVAR_TestNet.f90	/^    integer,parameter::LogFileNo /;"	v	module:ConstPara
+MACSOLC	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::MACSOLC /;"	v	module:ConstPara
+MAXCPU	.\DEFINEVAR_TestNet.f90	/^    REAL*8,PARAMETER::MAXCPU /;"	v	module:ConstPara
+MAXCT	.\DEFINEVAR_TestNet.f90	/^    REAL*8,PARAMETER::MAXCT /;"	v	module:ConstPara
+MAXITERATION	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::MAXITERATION=/;"	v	module:ConstPara
+MINSP	.\MINSP.F90	/^	SUBROUTINE MINSP(/;"	s
+MINSP__genmod	.\Debug\minsp__genmod.f90	/^        MODULE MINSP__genmod$/;"	m
+MSA2	.\MSA&SAM.F90	/^SUBROUTINE MSA2(/;"	s
+MSA2__genmod	.\Debug\msa2__genmod.f90	/^        MODULE MSA2__genmod$/;"	m
+MaxCom	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::MaxCom /;"	v	module:ConstPara
+MaxLineStops	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::MaxLineStops /;"	v	module:ConstPara
+MaxSecLine	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::MaxSecLine=/;"	v	module:ConstPara
+NCP_EPS	.\DEFINEVAR_TestNet.f90	/^    REAL*8, PARAMETER::NCP_EPS=/;"	v	module:ConstPara
+NCP_ERROR	.\NCPERR.F90	/^		SUBROUTINE NCP_ERROR(/;"	s
+NCP_ERROR__genmod	.\Debug\ncp_error__genmod.f90	/^        MODULE NCP_ERROR__genmod$/;"	m
+NDEST	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::NDEST=/;"	v	module:ConstPara
+NDIST	.\DEFINEVAR_TestNet.f90	/^    REAL*8::NDIST(/;"	v	module:DEFINE
+NF	.\DEFINEVAR_TestNet.f90	/^    REAL*8::NF(/;"	v	module:DEFINE
+NL	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::NL=/;"	v	module:ConstPara
+NLINE	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::NLINE=/;"	v	module:ConstPara
+NN	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::NN=/;"	v	module:ConstPara
+NOD	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::NOD=/;"	v	module:ConstPara
+NODE_FLOW	.\DPMAIN.F90	/^    SUBROUTINE NODE_FLOW(/;"	s
+NODE_FLOW__genmod	.\Debug\node_flow__genmod.f90	/^        MODULE NODE_FLOW__genmod$/;"	m
+NORM_VALUE	.\NORMVAL.F90	/^REAL*8 FUNCTION NORM_VALUE(/;"	f
+NORM_VALUE0	.\NORMVAL.F90	/^REAL*8 FUNCTION NORM_VALUE0(/;"	f
+NORM_VALUE0__genmod	.\Debug\norm_value0__genmod.f90	/^        MODULE NORM_VALUE0__genmod$/;"	m
+NORM_VALUE2	.\NORMVAL.F90	/^REAL*8 FUNCTION NORM_VALUE2(/;"	f
+NORM_VALUE2__genmod	.\Debug\norm_value2__genmod.f90	/^        MODULE NORM_VALUE2__genmod$/;"	m
+NORM_VALUE__genmod	.\Debug\norm_value__genmod.f90	/^        MODULE NORM_VALUE__genmod$/;"	m
+NUMCONNECT	.\DEFINEVAR_TestNet.f90	/^    INTEGER::NUMCONNECT(/;"	v	module:DEFINE
+NumCom	.\DEFINEVAR_TestNet.f90	/^    INTEGER::NumCom(/;"	v	module:DEFINE
+ORDER	.\TORDER.f90	/^	SUBROUTINE ORDER(/;"	s
+ORDER__genmod	.\Debug\order__genmod.f90	/^        MODULE ORDER__genmod$/;"	m
+ORIGIN	.\DEFINEVAR_TestNet.f90	/^    INTEGER::DEST(NOD),ORIGIN(/;"	v	module:DEFINE
+OUTPUTOD	.\WRITEOUTPUT.F90	/^    SUBROUTINE OUTPUTOD(/;"	s
+OUTPUTOD__genmod	.\Debug\outputod__genmod.f90	/^        MODULE OUTPUTOD__genmod$/;"	m
+OUTPUTPARA	.\WRITEOUTPUT.F90	/^    SUBROUTINE OUTPUTPARA$/;"	s
+OUTPUTPARA__genmod	.\Debug\outputpara__genmod.f90	/^        MODULE OUTPUTPARA__genmod$/;"	m
+OUTPUTPATH	.\WRITEOUTPUT.F90	/^    SUBROUTINE OUTPUTPATH(/;"	s
+OUTPUTPATH__genmod	.\Debug\outputpath__genmod.f90	/^        MODULE OUTPUTPATH__genmod$/;"	m
+OUTPUTX	.\WRITEOUTPUT.F90	/^    SUBROUTINE OUTPUTX(/;"	s
+OUTPUTX__genmod	.\Debug\outputx__genmod.f90	/^        MODULE OUTPUTX__genmod$/;"	m
+PA	.\DEFINEVAR_TestNet.f90	/^    INTEGER PA(/;"	v	module:DEFINE
+PITER	.\DEFINEVAR_TestNet.f90	/^    INTEGER::PITER$/;"	v	module:GRAPH
+PROJECTION	.\DPMAIN.F90	/^    SUBROUTINE PROJECTION(/;"	s
+PROJECTION__genmod	.\Debug\projection__genmod.f90	/^        MODULE PROJECTION__genmod$/;"	m
+READNETWORK	.\READNETWORK.F90	/^    SUBROUTINE READNETWORK(/;"	s
+READNETWORK__genmod	.\Debug\readnetwork__genmod.f90	/^        MODULE READNETWORK__genmod$/;"	m
+READPARA	.\READPARA.f90	/^    SUBROUTINE READPARA$/;"	s
+READPARA__genmod	.\Debug\readpara__genmod.f90	/^        MODULE READPARA__genmod$/;"	m
+RIO	.\DEFINEVAR_TestNet.f90	/^    REAL*8::RIO /;"	v	module:DEFINE
+ROOTS	.\DEFINEVAR_TestNet.f90	/^    INTEGER::ROOTS(/;"	v	module:GRAPH
+RSP	.\RSPATH.F90	/^		SUBROUTINE RSP(/;"	s
+RSP__genmod	.\Debug\rsp__genmod.f90	/^        MODULE RSP__genmod$/;"	m
+SAM	.\DEFINEVAR_TestNet.f90	/^    LOGICAL SAM$/;"	v	module:DEFINE
+SAMMAIN	.\MayNotUseful\SAM.f90	/^		SUBROUTINE SAMMAIN(/;"	s
+SCOST	.\DEFINEVAR_TestNet.f90	/^    REAL*8::SCOST(/;"	v	module:DEFINE
+SELF_REGULATED_MSA	.\MSA&SAM.F90	/^SUBROUTINE SELF_REGULATED_MSA(/;"	s
+SELF_REGULATED_MSA__genmod	.\Debug\self_regulated_msa__genmod.f90	/^        MODULE SELF_REGULATED_MSA__genmod$/;"	m
+SF	.\DEFINEVAR_TestNet.f90	/^    REAL*8::FRE(NLINE),SF(/;"	v	module:DEFINE
+SHORTEST_PATH_UPDATE_FX	.\MSAFX.F90	/^		SUBROUTINE SHORTEST_PATH_UPDATE_FX(/;"	s
+SHORTEST_PATH_UPDATE_FX__genmod	.\Debug\shortest_path_update_fx__genmod.f90	/^        MODULE SHORTEST_PATH_UPDATE_FX__genmod$/;"	m
+SIMPLEX_PROJECTION	.\SIMPLEXPROJECTION.f90	/^		SUBROUTINE SIMPLEX_PROJECTION(/;"	s
+SIMPLEX_PROJECTION__genmod	.\Debug\simplex_projection__genmod.f90	/^        MODULE SIMPLEX_PROJECTION__genmod$/;"	m
+SINDEX	.\DEFINEVAR_TestNet.f90	/^    INTEGER SINDEX(/;"	v	module:DEFINE
+SL	.\DEFINEVAR_TestNet.f90	/^    INTEGER::SL(/;"	v	module:DEFINE
+SLC	.\DEFINEVAR_TestNet.f90	/^    INTEGER::SLC(/;"	v	module:DEFINE
+SLFLOW	.\DEFINEVAR_TestNet.f90	/^    REAL*8::SLFLOW(/;"	v	module:DEFINE
+SOLC	.\DEFINEVAR_TestNet.f90	/^    INTEGER SOLC,/;"	v	module:DEFINE
+SP	.\SP.F90	/^		SUBROUTINE SP(/;"	s
+SP__genmod	.\Debug\sp__genmod.f90	/^        MODULE SP__genmod$/;"	m
+STT	.\DEFINEVAR_TestNet.f90	/^    REAL*8::STT(/;"	v	module:DEFINE
+SUBCONVERGE	.\DEFINEVAR_TestNet.f90	/^    LOGICAL SUBCONVERGE$/;"	v	module:DEFINE
+SUBCOUNT	.\DEFINEVAR_TestNet.f90	/^    INTEGER SOLC,SUBCOUNT /;"	v	module:DEFINE
+SUBMAX	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::SUBMAX /;"	v	module:ConstPara
+SUBRSP	.\SUBRSP.f90	/^		SUBROUTINE SUBRSP(/;"	s
+SUBRSP__genmod	.\Debug\subrsp__genmod.f90	/^        MODULE SUBRSP__genmod$/;"	m
+SVAR	.\DEFINEVAR_TestNet.f90	/^    REAL*8::SCOST(NL),SVAR(/;"	v	module:DEFINE
+SubLink	.\DEFINEVAR_TestNet.f90	/^    LOGICAL::SubLink(/;"	v	module:GRAPH
+SubNode	.\DEFINEVAR_TestNet.f90	/^    LOGICAL::SubLink(NL,NDEST),SubNode(/;"	v	module:GRAPH
+TIME_BEGIN	.\DEFINEVAR_TestNet.f90	/^    REAL*8 TIME_BEGIN,/;"	v	module:DEFINE
+TIME_END	.\DEFINEVAR_TestNet.f90	/^    REAL*8 TIME_BEGIN,TIME_END$/;"	v	module:DEFINE
+TORDER	.\DEFINEVAR_TestNet.f90	/^    INTEGER::TORDER(/;"	v	module:GRAPH
+TREE	.\DFS.F90	/^		SUBROUTINE TREE(/;"	s
+TREE__genmod	.\Debug\tree__genmod.f90	/^        MODULE TREE__genmod$/;"	m
+TotalCost	.\BILEVEL.f90	/^    REAL*8::TotalCost$/;"	v	program:BILEVEL
+UECONVERGE	.\DEFINEVAR_TestNet.f90	/^    LOGICAL UECONVERGE$/;"	v	module:DEFINE
+UPDATEEXPECTEDCOST__genmod	.\Debug\updateexpectedcost__genmod.f90	/^        MODULE UPDATEEXPECTEDCOST__genmod$/;"	m
+UPDATESF__genmod	.\Debug\updatesf__genmod.f90	/^        MODULE UPDATESF__genmod$/;"	m
+UPDATESUB	.\UPDATESUB.f90	/^	SUBROUTINE UPDATESUB(/;"	s
+UPDATESUB__genmod	.\Debug\updatesub__genmod.f90	/^        MODULE UPDATESUB__genmod$/;"	m
+UPDATE_ALPH	.\DPMAIN.F90	/^    REAL*8 FUNCTION UPDATE_ALPH(/;"	f
+UPDATE_ALPH__genmod	.\Debug\update_alph__genmod.f90	/^        MODULE UPDATE_ALPH__genmod$/;"	m
+UpdateExpectedCost	.\READNETWORK.F90	/^    subroutine UpdateExpectedCost(/;"	s
+WRITEPARA	.\READPARA.f90	/^    SUBROUTINE WRITEPARA$/;"	s
+WRITEPARA__genmod	.\Debug\writepara__genmod.f90	/^        MODULE WRITEPARA__genmod$/;"	m
+WalkCost	.\DEFINEVAR_TestNet.f90	/^    REAL*8,PARAMETER::WalkCost /;"	v	module:ConstPara
+X	.\DEFINEVAR_TestNet.f90	/^    REAL*8::X(/;"	v	module:DEFINE
+XFA	.\BILEVEL.f90	/^    REAL*8::XFA(/;"	v	program:BILEVEL
+fare	.\DEFINEVAR_TestNet.f90	/^    REAL*8::fare(/;"	v	module:DEFINE
+gama	.\DEFINEVAR_TestNet.f90	/^    REAL*8,PARAMETER::gama=/;"	v	module:ConstPara
+updatesf	.\READNETWORK.F90	/^    subroutine updatesf(/;"	s

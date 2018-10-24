@@ -1,0 +1,37 @@
+! just sort the vector 
+
+		SUBROUTINE TREE(NR,LABLE)
+		USE GRAPH
+
+		IMPLICIT NONE 
+		INTEGER,INTENT(IN):: NR
+		REAL*8,INTENT(IN)::LABLE(NN)
+		INTEGER I,J,TI
+		! NR IS TO INDICATE THE NUMBER OF DESTINATNIO NODE
+		REAL*8 VEC(NN),TEMP
+
+		DO I = 1,NN
+			TORDER(I,NR) = I
+		END DO  
+		VEC(:)=LABLE(:)
+
+		DO I=1, NN
+			DO J=NN, I+1, -1
+			 IF (VEC(J-1).LE.VEC(J)) THEN 
+				TEMP = VEC(J-1)
+				VEC(J-1) = VEC(J)
+				VEC(J) = TEMP
+				TI =  TORDER(J-1,NR)
+				TORDER(J-1,NR) =  TORDER(J,NR)
+				TORDER(J,NR) = TI
+				END IF 
+			END DO 
+		END DO 
+		DO I = 1,NN
+			IF (VEC(I).GE.LARGE) THEN
+				TORDER(I,NR) = 0
+			END IF
+		END DO  
+	
+		RETURN
+		END SUBROUTINE
