@@ -1,11 +1,7 @@
     ! the following code is referred to
     ! http://www.lahey.com/docs/lfenthelp/NLMOvElConstructors.htm
     !TODO
-    module MyClassModule
-    use MyLineClass
-    use MyLinkClass
-    use MySolClass
-    end module
+
     
     module MySolClass
     USE DEFINE
@@ -224,3 +220,8 @@
 
     end module
 
+    module MyClassModule
+    use MyLineClass
+    use MyLinkClass
+    use MySolClass
+    end module
