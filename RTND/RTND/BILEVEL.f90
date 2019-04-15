@@ -7,6 +7,7 @@
 
     INTEGER:: FIRSTOUT(NN), LASTOUT(NN)
     INTEGER:: I,l
+	integer allseed(20),seed_cycle,seed1(1)
     REAL*8::XFA(NL,NDEST)
     REAL*8::TotalCost
     real*8,external::Get_TotalCost
@@ -14,7 +15,10 @@
     integer::NewFleet(NLINE)
     !TODO: CHANGE THE INPUT OF THE OUTER RALTED THE THE FLEET SIZE
     
-    
+    !TODOD: set read seed from file and set the seed cycle
+    seed1=1
+    call random_seed(put=seed1(:))
+
     OPEN (UNIT=LOGFILENO,FILE='..\..\RESULTS\LOG.TXT',STATUS='REPLACE',ACTION="WRITE")
 
     ! STEP 1 READ INPUT DATA
@@ -22,7 +26,7 @@
     CALL WRITEPARA
     CALL READNETWORK(FIRSTOUT, LASTOUT)
     call Ini_MyLines(mylines)
-    ! intilize my new added links
+    ! Initialise  my new added links
     call IniLinks(mylinks)
     do L=1, NLINE
         call ini_line_links(mylines(l),mylinks)
@@ -42,7 +46,8 @@
     
     call set_sol_fre(test_sol, NewFleet)
     call EvaluateSol(test_sol,FIRSTOUT,LASTOUT,XFA)
-
+    
+    
 
     END PROGRAM
 

@@ -3,6 +3,7 @@
     implicit none
     real*8,parameter::MaxFre = 17
     real*8,parameter::MinFre = 4
+    integer,parameter::TotalFleet = 15
     integer,parameter::LogFileNo = 99
     INTEGER,PARAMETER::INPUTSEED = 1
     INTEGER,PARAMETER::SUBMAX = 0

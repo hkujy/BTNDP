@@ -14,6 +14,7 @@
     contains 
     
     subroutine set_sol_fre(this, newFleet)
+    ! set fleet size for the solution
     type(SolClass),intent(inout)::this
     
     integer l
