@@ -316,7 +316,7 @@
     integer::bcmcount
     logical::isbcm(5)
     logical::isupdated(nn,ndest)
-    open(1,file='c:\gitcodes\logitassign\results\fortran_checkmadf.txt',position="append") 
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_checkmadf.txt',position="append") 
     madf = 0.0d0 
     ! Todo: Check Whether i need to update xfa 
     if (islogit) then 
@@ -466,7 +466,7 @@
     real*8:: printfx
     largecost = 1000.0
 
-    open(1,file='c:\gitcodes\logitassign\results\fortran_output_link.txt')
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_output_link.txt')
     write(1,*) "method,case,dest,link,flow,fx,lt,xprob,logitprob,tail,head"
     do i=1,ndest
         do j=1,nl
@@ -510,7 +510,7 @@
     integer q,w
 
     !open(39,file='..\..\results\fortran_outputod.txt',status='old', position='append' )
-    open(1,file='c:\gitcodes\logitassign\results\fortran_outputod.txt')
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_outputod.txt')
     write(1,*) "case","origin","dest","demand","y","flow"
     !integer::dest(nod),origin(nod)
     do q = 1, nod
@@ -545,8 +545,8 @@
     real*8::linktime(nl)
     real*8,intent(in)::xfa(nl,ndest)
 
-    open(1,file='c:\gitcodes\logitassign\results\fortran_linkcost.txt' )
-    open(2,file='c:\gitcodes\logitassign\results\fortran_pathcost.txt' ) 
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_linkcost.txt' )
+    open(2,file='c:\gitcodes\BTNDP\results\fortran_pathcost.txt' ) 
     
     write(1,*) "case,linkid,linktime"
     do i = 1, nl

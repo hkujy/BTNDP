@@ -5,9 +5,9 @@
     integer i
     real*8::value
 
-    open(1,file='c:\gitcodes\logitassign\input\testnetwork\para.txt')
-    open(2,file='c:\gitcodes\logitassign\input\testnetwork\bsvalue.txt')
-    open(3,file='c:\gitcodes\logitassign\results\fortran_bsvalue.txt' )
+    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\para.txt')
+    open(2,file='c:\gitcodes\BTNDP\input\testnetwork\bsvalue.txt')
+    open(3,file='c:\gitcodes\BTNDP\results\fortran_bsvalue.txt' )
     do i = 1,4
         read(1,*) value 
         if (i==1) then
@@ -46,7 +46,7 @@
     use constpara   
     implicit none
     !open(1,file='..\..\results\fortran_para.txt',status='old', position='append' )
-    open(1,file='c:\gitcodes\logitassign\results\fortran_para.txt' )
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_para.txt' )
     
     write(1,'(i3, a, f6.2)') caseindex, ', congestion_para_n', congestion_n
     !write(1,'(i3, a, f6.2)') caseindex, ',', bs 

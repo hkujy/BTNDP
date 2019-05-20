@@ -29,14 +29,14 @@ module dpsolverlib
     integer::i,j
     integer::mb, nb
     !	step 1 fixed beta ! test other three
-    open(1,file='c:\gitcodes\logitassign\results\fortran_dp_para1.txt')
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_para1.txt')
     write(1,*) "case,lama,miu,v"
 
-    open(2,file='c:\gitcodes\logitassign\results\fortran_dp_para2.txt')
+    open(2,file='c:\gitcodes\BTNDP\results\fortran_dp_para2.txt')
     write(2,*) "case,beta,solc,cputime,error,distanceerr"
 
     !open(17,file='..\..\results\fortran_finalerr.txt',status='old',position='append')
-    open(3,file='c:\gitcodes\logitassign\results\fortran_finalerr.txt')
+    open(3,file='c:\gitcodes\BTNDP\results\fortran_finalerr.txt')
     write(3,*) "case,err" 
     ! just use the double project method
     this%name ='dp'
@@ -93,9 +93,9 @@ module dpsolverlib
     this%isNCPconverge = .false.
     this%gapfileno = 98
 
-    open(1,file='c:\gitcodes\logitassign\results\fortran_dp_converge.txt')
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_converge.txt')
     write(1,*) "case,solc,err"
-    open (unit=this%gapfileno,file='c:\gitcodes\logitassign\results\dpgap.txt',&
+    open (unit=this%gapfileno,file='c:\gitcodes\BTNDP\results\dpgap.txt',&
          status='replace',action="write")
     write(this%gapfileno,*) 'solc,ncperr'    
 

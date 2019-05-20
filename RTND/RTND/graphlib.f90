@@ -92,14 +92,14 @@
     !open(1,file='..\testnetwork\alllinks.txt')
     !open(2,file='..\input\cost.txt')
     !open(3,file='..\input\demand.txt')
-    open(1,file='c:\gitcodes\logitassign\input\testnetwork\odpairs.txt')
-    open(2,file='c:\gitcodes\logitassign\input\testnetwork\numlinestops.txt')
-    open(3,file='c:\gitcodes\logitassign\input\testnetwork\putstops.txt')
-    open(4,file='c:\gitcodes\logitassign\input\testnetwork\destnodeset.txt')
-    open(5,file='c:\gitcodes\logitassign\input\testnetwork\linesectiondata.txt')
-    open(6,file='c:\gitcodes\logitassign\input\testnetwork\inifre.txt')
-    open(7,file='c:\gitcodes\logitassign\results\fortran_6linkdata.txt')
-    open(8,file='c:\gitcodes\logitassign\results\fortran_linecostandvar.txt')
+    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\odpairs.txt')
+    open(2,file='c:\gitcodes\BTNDP\input\testnetwork\numlinestops.txt')
+    open(3,file='c:\gitcodes\BTNDP\input\testnetwork\putstops.txt')
+    open(4,file='c:\gitcodes\BTNDP\input\testnetwork\destnodeset.txt')
+    open(5,file='c:\gitcodes\BTNDP\input\testnetwork\linesectiondata.txt')
+    open(6,file='c:\gitcodes\BTNDP\input\testnetwork\inifre.txt')
+    open(7,file='c:\gitcodes\BTNDP\results\fortran_6linkdata.txt')
+    open(8,file='c:\gitcodes\BTNDP\results\fortran_linecostandvar.txt')
     ! step 1
     ! read od pairs
     do i=1,nod

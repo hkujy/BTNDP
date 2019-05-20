@@ -4,232 +4,231 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-10	.\DPMAIN.F90	/^10  CALL PROJECTION(X_BAR,X,FX,BETA,FIRSTOUT,LASTOUT)$/;"	l	file:
-10	.\RSPATH.F90	/^	10    CONTINUE$/;"	l	subroutine:RSP	file:
-10	.\SIMPLEXPROJECTION.f90	/^10		SET_I=0$/;"	l	subroutine:SIMPLEX_PROJECTION	file:
-10	.\SP.F90	/^	10    CONTINUE$/;"	l	subroutine:SP	file:
-10	.\SUBRSP.f90	/^	10    CONTINUE$/;"	l	subroutine:SUBRSP	file:
-100	.\RSPATH.F90	/^	100   CONTINUE$/;"	l	subroutine:RSP	file:
-100	.\SP.F90	/^	100   CONTINUE$/;"	l	subroutine:SP	file:
-100	.\SUBRSP.f90	/^	100   CONTINUE$/;"	l	subroutine:SUBRSP	file:
-1000	.\DPMAIN.F90	/^1000 CALL CPU_TIME(TIME_END)$/;"	l	file:
-1000	.\MayNotUseful\SAM.f90	/^1000	CALL CPU_TIME(TIME_END)$/;"	l	file:
-20	.\DPMAIN.F90	/^20  NUMERATOR=NORM_VALUE2(X,X_BAR,NL,NDEST)$/;"	l	file:
-20	.\RSPATH.F90	/^	20       Q(ENDQ) = ND$/;"	l	subroutine:RSP	file:
-20	.\SP.F90	/^	20       Q(ENDQ) = ND$/;"	l	subroutine:SP	file:
-20	.\SUBRSP.f90	/^	20       Q(ENDQ) = ND$/;"	l	subroutine:SUBRSP	file:
-201	.\RSPATH.F90	/^	201   N1 = Q(P)$/;"	l	subroutine:RSP	file:
-201	.\SP.F90	/^	201   N1 = Q(P)$/;"	l	subroutine:SP	file:
-201	.\SUBRSP.f90	/^	201   N1 = Q(P)$/;"	l	subroutine:SUBRSP	file:
-30	.\RSPATH.F90	/^	30       Q(ND) = Q(P)$/;"	l	subroutine:RSP	file:
-30	.\SP.F90	/^	30       Q(ND) = Q(P)$/;"	l	subroutine:SP	file:
-30	.\SUBRSP.f90	/^	30       Q(ND) = Q(P)$/;"	l	subroutine:SUBRSP	file:
-5	.\MayNotUseful\SAM.f90	/^5		CALL SELF_REGULATED_MSA(X0,X1,FX0,FX1,X2,NL,NDEST,BETA,TAU,LAMA,CONVERT,MSAERR)$/;"	l	file:
-5	.\UPDATESUB.f90	/^5	UECONVERGE = .TRUE.$/;"	l	subroutine:UPDATESUB	file:
-998	.\DPMAIN.F90	/^998    X=X_BAR$/;"	l	file:
-999	.\LOWERLEVEL.f90	/^999 WRITE(*,*) "DONE"$/;"	l	subroutine:LOWERLEVEL	file:
-ANODE	.\DEFINEVAR_TestNet.f90	/^    INTEGER::ANODE(/;"	v	module:DEFINE
-BACKANODE	.\DEFINEVAR_TestNet.f90	/^    INTEGER::BACKANODE(/;"	v	module:GRAPH
-BACKBNODE	.\DEFINEVAR_TestNet.f90	/^    INTEGER::BACKANODE(NL),BACKBNODE(/;"	v	module:GRAPH
-BACKTOFORWARD	.\DEFINEVAR_TestNet.f90	/^    INTEGER::BACKTOFORWARD(/;"	v	module:GRAPH
-BACKWARD_UPDATE_FX	.\BACKWARDUPDATE.F90	/^	SUBROUTINE BACKWARD_UPDATE_FX(/;"	s
+10	.\RSPATH.F90	/^	10    continue$/;"	l	subroutine:rsp	file:
+10	.\dpsoslver.f90	/^10  call projection(this%x_bar,this%x,this%fx,this%beta,this%nwk)$/;"	l	subroutine:dpmain	file:
+10	.\genetic.f90	/^10  do nr=1,ndest$/;"	l	subroutine:projection	file:
+10	.\genetic_simplexprojection.f90	/^10	set_i=0$/;"	l	subroutine:simplex_projection	file:
+100	.\RSPATH.F90	/^	100   continue$/;"	l	subroutine:rsp	file:
+1000	.\dpsoslver.f90	/^1000 call cpu_time(time_end)$/;"	l	subroutine:dpmain	file:
+1000	.\msasolver.f90	/^1000	call cpu_time(time_end)$/;"	l	subroutine:solver	file:
+20	.\RSPATH.F90	/^	20       q(endq) = nd$/;"	l	subroutine:rsp	file:
+20	.\dpsoslver.f90	/^20  numerator=norm_value2(this%x,this%x_bar,nl,ndest)$/;"	l	subroutine:dpmain	file:
+201	.\RSPATH.F90	/^	201   n1 = q(p)$/;"	l	subroutine:rsp	file:
+30	.\RSPATH.F90	/^	30       q(nd) = q(p)$/;"	l	subroutine:rsp	file:
+5	.\graphlib.f90	/^5   this%isUEconverge = .true.$/;"	l	subroutine:updatesub	file:
+5	.\msasolver.f90	/^5   x0 = this%x$/;"	l	subroutine:solver	file:
+66	.\solverlib.f90	/^66  if (isusebcm) then $/;"	l	subroutine:backward_update_fx	file:
+998	.\dpsoslver.f90	/^998 this%x=this%x_bar$/;"	l	subroutine:dpmain	file:
+999	.\dpsoslver.f90	/^999 write(*,*) "done"$/;"	l	subroutine:solver	file:
 BACKWARD_UPDATE_FX__genmod	.\Debug\backward_update_fx__genmod.f90	/^        MODULE BACKWARD_UPDATE_FX__genmod$/;"	m
-BNODE	.\DEFINEVAR_TestNet.f90	/^    INTEGER::ANODE(NL),BNODE(/;"	v	module:DEFINE
-BS	.\DEFINEVAR_TestNet.f90	/^    REAL*8::BS(/;"	v	module:DEFINE
-CAL_FX	.\GETFX.f90	/^		SUBROUTINE CAL_FX(/;"	s
 CAL_FX__genmod	.\Debug\cal_fx__genmod.f90	/^        MODULE CAL_FX__genmod$/;"	m
-CAL_MSA_FX	.\MSAFX.F90	/^		SUBROUTINE CAL_MSA_FX(/;"	s
 CAL_MSA_FX__genmod	.\Debug\cal_msa_fx__genmod.f90	/^        MODULE CAL_MSA_FX__genmod$/;"	m
-CASEINDEX	.\DEFINEVAR_TestNet.f90	/^    INTEGER::CASEINDEX$/;"	v	module:DEFINE
-CLF	.\DEFINEVAR_TestNet.f90	/^    REAL*8::CLF(/;"	v	module:DEFINE
-CONGESTION_N	.\DEFINEVAR_TestNet.f90	/^    real*8::CONGESTION_N$/;"	v	module:DEFINE
-CONNECT	.\DEFINEVAR_TestNet.f90	/^    LOGICAL::CONNECT(/;"	v	module:DEFINE
-COUNTCONECT	.\CONNECT.F90	/^		SUBROUTINE COUNTCONECT$/;"	s
 COUNTCONECT__genmod	.\Debug\countconect__genmod.f90	/^        MODULE COUNTCONECT__genmod$/;"	m
-Capk	.\DEFINEVAR_TestNet.f90	/^    REAL*8::Capk$/;"	v	module:DEFINE
-CompeteSec	.\DEFINEVAR_TestNet.f90	/^    INTEGER::CompeteSec(/;"	v	module:DEFINE
-ConstPara	.\DEFINEVAR_TestNet.f90	/^    module ConstPara$/;"	m
-DEFINE	.\DEFINEVAR_TestNet.f90	/^    MODULE DEFINE$/;"	m
-DELFLOWEPS	.\DEFINEVAR_TestNet.f90	/^    REAL*8,PARAMETER::DELFLOWEPS /;"	v	module:ConstPara
-DEMAND	.\DEFINEVAR_TestNet.f90	/^    REAL*8::DEMAND(/;"	v	module:DEFINE
-DEST	.\DEFINEVAR_TestNet.f90	/^    INTEGER::DEST(/;"	v	module:DEFINE
-DIST	.\DEFINEVAR_TestNet.f90	/^    REAL*8 DIST(/;"	v	module:DEFINE
-DPMAIN	.\DPMAIN.F90	/^    SUBROUTINE DPMAIN(/;"	s
 DPMAIN__genmod	.\Debug\dpmain__genmod.f90	/^        MODULE DPMAIN__genmod$/;"	m
 ERROR_EUCLIDEAN_DISTANCE__genmod	.\Debug\error_euclidean_distance__genmod.f90	/^        MODULE ERROR_EUCLIDEAN_DISTANCE__genmod$/;"	m
-ERROR_Euclidean_distance	.\NCPERR.F90	/^		SUBROUTINE ERROR_Euclidean_distance(/;"	s
 EvaluateSol	.\MyClass.F90	/^    subroutine EvaluateSol(/;"	s	module:MySolClass
-ExpTime	.\MyClass.F90	/^        real*8::ExpTime$/;"	k	type:LineClass
-FACT	.\LINKTIME.F90	/^    REAL*8 FUNCTION FACT(/;"	f
 FACT__genmod	.\Debug\fact__genmod.f90	/^        MODULE FACT__genmod$/;"	m
-FIRSTIN	.\DEFINEVAR_TestNet.f90	/^    INTEGER::FIRSTIN(/;"	v	module:GRAPH
-FLOW_EPS	.\DEFINEVAR_TestNet.f90	/^    REAL*8, PARAMETER::FLOW_EPS=/;"	v	module:ConstPara
-FORWARD_UPDATE_FLOW	.\FORWARDUPDATE.F90	/^		SUBROUTINE FORWARD_UPDATE_FLOW(/;"	s
 FORWARD_UPDATE_FLOW__genmod	.\Debug\forward_update_flow__genmod.f90	/^        MODULE FORWARD_UPDATE_FLOW__genmod$/;"	m
-FRE	.\DEFINEVAR_TestNet.f90	/^    REAL*8::FRE(/;"	v	module:DEFINE
-FX	.\DEFINEVAR_TestNet.f90	/^    REAL*8::FX(/;"	v	module:DEFINE
-Fare	.\MyClass.F90	/^        real*8::Fare$/;"	k	type:LinkClass
 Fitness	.\MyClass.F90	/^        real*8::Fitness$/;"	k	type:SolClass
-Fleet	.\MyClass.F90	/^        integer::Fleet$/;"	k	type:LineClass
 Fleet	.\MyClass.F90	/^        integer::Fleet(/;"	k	type:SolClass
-Fre	.\MyClass.F90	/^        real*8::Fre$/;"	k	type:LineClass
-GETORDER	.\TORDER.f90	/^	SUBROUTINE GETORDER(/;"	s
 GETORDER__genmod	.\Debug\getorder__genmod.f90	/^        MODULE GETORDER__genmod$/;"	m
-GET_SUM	.\SIMPLEXPROJECTION.f90	/^		REAL*8 FUNCTION GET_SUM(/;"	f
 GET_SUM__genmod	.\Debug\get_sum__genmod.f90	/^        MODULE GET_SUM__genmod$/;"	m
 GET_TOTALCOST__genmod	.\Debug\get_totalcost__genmod.f90	/^        MODULE GET_TOTALCOST__genmod$/;"	m
-GRAPH	.\DEFINEVAR_TestNet.f90	/^    MODULE GRAPH$/;"	m
-Head	.\MyClass.F90	/^        character(len=4)::Head$/;"	k	type:LinkClass
-ID	.\MyClass.F90	/^        integer::ID$/;"	k	type:LineClass
-ID	.\MyClass.F90	/^        integer::ID$/;"	k	type:LinkClass
+GraphLib	.\graphlib.f90	/^    module GraphLib$/;"	m
 ID	.\MyClass.F90	/^        integer::ID$/;"	k	type:SolClass
-INF1	.\DEFINEVAR_TestNet.f90	/^    REAL*8, PARAMETER:: INF1=/;"	v	module:ConstPara
-INITIAL_X	.\INITIALSOL.F90	/^		SUBROUTINE INITIAL_X(/;"	s
 INITIAL_X__genmod	.\Debug\initial_x__genmod.f90	/^        MODULE INITIAL_X__genmod$/;"	m
-INPUTSEED	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::INPUTSEED /;"	v	module:ConstPara
-ISCONVERGE	.\DEFINEVAR_TestNet.f90	/^    LOGICAL ISCONVERGE$/;"	v	module:DEFINE
-IniLinks	.\MyClass.F90	/^    subroutine IniLinks(/;"	s	module:MyLinkClass
-Ini_MyLines	.\MyClass.F90	/^    subroutine Ini_MyLines(/;"	s	module:MyLineClass
-LARGE	.\DEFINEVAR_TestNet.f90	/^    REAL*8, PARAMETER:: LARGE /;"	v	module:ConstPara
-LASTIN	.\DEFINEVAR_TestNet.f90	/^    INTEGER::FIRSTIN(NN),LASTIN(/;"	v	module:GRAPH
-LINE	.\DEFINEVAR_TestNet.f90	/^    INTEGER::LINE(/;"	v	module:DEFINE
-LINK_TIME	.\LINKTIME.F90	/^    SUBROUTINE LINK_TIME(/;"	s
 LINK_TIME__genmod	.\Debug\link_time__genmod.f90	/^        MODULE LINK_TIME__genmod$/;"	m
-LNDIST	.\DEFINEVAR_TestNet.f90	/^    REAL*8::LNDIST(/;"	v	module:DEFINE
-LOWERLEVEL	.\LOWERLEVEL.f90	/^    SUBROUTINE LOWERLEVEL(/;"	s
 LOWERLEVEL__genmod	.\Debug\lowerlevel__genmod.f90	/^        MODULE LOWERLEVEL__genmod$/;"	m
-Line	.\MyClass.F90	/^        Integer::Line$/;"	k	type:LinkClass
-LineClass	.\MyClass.F90	/^    type LineClass /;"	t	module:MyLineClass
-LineStops	.\DEFINEVAR_TestNet.f90	/^    INTEGER::LineStops(/;"	v	module:DEFINE
-LinkClass	.\MyClass.F90	/^    type LinkClass$/;"	t	module:MyLinkClass
-Links	.\MyClass.F90	/^        Type(LinkClass), DIMENSION(:),allocatable::Links /;"	k	type:LineClass
-LocateCompete	.\DEFINEVAR_TestNet.f90	/^    INTEGER::LocateCompete(/;"	v	module:DEFINE
-LogFileNo	.\DEFINEVAR_TestNet.f90	/^    integer,parameter::LogFileNo /;"	v	module:ConstPara
-MACSOLC	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::MACSOLC /;"	v	module:ConstPara
-MAXCPU	.\DEFINEVAR_TestNet.f90	/^    REAL*8,PARAMETER::MAXCPU /;"	v	module:ConstPara
-MAXCT	.\DEFINEVAR_TestNet.f90	/^    REAL*8,PARAMETER::MAXCT /;"	v	module:ConstPara
-MAXITERATION	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::MAXITERATION=/;"	v	module:ConstPara
-MINSP	.\MINSP.F90	/^	SUBROUTINE MINSP(/;"	s
 MINSP__genmod	.\Debug\minsp__genmod.f90	/^        MODULE MINSP__genmod$/;"	m
-MSA2	.\MSA&SAM.F90	/^SUBROUTINE MSA2(/;"	s
 MSA2__genmod	.\Debug\msa2__genmod.f90	/^        MODULE MSA2__genmod$/;"	m
-MaxCom	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::MaxCom /;"	v	module:ConstPara
-MaxFre	.\DEFINEVAR_TestNet.f90	/^    real*8,parameter::MaxFre /;"	v	module:ConstPara
-MaxLineStops	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::MaxLineStops /;"	v	module:ConstPara
-MaxSecLine	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::MaxSecLine=/;"	v	module:ConstPara
-MinFre	.\DEFINEVAR_TestNet.f90	/^    real*8,parameter::MinFre /;"	v	module:ConstPara
 MyClassModule	.\MyClass.F90	/^    module MyClassModule$/;"	m
-MyLineClass	.\MyClass.F90	/^    module MyLineClass /;"	m
-MyLines	.\DEFINEVAR_TestNet.f90	/^    type(LineClass),dimension(NLINE):: MyLines$/;"	v	module:DEFINE
-MyLinkClass	.\MyClass.F90	/^    module MyLinkClass$/;"	m
-MyLinks	.\DEFINEVAR_TestNet.f90	/^    type(LinkClass),dimension(NL)::MyLinks$/;"	v	module:DEFINE
 MySolClass	.\MyClass.F90	/^    module MySolClass$/;"	m
-NCP_EPS	.\DEFINEVAR_TestNet.f90	/^    REAL*8, PARAMETER::NCP_EPS=/;"	v	module:ConstPara
-NCP_ERROR	.\NCPERR.F90	/^		SUBROUTINE NCP_ERROR(/;"	s
 NCP_ERROR__genmod	.\Debug\ncp_error__genmod.f90	/^        MODULE NCP_ERROR__genmod$/;"	m
-NDEST	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::NDEST=/;"	v	module:ConstPara
-NDIST	.\DEFINEVAR_TestNet.f90	/^    REAL*8::NDIST(/;"	v	module:DEFINE
-NF	.\DEFINEVAR_TestNet.f90	/^    REAL*8::NF(/;"	v	module:DEFINE
-NL	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::NL=/;"	v	module:ConstPara
-NLINE	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::NLINE=/;"	v	module:ConstPara
-NN	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::NN=/;"	v	module:ConstPara
-NOD	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::NOD=/;"	v	module:ConstPara
-NODE_FLOW	.\DPMAIN.F90	/^    SUBROUTINE NODE_FLOW(/;"	s
 NODE_FLOW__genmod	.\Debug\node_flow__genmod.f90	/^        MODULE NODE_FLOW__genmod$/;"	m
-NORM_VALUE	.\NORMVAL.F90	/^REAL*8 FUNCTION NORM_VALUE(/;"	f
-NORM_VALUE0	.\NORMVAL.F90	/^REAL*8 FUNCTION NORM_VALUE0(/;"	f
 NORM_VALUE0__genmod	.\Debug\norm_value0__genmod.f90	/^        MODULE NORM_VALUE0__genmod$/;"	m
-NORM_VALUE2	.\NORMVAL.F90	/^REAL*8 FUNCTION NORM_VALUE2(/;"	f
 NORM_VALUE2__genmod	.\Debug\norm_value2__genmod.f90	/^        MODULE NORM_VALUE2__genmod$/;"	m
 NORM_VALUE__genmod	.\Debug\norm_value__genmod.f90	/^        MODULE NORM_VALUE__genmod$/;"	m
-NUMCONNECT	.\DEFINEVAR_TestNet.f90	/^    INTEGER::NUMCONNECT(/;"	v	module:DEFINE
-NumCom	.\DEFINEVAR_TestNet.f90	/^    INTEGER::NumCom(/;"	v	module:DEFINE
-ORDER	.\TORDER.f90	/^	SUBROUTINE ORDER(/;"	s
 ORDER__genmod	.\Debug\order__genmod.f90	/^        MODULE ORDER__genmod$/;"	m
-ORIGIN	.\DEFINEVAR_TestNet.f90	/^    INTEGER::DEST(NOD),ORIGIN(/;"	v	module:DEFINE
-OUTPUTOD	.\WRITEOUTPUT.F90	/^    SUBROUTINE OUTPUTOD(/;"	s
 OUTPUTOD__genmod	.\Debug\outputod__genmod.f90	/^        MODULE OUTPUTOD__genmod$/;"	m
-OUTPUTPARA	.\WRITEOUTPUT.F90	/^    SUBROUTINE OUTPUTPARA$/;"	s
 OUTPUTPARA__genmod	.\Debug\outputpara__genmod.f90	/^        MODULE OUTPUTPARA__genmod$/;"	m
-OUTPUTPATH	.\WRITEOUTPUT.F90	/^    SUBROUTINE OUTPUTPATH(/;"	s
 OUTPUTPATH__genmod	.\Debug\outputpath__genmod.f90	/^        MODULE OUTPUTPATH__genmod$/;"	m
-OUTPUTX	.\WRITEOUTPUT.F90	/^    SUBROUTINE OUTPUTX(/;"	s
 OUTPUTX__genmod	.\Debug\outputx__genmod.f90	/^        MODULE OUTPUTX__genmod$/;"	m
-PA	.\DEFINEVAR_TestNet.f90	/^    INTEGER PA(/;"	v	module:DEFINE
-PITER	.\DEFINEVAR_TestNet.f90	/^    INTEGER::PITER$/;"	v	module:GRAPH
-PROJECTION	.\DPMAIN.F90	/^    SUBROUTINE PROJECTION(/;"	s
 PROJECTION__genmod	.\Debug\projection__genmod.f90	/^        MODULE PROJECTION__genmod$/;"	m
-READNETWORK	.\READNETWORK.F90	/^    SUBROUTINE READNETWORK(/;"	s
 READNETWORK__genmod	.\Debug\readnetwork__genmod.f90	/^        MODULE READNETWORK__genmod$/;"	m
-READPARA	.\READPARA.f90	/^    SUBROUTINE READPARA$/;"	s
 READPARA__genmod	.\Debug\readpara__genmod.f90	/^        MODULE READPARA__genmod$/;"	m
-RIO	.\DEFINEVAR_TestNet.f90	/^    REAL*8::RIO /;"	v	module:DEFINE
-ROOTS	.\DEFINEVAR_TestNet.f90	/^    INTEGER::ROOTS(/;"	v	module:GRAPH
-RSP	.\RSPATH.F90	/^		SUBROUTINE RSP(/;"	s
 RSP__genmod	.\Debug\rsp__genmod.f90	/^        MODULE RSP__genmod$/;"	m
-SAM	.\DEFINEVAR_TestNet.f90	/^    LOGICAL SAM$/;"	v	module:DEFINE
-SAMMAIN	.\MayNotUseful\SAM.f90	/^		SUBROUTINE SAMMAIN(/;"	s
-SCOST	.\DEFINEVAR_TestNet.f90	/^    REAL*8::SCOST(/;"	v	module:DEFINE
-SELF_REGULATED_MSA	.\MSA&SAM.F90	/^SUBROUTINE SELF_REGULATED_MSA(/;"	s
 SELF_REGULATED_MSA__genmod	.\Debug\self_regulated_msa__genmod.f90	/^        MODULE SELF_REGULATED_MSA__genmod$/;"	m
 SET_MYLINE_FLEET__genmod	.\Debug\set_myline_fleet__genmod.f90	/^        MODULE SET_MYLINE_FLEET__genmod$/;"	m
 SET_TEST_FLEET__genmod	.\Debug\set_test_fleet__genmod.f90	/^        MODULE SET_TEST_FLEET__genmod$/;"	m
-SF	.\DEFINEVAR_TestNet.f90	/^    real*8::SF(/;"	v	module:DEFINE
-SHORTEST_PATH_UPDATE_FX	.\MSAFX.F90	/^		SUBROUTINE SHORTEST_PATH_UPDATE_FX(/;"	s
 SHORTEST_PATH_UPDATE_FX__genmod	.\Debug\shortest_path_update_fx__genmod.f90	/^        MODULE SHORTEST_PATH_UPDATE_FX__genmod$/;"	m
-SIMPLEX_PROJECTION	.\SIMPLEXPROJECTION.f90	/^		SUBROUTINE SIMPLEX_PROJECTION(/;"	s
 SIMPLEX_PROJECTION__genmod	.\Debug\simplex_projection__genmod.f90	/^        MODULE SIMPLEX_PROJECTION__genmod$/;"	m
-SINDEX	.\DEFINEVAR_TestNet.f90	/^    INTEGER SINDEX(/;"	v	module:DEFINE
-SL	.\DEFINEVAR_TestNet.f90	/^    INTEGER::SL(/;"	v	module:DEFINE
-SLC	.\DEFINEVAR_TestNet.f90	/^    INTEGER::SLC(/;"	v	module:DEFINE
-SLF	.\DEFINEVAR_TestNet.f90	/^    REAL*8::SLF(/;"	v	module:DEFINE
-SLFLOW	.\DEFINEVAR_TestNet.f90	/^    REAL*8::SLFLOW(/;"	v	module:DEFINE
-SOLC	.\DEFINEVAR_TestNet.f90	/^    INTEGER SOLC,/;"	v	module:DEFINE
-SP	.\SP.F90	/^		SUBROUTINE SP(/;"	s
 SP__genmod	.\Debug\sp__genmod.f90	/^        MODULE SP__genmod$/;"	m
-STT	.\DEFINEVAR_TestNet.f90	/^    REAL*8::STT(/;"	v	module:DEFINE
-SUBCONVERGE	.\DEFINEVAR_TestNet.f90	/^    LOGICAL SUBCONVERGE$/;"	v	module:DEFINE
-SUBCOUNT	.\DEFINEVAR_TestNet.f90	/^    INTEGER SOLC,SUBCOUNT /;"	v	module:DEFINE
-SUBMAX	.\DEFINEVAR_TestNet.f90	/^    INTEGER,PARAMETER::SUBMAX /;"	v	module:ConstPara
-SUBRSP	.\SUBRSP.f90	/^		SUBROUTINE SUBRSP(/;"	s
 SUBRSP__genmod	.\Debug\subrsp__genmod.f90	/^        MODULE SUBRSP__genmod$/;"	m
-SVAR	.\DEFINEVAR_TestNet.f90	/^    REAL*8::SCOST(NL),SVAR(/;"	v	module:DEFINE
 SolClass	.\MyClass.F90	/^    type SolClass$/;"	t	module:MySolClass
-SubLink	.\DEFINEVAR_TestNet.f90	/^    LOGICAL::SubLink(/;"	v	module:GRAPH
-SubNode	.\DEFINEVAR_TestNet.f90	/^    LOGICAL::SubLink(NL,NDEST),SubNode(/;"	v	module:GRAPH
+SolverLib	.\solverlib.f90	/^    module SolverLib$/;"	m
 TEST_ONE_FLEET_SOL__genmod	.\Debug\test_one_fleet_sol__genmod.f90	/^        MODULE TEST_ONE_FLEET_SOL__genmod$/;"	m
-TIME_BEGIN	.\DEFINEVAR_TestNet.f90	/^    REAL*8 TIME_BEGIN,/;"	v	module:DEFINE
-TIME_END	.\DEFINEVAR_TestNet.f90	/^    REAL*8 TIME_BEGIN,TIME_END$/;"	v	module:DEFINE
-TORDER	.\DEFINEVAR_TestNet.f90	/^    INTEGER::TORDER(/;"	v	module:GRAPH
-TREE	.\DFS.F90	/^		SUBROUTINE TREE(/;"	s
 TREE__genmod	.\Debug\tree__genmod.f90	/^        MODULE TREE__genmod$/;"	m
-Tail	.\MyClass.F90	/^        character(len=4)::Tail$/;"	k	type:LinkClass
-Test_One_Fleet_Sol	.\BILEVEL.f90	/^    subroutine Test_One_Fleet_Sol(/;"	s
-Time	.\MyClass.F90	/^        Real*8::Time$/;"	k	type:LinkClass
-UECONVERGE	.\DEFINEVAR_TestNet.f90	/^    LOGICAL UECONVERGE$/;"	v	module:DEFINE
 UPDATESECTIONCOST__genmod	.\Debug\updatesectioncost__genmod.f90	/^        MODULE UPDATESECTIONCOST__genmod$/;"	m
-UPDATESUB	.\UPDATESUB.f90	/^	SUBROUTINE UPDATESUB(/;"	s
 UPDATESUB__genmod	.\Debug\updatesub__genmod.f90	/^        MODULE UPDATESUB__genmod$/;"	m
-UPDATE_ALPH	.\DPMAIN.F90	/^    REAL*8 FUNCTION UPDATE_ALPH(/;"	f
 UPDATE_ALPH__genmod	.\Debug\update_alph__genmod.f90	/^        MODULE UPDATE_ALPH__genmod$/;"	m
 UPDATE_LINEFRE__genmod	.\Debug\update_linefre__genmod.f90	/^        MODULE UPDATE_LINEFRE__genmod$/;"	m
 UPDATE_SECFRE__genmod	.\Debug\update_secfre__genmod.f90	/^        MODULE UPDATE_SECFRE__genmod$/;"	m
-UpdateSectionCost	.\READNETWORK.F90	/^    subroutine UpdateSectionCost$/;"	s
-Update_LineFre	.\UpdateFre.f90	/^subroutine Update_LineFre(/;"	s
-Var	.\MyClass.F90	/^        real*8::Var$/;"	k	type:LinkClass
-VarTime	.\MyClass.F90	/^        real*8::VarTime$/;"	k	type:LineClass
-WRITEPARA	.\READPARA.f90	/^    SUBROUTINE WRITEPARA$/;"	s
 WRITEPARA__genmod	.\Debug\writepara__genmod.f90	/^        MODULE WRITEPARA__genmod$/;"	m
-WalkCost	.\DEFINEVAR_TestNet.f90	/^    REAL*8,PARAMETER::WalkCost /;"	v	module:ConstPara
-X	.\DEFINEVAR_TestNet.f90	/^    REAL*8::X(/;"	v	module:DEFINE
-fare	.\DEFINEVAR_TestNet.f90	/^    REAL*8::fare(/;"	v	module:DEFINE
-gama	.\DEFINEVAR_TestNet.f90	/^    REAL*8,PARAMETER::gama=/;"	v	module:ConstPara
-get_line_fre	.\MyClass.F90	/^    subroutine get_line_fre(/;"	s	module:MyLineClass
-get_line_time	.\MyClass.F90	/^    subroutine get_line_time(/;"	s	module:MyLineClass
-ini_line_links	.\MyClass.F90	/^    subroutine ini_line_links(/;"	s	module:MyLineClass
-ini_one_link	.\MyClass.F90	/^    subroutine ini_one_link(/;"	s	module:MyLinkClass
-set_Test_fleet	.\BILEVEL.f90	/^    subroutine set_Test_fleet$/;"	s
-set_myline_fleet	.\BILEVEL.f90	/^    subroutine set_myline_fleet(/;"	s
-set_sol_fre	.\MyClass.F90	/^    subroutine set_sol_fre(/;"	s	module:MySolClass
-tsl	.\DEFINEVAR_TestNet.f90	/^    real*8:: tsl(/;"	v	module:DEFINE
-update_secFre	.\READNETWORK.F90	/^    subroutine update_secFre$/;"	s
+anode	.\graphlib.f90	/^        integer::anode(/;"	k	type:graphclass
+backanode	.\graphlib.f90	/^        integer::backanode(/;"	k	type:graphclass
+backbnode	.\graphlib.f90	/^        integer::backanode(nl),backbnode(/;"	k	type:graphclass
+backtoforward	.\graphlib.f90	/^        integer::backtoforward(/;"	k	type:graphclass
+backward_update_fx	.\solverlib.f90	/^    subroutine backward_update_fx(/;"	s	module:SolverLib
+bcmratio	.\para.f90	/^    real*8, PARAMETER::bcmratio /;"	v	module:constpara
+beta	.\dpsoslver.f90	/^        real*8::beta,/;"	v	module:dpsolverlib
+betastep	.\dpsoslver.f90	/^        real*8::beta,lama,v,miu,tau,betastep$/;"	v	module:dpsolverlib
+bnode	.\graphlib.f90	/^        integer::anode(nl),bnode(/;"	k	type:graphclass
+bs	.\para.f90	/^    real*8::bs(/;"	v	module:constpara
+cal_bcm_fx	.\solverlib.f90	/^    subroutine cal_bcm_fx(/;"	s
+cal_fx	.\solverlib.f90	/^    subroutine cal_fx(/;"	s
+capk	.\para.f90	/^    real*8::capk$/;"	v	module:constpara
+caseindex	.\graphlib.f90	/^        integer::caseindex=/;"	k	type:graphclass
+caseindex	.\para.f90	/^    integer::caseindex=/;"	v	module:constpara
+cleanfiles	.\lowermain.f90	/^    subroutine cleanfiles$/;"	s
+competesec	.\graphlib.f90	/^        integer::competesec(/;"	k	type:graphclass
+congestion_n	.\para.f90	/^    integer::congestion_n$/;"	v	module:constpara
+connect	.\graphlib.f90	/^        logical::connect(/;"	k	type:graphclass
+constpara	.\para.f90	/^    module constpara$/;"	m
+countconect	.\graphlib.f90	/^    subroutine countconect(/;"	s	module:GraphLib
+cputime	.\solverlib.f90	/^        real*8::ncperr,cputime$/;"	k	type:methods
+delfloweps	.\para.f90	/^    real*8,parameter::delfloweps /;"	v	module:constpara
+demand	.\graphlib.f90	/^        real*8::demand(/;"	k	type:graphclass
+dest	.\graphlib.f90	/^        integer::dest(/;"	k	type:graphclass
+dist	.\para.f90	/^    real*8::dist(/;"	v	module:constpara
+disterr	.\msasolver.f90	/^    real*8::disterr$/;"	v	module:msasolverlib
+dpmain	.\dpsoslver.f90	/^    subroutine dpmain(/;"	s	module:dpsolverlib
+dpsolverlib	.\dpsoslver.f90	/^module dpsolverlib$/;"	m
+employ_bee	.\abc.f90	/^subroutine employ_bee(/;"	s
+fact	.\graphlib.f90	/^    real*8 function fact(/;"	f
+fare	.\graphlib.f90	/^        real*8::fare(/;"	k	type:graphclass
+firstin	.\graphlib.f90	/^        integer::firstin(/;"	k	type:graphclass
+firstout	.\graphlib.f90	/^        integer::firstout(/;"	k	type:graphclass
+flow_eps	.\para.f90	/^    real*8, parameter::flow_eps=/;"	v	module:constpara
+forward_update_flow	.\solverlib.f90	/^    subroutine forward_update_flow(/;"	s	module:SolverLib
+fre	.\graphlib.f90	/^        real*8::fre(/;"	k	type:graphclass
+fx	.\solverlib.f90	/^        real*8::fx(/;"	k	type:methods
+fx_bar	.\dpsoslver.f90	/^        real*8::fx_bar(/;"	v	module:dpsolverlib
+gama	.\para.f90	/^    real*8,parameter::gama=/;"	v	module:constpara
+gapfileno	.\para.f90	/^    integer,parameter::gapfileno /;"	v	module:constpara
+gapfileno	.\solverlib.f90	/^        integer::gapfileno$/;"	k	type:methods
+gc_update_secfre	.\graphlib.f90	/^    subroutine gc_update_secfre(/;"	s	module:GraphLib
+gc_updatesectioncost	.\graphlib.f90	/^    subroutine gc_updatesectioncost(/;"	s	module:GraphLib
+gen_sol	.\abc.f90	/^subroutine gen_sol(/;"	s
+geninisol	.\solverlib.f90	/^    subroutine geninisol(/;"	s	module:SolverLib
+get_bcmval	.\solverlib.f90	/^   function get_bcmval(/;"	f	module:SolverLib
+get_sum	.\genetic_simplexprojection.f90	/^		real*8 function get_sum(/;"	f
+getncperr	.\solverlib.f90	/^    function getncperr(/;"	f
+getorder	.\graphlib.f90	/^    subroutine getorder(/;"	s	module:GraphLib
+graphclass	.\graphlib.f90	/^    type, public::graphclass$/;"	t	module:GraphLib
+inf1	.\para.f90	/^    real*8, parameter:: inf1=/;"	v	module:constpara
+iniassignflow	.\solverlib.f90	/^    subroutine iniassignflow(/;"	s	module:SolverLib
+init_arc_flow	.\solverlib.f90	/^    subroutine init_arc_flow(/;"	s
+initial_x	.\solverlib.f90	/^    subroutine initial_x(/;"	s	module:SolverLib
+inputseed	.\para.f90	/^    integer,parameter::inputseed /;"	v	module:constpara
+isNCPconverge	.\solverlib.f90	/^        logical::isNCPconverge$/;"	k	type:methods
+isUEconverge	.\graphlib.f90	/^        logical::isUEconverge$/;"	k	type:graphclass
+isdebug	.\para.f90	/^    logical,parameter::isdebug /;"	v	module:constpara
+islogit	.\para.f90	/^    logical, parameter::islogit /;"	v	module:constpara
+isusebcm	.\para.f90	/^    logical, parameter::isusebcm /;"	v	module:constpara
+lama	.\dpsoslver.f90	/^        real*8::beta,lama,/;"	v	module:dpsolverlib
+large	.\para.f90	/^    real*8, parameter:: large /;"	v	module:constpara
+lastin	.\graphlib.f90	/^        integer::firstin(nn),lastin(/;"	k	type:graphclass
+lastout	.\graphlib.f90	/^        integer::firstout(nn),lastout(/;"	k	type:graphclass
+lf	.\solverlib.f90	/^        real*8::lf(/;"	k	type:methods
+line	.\graphlib.f90	/^        integer::line(/;"	k	type:graphclass
+linestops	.\graphlib.f90	/^        integer::linestops(/;"	k	type:graphclass
+link_time	.\graphlib.f90	/^    subroutine link_time(/;"	s	module:GraphLib
+lndist	.\para.f90	/^    real*8::lndist(/;"	v	module:constpara
+locatecompete	.\graphlib.f90	/^        integer::locatecompete(/;"	k	type:graphclass
+logfileno	.\para.f90	/^    integer,parameter::logfileno /;"	v	module:constpara
+logitprob	.\solverlib.f90	/^        real*8::logitprob(/;"	k	type:methods
+lt	.\solverlib.f90	/^        real*8::lt(/;"	k	type:methods
+macsolc	.\para.f90	/^    integer,parameter::macsolc /;"	v	module:constpara
+maxcom	.\para.f90	/^    integer,parameter::maxcom /;"	v	module:constpara
+maxcpu	.\para.f90	/^    real*8,parameter::maxcpu /;"	v	module:constpara
+maxct	.\para.f90	/^    real*8,parameter::maxct /;"	v	module:constpara
+maxfre	.\para.f90	/^    real*8,parameter::maxfre /;"	v	module:constpara
+maxiteration	.\para.f90	/^    integer,parameter::maxiteration=/;"	v	module:constpara
+maxlinestops	.\para.f90	/^    integer,parameter::maxlinestops /;"	v	module:constpara
+maxsecline	.\para.f90	/^    integer,parameter::maxsecline=/;"	v	module:constpara
+method_outputpath	.\solverlib.f90	/^    subroutine method_outputpath(/;"	s
+methods	.\solverlib.f90	/^    type,public::methods$/;"	t	module:SolverLib
+minfre	.\para.f90	/^    real*8,parameter::minfre /;"	v	module:constpara
+minspantree	.\graphlib.f90	/^    subroutine minspantree(/;"	s	module:GraphLib
+miu	.\dpsoslver.f90	/^        real*8::beta,lama,v,miu,/;"	v	module:dpsolverlib
+msa	.\genetic.f90	/^    subroutine msa(/;"	s
+msasolverlib	.\msasolver.f90	/^    module msasolverlib$/;"	m
+name	.\solverlib.f90	/^        character(len = 10)::name$/;"	k	type:methods
+ncp_eps	.\para.f90	/^    real*8, parameter::ncp_eps=/;"	v	module:constpara
+ncp_flow_eps	.\para.f90	/^    real*8, parameter::ncp_flow_eps /;"	v	module:constpara
+ncperr	.\solverlib.f90	/^        real*8::ncperr,/;"	k	type:methods
+ndest	.\para.f90	/^    integer,parameter::ndest=/;"	v	module:constpara
+ndist	.\graphlib.f90	/^        real*8::ndist(/;"	k	type:graphclass
+nf	.\solverlib.f90	/^        real*8::nf(/;"	k	type:methods
+nl	.\para.f90	/^    integer,parameter::nl=/;"	v	module:constpara
+nline	.\para.f90	/^    integer,parameter::nline=/;"	v	module:constpara
+nn	.\para.f90	/^    integer,parameter::nn=/;"	v	module:constpara
+nod	.\para.f90	/^    integer,parameter::nod=/;"	v	module:constpara
+node_exp_sum	.\solverlib.f90	/^        real*8::node_exp_sum(/;"	k	type:methods
+node_flow	.\solverlib.f90	/^    subroutine node_flow(/;"	s	module:SolverLib
+norm_value	.\genetic_normval.F90	/^real*8 function norm_value(/;"	f
+norm_value0	.\genetic_normval.F90	/^real*8 function norm_value0(/;"	f
+norm_value2	.\genetic_normval.F90	/^real*8 function norm_value2(/;"	f
+numcom	.\graphlib.f90	/^        integer::numcom(/;"	k	type:graphclass
+numconnect	.\graphlib.f90	/^        integer::numconnect(/;"	k	type:graphclass
+nwk	.\solverlib.f90	/^        type(graphclass)::nwk$/;"	k	type:methods
+on_looker	.\abc.f90	/^subroutine on_looker(/;"	s
+order	.\graphlib.f90	/^	subroutine order(/;"	s	module:GraphLib
+origin	.\graphlib.f90	/^        integer::dest(nod),origin(/;"	k	type:graphclass
+outputod	.\solverlib.f90	/^    subroutine outputod(/;"	s
+outputx	.\solverlib.f90	/^    subroutine outputx(/;"	s
+pa	.\graphlib.f90	/^        integer pa(/;"	k	type:graphclass
+piter	.\para.f90	/^    integer::piter$/;"	v	module:constpara
+projection	.\genetic.f90	/^    subroutine projection(/;"	s
+read_para	.\para.f90	/^    subroutine read_para$/;"	s	module:constpara
+readnwt	.\graphlib.f90	/^    subroutine readnwt(/;"	s	module:GraphLib
+readpara	.\READPARA.f90	/^    subroutine readpara$/;"	s
+readpare	.\dpsoslver.f90	/^    subroutine readpare(/;"	s	module:dpsolverlib
+rio	.\para.f90	/^    real*8, PARAMETER::rio=/;"	v	module:constpara
+roots	.\graphlib.f90	/^        integer::roots(/;"	k	type:graphclass
+rsp	.\RSPATH.F90	/^		subroutine rsp(/;"	s
+scost	.\graphlib.f90	/^        real*8::scost(/;"	k	type:graphclass
+set_fleet	.\MyClass.F90	/^    subroutine set_fleet(/;"	s	module:MySolClass
+set_myline_fleet	.\belivel.f90	/^    subroutine set_myline_fleet(/;"	s
+set_test_fleet	.\belivel.f90	/^    subroutine set_test_fleet$/;"	s
+sf	.\graphlib.f90	/^        real*8::sf(/;"	k	type:graphclass
+simplex_projection	.\genetic_simplexprojection.f90	/^    subroutine simplex_projection(/;"	s
+sindex	.\graphlib.f90	/^        integer sindex(/;"	k	type:graphclass
+sl	.\graphlib.f90	/^        integer::sl(/;"	k	type:graphclass
+slc	.\graphlib.f90	/^        integer::slc(/;"	k	type:graphclass
+slf	.\graphlib.f90	/^        real*8::slf(/;"	k	type:graphclass
+solc	.\solverlib.f90	/^        integer::solc$/;"	k	type:methods
+solver	.\dpsoslver.f90	/^    subroutine solver(/;"	s	module:dpsolverlib
+solver	.\msasolver.f90	/^    subroutine solver(/;"	s	module:msasolverlib
+stepsize	.\msasolver.f90	/^    real*8::stepsize$/;"	v	module:msasolverlib
+sublink	.\graphlib.f90	/^        logical::sublink(/;"	k	type:graphclass
+submax	.\para.f90	/^    integer,parameter::submax=/;"	v	module:constpara
+subnode	.\graphlib.f90	/^        logical::sublink(nl,ndest),subnode(/;"	k	type:graphclass
+svar	.\graphlib.f90	/^        real*8::scost(nl),svar(/;"	k	type:graphclass
+tau	.\dpsoslver.f90	/^        real*8::beta,lama,v,miu,tau,/;"	v	module:dpsolverlib
+test_one_fleet_sol	.\belivel.f90	/^    subroutine test_one_fleet_sol(/;"	s
+tests	.\solverlib.f90	/^        integer::tests$/;"	k	type:methods
+theta	.\para.f90	/^    real*8, parameter::theta /;"	v	module:constpara
+torder	.\graphlib.f90	/^        integer::torder(/;"	k	type:graphclass
+totalfleet	.\para.f90	/^    integer,parameter::totalfleet /;"	v	module:constpara
+tsl	.\graphlib.f90	/^        real*8:: tsl(/;"	k	type:graphclass
+update_alph	.\dpsoslver.f90	/^    real*8 function update_alph(/;"	f	module:dpsolverlib
+updatesub	.\graphlib.f90	/^    subroutine updatesub(/;"	s	module:GraphLib
+updatesub_bcm	.\graphlib.f90	/^    subroutine updatesub_bcm(/;"	s	module:GraphLib
+v	.\dpsoslver.f90	/^        real*8::beta,lama,v,/;"	v	module:dpsolverlib
+walkcost	.\para.f90	/^    real*8,parameter::walkcost /;"	v	module:constpara
+writepara	.\READPARA.f90	/^    subroutine writepara$/;"	s
+x	.\solverlib.f90	/^        real*8::x(/;"	k	type:methods
+x_bar	.\dpsoslver.f90	/^        real*8::x_bar(/;"	v	module:dpsolverlib
+xfa	.\solverlib.f90	/^        real*8::xfa(/;"	k	type:methods
+zero	.\para.f90	/^    real*8,parameter::zero /;"	v	module:constpara

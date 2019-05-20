@@ -1,10 +1,11 @@
 
     module constpara
     implicit none
-    logical, parameter::islogit = .true. ! logit model assignment 
+    logical, parameter::islogit = .false. ! logit model assignment 
     logical, parameter::isusebcm = .false.
     real*8, parameter::theta = 0.2 ! parameter for the logit model
     logical,parameter::isdebug = .true.
+    logical,parameter::isConstBcm =.false.
     real*8,parameter::maxfre = 17
     real*8,parameter::minfre = 4
     integer,parameter::totalfleet = 15
