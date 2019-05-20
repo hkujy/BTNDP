@@ -38,6 +38,7 @@
     real*8, parameter::ncp_flow_eps = 0.1
     real*8, PARAMETER::rio=0.0  ! variance is not considered
     real*8, PARAMETER::bcmratio = 0.5
+    integer::line_links(4,10)
     integer::caseindex=1
     integer::piter
     real*8::dist(nn) ! node laber for shortest cost
@@ -53,5 +54,27 @@
         write(logfileno,*) "TODO: to write, const para" 
     end subroutine 
 
+   subroutine set_line_links
+   implicit none
+   ! to do, input the links associated with the lines
+   !  lines	links
+   !1, (1)
+   !2, (2	3)
+   !3, (4	5)
+   !4, (6)
+
+   line_links = -1
+   line_links(1,1) = 1
+
+   line_links(2,1) = 2
+   line_links(2,2) = 3
+
+   line_links(3,1) = 4
+   line_links(3,2) = 5
+   line_links(4,1) = 6
+
+   end subroutine
+
+    
     end module
  

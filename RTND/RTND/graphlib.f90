@@ -1,5 +1,6 @@
     module GraphLib
     use constpara 
+    !use mylineclass
     implicit none 
 
     type, public::graphclass

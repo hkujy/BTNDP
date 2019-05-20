@@ -2,11 +2,10 @@
 ! Solution representation 
 ! each gen represents the number of fleet allocated to for a ABC
 
-include "MyClass.F90"
 
 module ABC
-use MyClassModule
-use GRAPH
+!use MyClassModule
+!use GRAPH
 implicit none 
 
 contains 

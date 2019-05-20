@@ -28,13 +28,13 @@
 		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
 		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
 		<File RelativePath=".\abc.f90"/>
-		<File RelativePath=".\belivel.f90"/>
+		<File RelativePath=".\bilevel.f90"/>
 		<File RelativePath=".\dpsoslver.f90"/>
 		<File RelativePath=".\genetic.f90"/>
 		<File RelativePath=".\genetic_normval.F90"/>
 		<File RelativePath=".\genetic_simplexprojection.f90"/>
 		<File RelativePath=".\graphlib.f90"/>
-		<File RelativePath=".\MyClass.F90"/>
+		<File RelativePath=".\myclass.f90"/>
 		<File RelativePath=".\para.f90"/>
 		<File RelativePath=".\readpara.f90"/>
 		<File RelativePath=".\rspath.F90"/>

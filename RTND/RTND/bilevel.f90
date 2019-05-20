@@ -1,17 +1,20 @@
+    include "myclass.f90"
     program bilevel
+
     use constpara
     use GraphLib
     use dpsolverlib
-    use myclassmodule
+    use myclass
     implicit none
     integer:: i,l
     integer allseed(20),seed_cycle,seed1(1)
     real*8::totalcost
     real*8,external::get_totalcost
-    type(solclass):: test_sol
+    !type(solclass):: test_sol
     integer::newfleet(nline)
-    type(dpsolver)::dp
+    type(dpsolver)::dp(100)
     
+    call set_line_links
     seed1=1
     call random_seed(put=seed1(:))
     open (unit=logfileno,file='c:\GitCodes\BTNDP\RTND\RESULTS\log.txt',status='replace',action="write")
@@ -19,8 +22,10 @@
     call cleanfiles
     call readpara
     call writepara
-    call dp%nwk%readnwt
-    call dp%solver
+    do i =1, 100
+    call dp(i)%nwk%readnwt
+    enddo
+    !call dp%solver
     
     !call ini_mylines(mylines)
     !! initialise  my new added links
