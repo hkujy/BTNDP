@@ -27,31 +27,18 @@
 		<Filter Name="Header Files" Filter="fi;fd;h;inc"/>
 		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
 		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
-		<File RelativePath=".\BACKWARDUPDATE.F90"/>
+		<File RelativePath=".\ABC.f90"/>
 		<File RelativePath=".\BILEVEL.f90"/>
-		<File RelativePath=".\CONNECT.F90"/>
-		<File RelativePath=".\DEFINEVAR_TestNet.f90"/>
-		<File RelativePath=".\DFS.F90"/>
-		<File RelativePath=".\DPMAIN.F90"/>
-		<File RelativePath=".\FORWARDUPDATE.F90"/>
-		<File RelativePath=".\GETFX.f90"/>
-		<File RelativePath=".\INITIALSOL.F90"/>
-		<File RelativePath=".\LINKTIME.F90"/>
-		<File RelativePath=".\LOWERLEVEL.f90"/>
-		<File RelativePath=".\MINSP.F90"/>
-		<File RelativePath=".\MSA&amp;SAM.F90"/>
-		<File RelativePath=".\MSAFX.F90"/>
+		<File RelativePath=".\dpsoslver.f90"/>
+		<File RelativePath=".\genetic.f90"/>
+		<File RelativePath=".\genetic_normval.F90"/>
+		<File RelativePath=".\genetic_simplexprojection.f90"/>
+		<File RelativePath=".\graphlib.f90"/>
+		<File RelativePath=".\lowermain.f90"/>
+		<File RelativePath=".\msasolver.f90"/>
 		<File RelativePath=".\MyClass.F90"/>
-		<File RelativePath=".\NCPERR.F90"/>
-		<File RelativePath=".\NORMVAL.F90"/>
-		<File RelativePath=".\READNETWORK.F90"/>
-		<File RelativePath=".\READPARA.f90"/>
-		<File RelativePath=".\RSPATH.F90"/>
-		<File RelativePath=".\SIMPLEXPROJECTION.f90"/>
-		<File RelativePath=".\SP.F90"/>
-		<File RelativePath=".\SUBRSP.f90"/>
-		<File RelativePath=".\TORDER.f90"/>
-		<File RelativePath=".\UpdateFre.f90"/>
-		<File RelativePath=".\UPDATESUB.f90"/>
-		<File RelativePath=".\WRITEOUTPUT.F90"/></Filter></Files>
+		<File RelativePath=".\para.f90"/>
+		<File RelativePath=".\readpara.f90"/>
+		<File RelativePath=".\rspath.F90"/>
+		<File RelativePath=".\solverlib.f90"/></Filter></Files>
 	<Globals/></VisualStudioProject>

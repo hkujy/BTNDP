@@ -1,7 +1,7 @@
-    INCLUDE 'LOWERLEVEL.F90'
+    INCLUDE 'lowermain.F90'
 
     PROGRAM BILEVEL
-    USE GRAPH
+    USE la
     use MyClassModule
     IMPLICIT NONE
 

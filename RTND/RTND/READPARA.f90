@@ -1,54 +1,57 @@
-    !THE FUNCTION READ AND WRITE DEFAULT PARAMETERS FOR THE PROGRAM
-    SUBROUTINE READPARA
-    USE GRAPH
-    IMPLICIT NONE
-    INTEGER I
-    REAL*8::VALUE
+    !TODO: the function read and write default parameters for the program
+    subroutine readpara
+    use constpara
+    implicit none
+    integer i
+    real*8::value
 
-    OPEN(1,FILE='..\..\TESTNETWORK\PARA.TXT')
-    DO I = 1,4
-        READ(1,*) VALUE
-        IF (I==1) THEN
-            CONGESTION_N=VALUE
-        ENDIF
-        IF (I==2) THEN
-            !BS = VALUE
-        ENDIF
-        IF (I==3) THEN
-            CAPK=VALUE
-        ENDIF
-        IF (I==4) THEN
-            RIO = VALUE
-        ENDIF
-    ENDDO
-    CLOSE(1)
-    
-    OPEN(1,FILE='..\..\TESTNETWORK\BSVALUE.TXT')
+    open(1,file='c:\gitcodes\logitassign\input\testnetwork\para.txt')
+    open(2,file='c:\gitcodes\logitassign\input\testnetwork\bsvalue.txt')
+    open(3,file='c:\gitcodes\logitassign\results\fortran_bsvalue.txt' )
+    do i = 1,4
+        read(1,*) value 
+        if (i==1) then
+            congestion_n = IDINT(value)
+        endif
+        if (i==2) then
+            write(logfileno,*) "read_pare: use the same bs value for all"
+            !bs = value
+        endif
+        if (i==3) then
+            capk = value
+        endif
+        !if (i==4) then
+        !    rio = value
+        !endif
+    enddo
 
-    DO I=1, NL
-        READ (1,*) BS(I)
-    ENDDO
-    CLOSE(1)
-    
-    OPEN(1,FILE='..\..\RESULTS\FORTRAN_BSVALUE.TXT' )
-    DO I=1,NL
-        WRITE(1,*) I,",",BS(I)
-    ENDDO
-    
-    CLOSE(1)
-    
-    
-    END SUBROUTINE
+   ! read beta value file 
+    do i=1, nl
+        read (2,*) bs(i)
+    enddo
+   
+    write(3,*) "linkid,bsvalue"
 
-    SUBROUTINE WRITEPARA
-    USE GRAPH
-    IMPLICIT NONE
-    INTEGER I
-    OPEN(1,FILE='..\..\RESULTS\FORTRAN_PARA.TXT',STATUS='OLD', POSITION='APPEND' )
+    do i=1,nl
+        write(3,*) i,",",bs(i)
+    enddo
+
+    close(1)
+    close(2)
+    close(3)
+    call writepara
+    end subroutine
+
+    subroutine writepara
+    use constpara   
+    implicit none
+    !open(1,file='..\..\results\fortran_para.txt',status='old', position='append' )
+    open(1,file='c:\gitcodes\logitassign\results\fortran_para.txt' )
     
-    WRITE(1,'(I3, A, F6.2)') CASEINDEX, ', CONGESTION_PARA_N', CONGESTION_N
-    !WRITE(1,'(I3, A, F6.2)') CASEINDEX, ',', BS 
-    WRITE(1,'(I3, A, F6.2)') CASEINDEX, ', CAPACITY_K=', CAPK
-    WRITE(1,'(I3, A, F6.2)') CASEINDEX, ', RISK_RIO= ', RIO
+    write(1,'(i3, a, f6.2)') caseindex, ', congestion_para_n', congestion_n
+    !write(1,'(i3, a, f6.2)') caseindex, ',', bs 
+    write(1,'(i3, a, f6.2)') caseindex, ', capacity_k=', capk
+    write(1,'(i3, a, f6.2)') caseindex, ', risk_rio= ', rio
+    close(1)
     
-    END SUBROUTINE 
+    end subroutine 
