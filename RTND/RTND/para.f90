@@ -49,7 +49,8 @@
 
     ! parameter for the bilevel 
     integer::fleetsize
-    integer::fleet_lb(nline), fleet_ub(nline)
+    integer::fleet_lb(nline), fleet_ub(nline) ! lower and upper bound of fleet
+    real*8::fre_lb(nline), fre_ub(nline) ! lower and upper bound of frequency 
     contains 
     
     subroutine read_para
@@ -76,9 +77,8 @@
    line_links(3,1) = 4
    line_links(3,2) = 5
    line_links(4,1) = 6
-
    end subroutine
 
     
-    end module
+   end module
  

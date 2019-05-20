@@ -5,6 +5,7 @@
     use GraphLib
     use dpsolverlib
     use myclass
+    use BruteForce
     implicit none
     integer:: i,l
     integer allseed(20),seed_cycle,seed1(1)
@@ -13,7 +14,11 @@
     !type(solclass):: test_sol
     integer::newfleet(nline)
     type(dpsolver)::dp(1)
+   
     
+    fre_lb = 4
+    fre_ub = 20
+    fleetsize = 12
     call set_line_links
     seed1=1
     call random_seed(put=seed1(:))
@@ -22,82 +27,22 @@
     call cleanfiles
     call readpara
     call writepara
-    do i =1, 100
-    call dp(i)%nwk%readnwt
-    enddo
+    call get_fleet_range
+ 
+    write (*,*) "lower bound = ", fleet_lb
+    write (*,*) "upper bound = ", fleet_ub
+    !do i =1, 100
+    !call dp(i)%nwk%readnwt
+    !enddo
     
+    call get_pool
     write(*,*) "good luck"
-    !call dp%solver
     
-    !call ini_mylines(mylines)
-    !! initialise  my new added links
-    !call inilinks(mylinks)
-    !do l=1, nline
-        !call ini_line_links(mylines(l),mylinks)
-    !enddo 
-    
-    !open (1, file='..\..\results\checklinevarcost.txt')
-    !write(1,*) "lineno,cost,var"
-    !do l = 1,nline
-        !write(1,*) l, mylines(l)%exptime, mylines(l)%vartime
-    !enddo    
-    !close(1)
-    
-    !newfleet(1) = 2
-    !newfleet(2) = 1
-    !newfleet(3) = 2
-    !newfleet(4) = 1
-    
-    !!call set_sol_fre(test_sol, newfleet)
-    !!call evaluatesol(test_sol,firstout,lastout,xfa)
     
     
 
     end program
 
-    !
-    !
-    !subroutine set_test_fleet
-    !use define
-    !implicit none 
-    !
-    !integer l
-    !do l=1, nline
-    !    mylines(l)%fleet = 5
-    !enddo    
-    !end subroutine 
-    !
-    !subroutine set_myline_fleet(sol_fleet)
-    !use define
-    !implicit none 
-    !integer,dimension(nline), intent(in)::sol_fleet 
-    !integer l
-    !do l=1, nline
-    !    mylines(l)%fleet = sol_fleet(l)
-    !enddo    
-    !end subroutine 
-    !
-    !
-    !subroutine test_one_fleet_sol(newfleet,firstout,lastout,xfa)
-    !! input is vector of solution fleet
-    !use define
-    !use graph
-    !implicit none
-    !integer, intent(in):: firstout(nn), lastout(nn)
-    !real*8, intent(inout)::xfa(nl,ndest)
-    !
-    !integer,dimension(nline), intent(in)::newfleet 
-    !integer l
-    !
-    !call set_myline_fleet(newfleet)
-    !call update_linefre(newfleet)
-    !call update_secfre
-    !call lowerlevel(xfa,firstout, lastout)
-    !call outputod(xfa, fx)
-    !!totalcost =  get_totalcost(xfa,fx)
-    !
-    !
-    !end subroutine
 
     subroutine cleanfiles
     implicit none
@@ -105,4 +50,24 @@
     open(1,file='c:\gitcodes\BTNDP\results\fortran_checkmadf.txt')
     write(1,*) 'case,i,anode,dest,x,y,ndest,maxdif' 
     close(1)
+    end subroutine
+
+
+    subroutine get_fleet_range
+    use myclass
+    use constpara
+    implicit none 
+    integer l
+    type(solclass)::sol
+    
+    call sol%dp%nwk%readnwt
+    call ini_lines(sol%mylines)
+    do l = 1, nline
+        call sol%mylines(l)%get_fleet(sol%dp%nwk,fre_lb(l))
+        fleet_lb(l) = sol%mylines(l)%fleet
+        call sol%mylines(l)%get_fleet(sol%dp%nwk,fre_ub(l))
+        fleet_ub(l) = sol%mylines(l)%fleet
+    end do 
+
+
     end subroutine

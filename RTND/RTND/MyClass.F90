@@ -20,29 +20,27 @@
     
     contains 
    
-    subroutine set_fleet_and_fre(this, newfleet,nwk)
+    subroutine set_fleet_and_fre(this, newfleet)
     use GraphLib
     implicit none
     class(solclass)::this
     integer,intent(in)::newfleet(nline)
-    type(graphclass),intent(in)::nwk
     integer l
     do l=1, nline
         this%fleet(l) = newfleet(l)
         this%mylines(l)%fleet = newfleet(l)
-        call this%mylines(l)%get_line_fre(nwk)
+        call this%mylines(l)%get_line_fre(this%dp%nwk)
     enddo
     end subroutine 
 
 
-    subroutine evaluate(this,dp)
+    subroutine evaluate(this)
     use graphlib
     use dpsolverlib
     implicit none
     class(solclass),intent(inout)::this
-    type(dpsolver)::dp
     
-    call dp%solver
+    call this%dp%solver
     end subroutine
     
     end module 
@@ -128,6 +126,7 @@
     contains
     procedure, pass::get_line_time=>get_line_time
     procedure, pass::get_line_fre =>get_line_fre
+    procedure, pass::get_fleet => get_fleet
    end type lineclass
 
    contains
@@ -139,12 +138,12 @@
    do l = 1, nline
        mylines(l)%id = l
    enddo 
-
    end subroutine
 
 
    subroutine get_line_time(this,nwk)
    use GraphLib
+   use constpara
    implicit none
    type(graphclass), intent(in)::nwk
    class(lineclass)::this
@@ -153,12 +152,31 @@
    !linksid
    this%exptime = 0
    this%vartime = 0
+   
+   select case(this%id) 
+   case(1)
+    this%exptime = 29
+    this%vartime = 3
+   case(2)
+    this%exptime = 12
+    this%vartime = 4
+   case(3)
+    this%exptime = 17
+    this%vartime = 8
+   case(4)
+    this%exptime = 9
+    this%vartime = 6
+   end select
+
+
+   return
    !do l=1, size(this%linksid)
    do l=1, size(line_links(this%id,:))
        if (line_links(this%id,l).lt.0) exit
        this%exptime =this%exptime + nwk%scost(line_links(this%id,l))
        this%vartime = this%vartime + nwk%svar(line_links(this%id,l))
    enddo
+
    end subroutine
 
     subroutine get_line_fre(this,nwk)
@@ -170,6 +188,19 @@
    ! computet the frequency
     this%fre = 60 * (this%fleet / this%exptime) *(1 + this%vartime/(this%exptime**2))
     end subroutine
+
+    subroutine get_fleet(this,nwk,fre)
+    use GraphLib
+    implicit none
+    class(lineclass)::this
+    real*8, intent(in)::fre
+    class(graphclass),INTENT(IN)::nwk
+    call this%get_line_time(nwk)
+    this%fleet = ceiling((this%exptime/60)*(fre)/(1+this%vartime/(this%exptime**2)))   
+
+
+    end subroutine
+
 
     end module
 
