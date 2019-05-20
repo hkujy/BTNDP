@@ -12,12 +12,12 @@
     real*8,external::get_totalcost
     !type(solclass):: test_sol
     integer::newfleet(nline)
-    type(dpsolver)::dp(100)
+    type(dpsolver)::dp(1)
     
     call set_line_links
     seed1=1
     call random_seed(put=seed1(:))
-    open (unit=logfileno,file='c:\GitCodes\BTNDP\RTND\RESULTS\log.txt',status='replace',action="write")
+    open (unit=logfileno,file='c:\GitCodes\BTNDP\RESULTS\log.txt',status='replace',action="write")
     ! step 1 read input data
     call cleanfiles
     call readpara
@@ -25,6 +25,8 @@
     do i =1, 100
     call dp(i)%nwk%readnwt
     enddo
+    
+    write(*,*) "good luck"
     !call dp%solver
     
     !call ini_mylines(mylines)

@@ -46,6 +46,10 @@
     integer::congestion_n
     real*8::bs(nl)
     real*8::capk
+
+    ! parameter for the bilevel 
+    integer::fleetsize
+    integer::fleet_lb(nline), fleet_ub(nline)
     contains 
     
     subroutine read_para

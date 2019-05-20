@@ -4,34 +4,43 @@
     
     module mysolclass
     use constpara
+    use mylineclass
+    use dpsolverlib
     implicit none
     type, public::solclass
         integer::id
         integer::fleet(nline)
         real*8::fitness
+        type(lineclass)::mylines(nline)
+        type(dpsolver)::dp
     contains 
-    procedure, pass::set_fleet=>set_fleet
+    procedure, pass::set_fleet_and_fre=>set_fleet_and_fre
     procedure, pass::evaluate=>evaluate
     end type
     
     contains 
-    
-    subroutine set_fleet(this, newfleet)
+   
+    subroutine set_fleet_and_fre(this, newfleet,nwk)
+    use GraphLib
+    implicit none
     class(solclass)::this
     integer,intent(in)::newfleet(nline)
+    type(graphclass),intent(in)::nwk
     integer l
     do l=1, nline
         this%fleet(l) = newfleet(l)
+        this%mylines(l)%fleet = newfleet(l)
+        call this%mylines(l)%get_line_fre(nwk)
     enddo
     end subroutine 
 
-    
+
     subroutine evaluate(this,dp)
     use graphlib
     use dpsolverlib
     implicit none
     class(solclass),intent(inout)::this
-    class(dpsolver)::dp
+    type(dpsolver)::dp
     
     call dp%solver
     end subroutine

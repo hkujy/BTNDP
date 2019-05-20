@@ -3,46 +3,71 @@
 ! each gen represents the number of fleet allocated to for a ABC
 
 
-module ABC
-!use MyClassModule
-!use GRAPH
-implicit none 
+    module ABC
+    use myclass
+    use constpara
+    implicit none 
+    integer,parameter::npop = 10   ! population size
+    real*8::ran   !random number
+    type(solclass)::chrom(npop)
+    contains 
 
-contains 
 
-!
-!subroutine gen_sol(chrom,lb,ub)
-!implicit none
-!type(SolClass), intent(out)::chrom
-!integer,dimension(NLINE),intent(in):: lb, ub !lower and upper bound, min/max fleetsize computed by via travel cost
-!real*8::ran   ! generate a random number
-!integer::remain
-!integer:: i
-!write(*,*) "print random_number =", ran
-!
-!! TotalFleet is the upper bound of all the fleet 
-!
-!chrom(:) = lb(:)
-!remain = int(TotalFleet - sum(chrom))
-!if (sum(chrom) .gt. TotalFleet) then 
-!    write(*,*) "The lower bound is greater than the total fleet"
-!    pause
-!endif 
-!do i = 1, int(TotalFleet-sum(chrom
-!call random_number(ran)
-!
-!
-!
-!
-!end subroutine
-!
-!subroutine employ_bee()
-!end subroutine 
-!
-!
-!subroutine on_looker()
-!
-!end subroutine 
+    subroutine abcmain
+    implicit none
+
+    call gen_sol
+
+    end subroutine
+
+
+    subroutine gen_sol_one(sol)
+    implicit none 
+    type(solclass), intent(inout)::sol
+    integer::remain,l,i
+    sol%fleet = fleet_lb
+    remain = int(fleetsize - sum(sol%fleet))
+
+
+    if (remain.le.0) then 
+        write(*,*) "The lower bound is greater than the total fleet"
+        pause
+    endif 
+
+    if (remain.ge.(sum(fleet_ub)-sum(sol%fleet))) then 
+        write(*,*) "Total fleet size is too large to be all allocated"
+        write(*,*) "check file, abc.f90"
+        pause
+    end if
+
+    do i = 1,remain
+5       call random_number(ran)
+        l = int(ran*nline + 1)
+        if (sol%fleet(l) + 1.gt.fleet_ub(l)) then 
+            goto 5
+        else 
+            sol%fleet(l) = sol%fleet(l)
+        end if
+    end do 
+
+    end subroutine
+
+    subroutine gen_sol
+    implicit none
+    
+    integer i 
+    do i=1,npop
+        call gen_sol_one(chrom(i))
+    end do 
+    end subroutine
+
+! subroutine employ_bee()
+! end subroutine 
+
+
+! subroutine on_looker()
+
+! end subroutine 
 
 
 
