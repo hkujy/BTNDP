@@ -13,9 +13,13 @@
         real*8::fitness
         type(lineclass)::mylines(nline)
         type(dpsolver)::dp
+        real*8::ttc
+        real*8::fair
+        real*8::odcost(nod)
     contains 
     procedure, pass::set_fleet_and_fre=>set_fleet_and_fre
     procedure, pass::evaluate=>evaluate
+    procedure, pass::get_obj=>get_obj
     end type
     
     contains 
@@ -41,8 +45,52 @@
     class(solclass),intent(inout)::this
     
     call this%dp%solver
+
     end subroutine
-    
+
+    subroutine get_od_cost(mydp)
+    implicit none 
+   
+    ! compute od cost based onthe dp solution
+
+
+    end subroutine
+
+
+
+    subroutine get_obj(this)    
+    use GraphLib
+    use dpsolverlib
+    implicit none
+    class(solclass):: this
+    integer::o,d,i,j,l
+    this%ttc = 0
+
+    do i = 1, nod
+        do o =  this%dp%nwk%origin(i)
+            do d = this%dp%nwk%dest(i)
+                do j = 1, ndest
+                    if (this%dp%nwk%roots(j).eq.d) then 
+                        nr = j
+                        exit
+                    end if
+                enddo 
+                do l = this%dp%nwk%firstout(o), this%dp%nwk%lastout(o)
+                    if (this%dp%x.gt.zero) then 
+                        this%tcc = this%ttc + this%dp%nwk%demand(i)*this%dp%fx(l,nr)
+                        exit
+                    end if 
+                enddo
+            enddo
+        enddo
+    enddo 
+
+    end subroutine
+
+
+
+
+
     end module 
 !
 !  
