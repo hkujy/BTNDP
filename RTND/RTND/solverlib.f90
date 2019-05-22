@@ -511,8 +511,8 @@
     integer q,w
 
     !open(39,file='..\..\results\fortran_outputod.txt',status='old', position='append' )
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_outputod.txt')
-    write(1,*) "case","origin","dest","demand","y","flow"
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_outputod.txt',position='append')
+    !write(1,*) "case","origin","dest","demand","y","flow"
     !integer::dest(nod),origin(nod)
     do q = 1, nod
         do w=1,ndest

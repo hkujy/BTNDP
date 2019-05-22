@@ -1,1 +1,310 @@
  case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000
+ case,err
+  1,  0.0000

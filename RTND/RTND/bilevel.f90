@@ -1,10 +1,8 @@
     !include "myclass.f90"
-    
     program bilevel
     use constpara
     use GraphLib
     use dpsolverlib
-    use myclass
     use BruteForce
     implicit none
     integer:: i,l
@@ -53,6 +51,22 @@
     open(1,file='c:\gitcodes\BTNDP\results\fortran_checkmadf.txt')
     write(1,*) 'case,i,anode,dest,x,y,ndest,maxdif' 
     close(1)
+
+
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_outputod.txt')
+    write(1,*) "case,origin,dest,demand,y,flow"
+    close(1)
+  
+    
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_output_link.txt')
+    write(1,*) "method,case,dest,link,flow,fx,lt,xprob,logitprob,tail,head"
+    close(1)
+    
+    open(1,file='c:\GitCodes\LogitAssign\Results\fortran_output_node.txt')
+    write(1,*) "method,case,dest,node,fout,lout,label"
+    close(1)
+ 
+
     end subroutine
 
 

@@ -107,7 +107,7 @@
     this%solc = 0
     call this%geninisol(set_nwk)
     subcounter = 0
-    this%beta = 0.01
+    !this%beta = 0.01
 ! 10 call cpu_time(et)
 10  call projection(this%x_bar,this%x,this%fx,this%beta,this%nwk)
     call this%cal_fx(this%x_bar,this%fx_bar)

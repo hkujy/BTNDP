@@ -60,8 +60,8 @@
 
     do l = 1, nline
         call basenwk%mylines(l)%copy(templines(l))
-
     enddo 
+
     end subroutine
 
     subroutine get_od_cost(mydp, odpie)
@@ -181,7 +181,3 @@
 !    end subroutine
 !
 !    end module
-    module myclass
-    use mylineclass
-    use mysolclass
-    end module

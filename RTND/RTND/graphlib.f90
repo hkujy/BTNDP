@@ -85,6 +85,7 @@
         call this%copynwk(rhsnwk)
         call gc_update_secfre(this%fre,this%slc,this%sl,this%sf,this%slf)
         call this%update_section_cost
+        return
     end if 
 
 
@@ -788,7 +789,7 @@
         this%demand = rhs%demand
         this%linestops = rhs%linestops
         this%line = rhs%line
-        this%fre = rhs%fre
+
         this%sf = rhs%sf
         this%slf = rhs%slf
         this%sindex = rhs%sindex
@@ -798,7 +799,7 @@
 
         do l =1, nline
           call this%mylines(l)%copy(rhs%mylines(l))
-
+          this%fre(l) =  rhs%mylines(l)%fre
         enddo 
 
 
