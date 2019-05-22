@@ -51,12 +51,13 @@
     
     
     
-    subroutine geninisol(this)
+    subroutine geninisol(this,set_nwk)
     implicit none
     CLASS(methods)::this
+    CLASS(graphclass),optional::set_nwk
     ! read network -> create topological order -> check connectivity
     ! compute inital x and intial y
-    call this%nwk%readnwt
+    call this%nwk%readnwt(set_nwk)
     call this%nwk%minspantree
     call this%init_arc_flow
     call this%nwk%getorder

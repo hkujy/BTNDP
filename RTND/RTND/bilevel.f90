@@ -1,6 +1,6 @@
-    include "myclass.f90"
+    !include "myclass.f90"
+    
     program bilevel
-
     use constpara
     use GraphLib
     use dpsolverlib
@@ -13,13 +13,14 @@
     real*8,external::get_totalcost
     !type(solclass):: test_sol
     integer::newfleet(nline)
-    type(dpsolver)::dp(1)
-   
+    type(dpsolver)::dp
+    type(graphclass)::Basenwk
+     
     
     fre_lb = 4
     fre_ub = 20
     fleetsize = 12
-    call set_line_links
+    ! call set_line_links
     seed1=1
     call random_seed(put=seed1(:))
     open (unit=logfileno,file='c:\GitCodes\BTNDP\RESULTS\log.txt',status='replace',action="write")
@@ -27,7 +28,9 @@
     call cleanfiles
     call readpara
     call writepara
-    call get_fleet_range
+
+    call Basenwk%readnwt
+    call get_fleet_range(Basenwk)
  
     write (*,*) "lower bound = ", fleet_lb
     write (*,*) "upper bound = ", fleet_ub
@@ -35,7 +38,7 @@
     !call dp(i)%nwk%readnwt
     !enddo
     
-    call get_pool
+    call bfmain(Basenwk)
     write(*,*) "good luck"
     
     
@@ -53,20 +56,18 @@
     end subroutine
 
 
-    subroutine get_fleet_range
-    use myclass
+    subroutine get_fleet_range(nwk)
     use constpara
+    use GraphLib
     implicit none 
+    type(graphclass)::nwk
     integer l
-    type(solclass)::sol
     
-    call sol%dp%nwk%readnwt
-    call ini_lines(sol%mylines)
     do l = 1, nline
-        call sol%mylines(l)%get_fleet(sol%dp%nwk,fre_lb(l))
-        fleet_lb(l) = sol%mylines(l)%fleet
-        call sol%mylines(l)%get_fleet(sol%dp%nwk,fre_ub(l))
-        fleet_ub(l) = sol%mylines(l)%fleet
+        call nwk%mylines(l)%get_fleet(fre_lb(l))
+        fleet_lb(l) = nwk%mylines(l)%fleet
+        call nwk%mylines(l)%get_fleet(fre_ub(l))
+        fleet_ub(l) = nwk%mylines(l)%fleet
     end do 
 
 

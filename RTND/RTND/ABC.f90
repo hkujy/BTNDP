@@ -1,8 +1,9 @@
 ! Main code the ABC algorithm 
 ! Solution representation 
 ! each gen represents the number of fleet allocated to for a ABC
+    
     module ABC
-    use myclass
+    use mysolclass
     use constpara
     implicit none 
     integer,parameter::npop = 10   ! population size

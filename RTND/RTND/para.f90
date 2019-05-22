@@ -17,7 +17,7 @@
     integer,parameter::nline=4	! number of line
     integer,parameter::nod=1	! number of od pairs
     integer,parameter::nn=4   ! number of nodes
-    integer,parameter::nl=6	!number of links
+    integer,parameter::nl=6	!number of links== number of sections
     real*8,parameter::walkcost = 0.01
     integer,parameter::maxcom = 10
     integer,parameter::submax=0
@@ -38,7 +38,7 @@
     real*8, parameter::ncp_flow_eps = 0.1
     real*8, PARAMETER::rio=0.0  ! variance is not considered
     real*8, PARAMETER::bcmratio = 0.5
-    integer::line_links(4,10)
+    integer::line_links(4,10)  ! noram linke
     integer::caseindex=1
     integer::piter
     real*8::dist(nn) ! node laber for shortest cost
@@ -78,7 +78,12 @@
    line_links(3,2) = 5
    line_links(4,1) = 6
    end subroutine
-
-    
    end module
+
+
+
+
+
+
+
  

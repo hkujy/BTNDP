@@ -2,17 +2,27 @@
 ! use brute force method to solve
     module BruteForce
     use constpara
-    use dpsolverlib
+    use mysolclass
     implicit none
-    
+        
     integer::totalfea
- 
+    integer, allocatable, dimension(:,:)::pool
 
     contains
 
-    subroutine bfmain
+    subroutine bfmain(basenwk)
+        use GraphLib
     implicit none 
-        
+    integer::p
+    type(solclass)::sol       
+    class(graphclass),intent(in)::basenwk
+    call get_pool
+    do p = 1, totalfea
+        write(*,*) pool(p,:)
+    enddo 
+    call sol%set_fleet_and_fre(pool(1,:))
+    call sol%evaluate(basenwk)
+
 
     end subroutine
 
@@ -36,10 +46,27 @@
     
     write(*,*) "total feasible pool = ",totalfea
 
+    allocate(pool(totalfea,4))
+    totalfea = 0
+    do l1 = fleet_lb(1), fleet_ub(1)
+        do l2 =  fleet_lb(2),fleet_ub(2)
+            do l3 = fleet_lb(3), fleet_ub(3)
+                do l4 =  fleet_lb(4),fleet_ub(4)
+                    if (l1+l2+l3+l4.le.fleetsize) then 
+                        totalfea = totalfea + 1
+                        pool(totalfea,1) = l1
+                        pool(totalfea,2) = l2
+                        pool(totalfea,3) = l3
+                        pool(totalfea,4) = l4
+                    end if 
+                end do 
+            enddo
+        end do 
+    end do 
+ 
+
+
+
     end subroutine
-
-
-
-
 
     end module

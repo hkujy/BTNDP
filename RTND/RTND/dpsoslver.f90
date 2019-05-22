@@ -1,4 +1,6 @@
-module dpsolverlib
+
+    
+    module dpsolverlib
     use constpara
     use SolverLib
     use GraphLib
@@ -22,10 +24,11 @@ module dpsolverlib
     
     end subroutine
     
-    subroutine solver(this)
+    subroutine solver(this,set_nwk)
     use constpara
     implicit none
     class(dpsolver)::this
+    class(graphclass),optional::set_nwk
     integer::i,j
     integer::mb, nb
     !	step 1 fixed beta ! test other three
@@ -57,7 +60,7 @@ module dpsolverlib
             do j = 1, 10
                 this%miu = 0.1d0*j
                 if (this%miu.lt.this%v) then
-                    call this%dpmain
+                    call this%dpmain(set_nwk)
                     if (this%isNCPconverge) then
                         write(3,'(i3,a,f8.4)') caseindex,',',this%ncperr
                         goto 999
@@ -78,10 +81,11 @@ module dpsolverlib
 999 write(*,*) "done"
      end subroutine
 
-    subroutine dpmain(this)
+    subroutine dpmain(this,set_nwk)
     use constpara
     implicit none
     class(dpsolver):: this
+    class(graphclass),OPTIONAL::set_nwk
     integer::i,subcounter,j
     logical::del
     real*8::alph,numerator,denominator
@@ -101,7 +105,7 @@ module dpsolverlib
 
     call cpu_time(time_begin)
     this%solc = 0
-    call this%geninisol
+    call this%geninisol(set_nwk)
     subcounter = 0
     this%beta = 0.01
 ! 10 call cpu_time(et)

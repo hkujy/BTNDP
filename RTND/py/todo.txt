@@ -1,0 +1,3 @@
+1. if change input
+1.Copy and Paste input data files, if neccessary 
+2. run the exe file

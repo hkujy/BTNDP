@@ -1,0 +1,38 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+LinkClass	.\myclass.py	/^class LinkClass:$/;"	c
+NodeClass	.\myclass.py	/^class NodeClass:$/;"	c
+NwkClass	.\myclass.py	/^class NwkClass:$/;"	c
+ODClass	.\myclass.py	/^class ODClass:$/;"	c
+ParaClass	.\para.py	/^class ParaClass:$/;"	c
+PathClass	.\myclass.py	/^class PathClass:$/;"	c
+SolClass	.\myclass.py	/^class SolClass:$/;"	c
+__init__	.\myclass.py	/^    def __init__(self):$/;"	m	class:LinkClass
+__init__	.\myclass.py	/^    def __init__(self):$/;"	m	class:NodeClass
+__init__	.\myclass.py	/^    def __init__(self):$/;"	m	class:ODClass
+__init__	.\myclass.py	/^    def __init__(self):$/;"	m	class:PathClass
+__init__	.\myclass.py	/^    def __init__(self):$/;"	m	class:SolClass
+__init__	.\myclass.py	/^    def __init__(self,num_links,num_nodes,num_od,num_dest):$/;"	m	class:NwkClass
+__init__	.\para.py	/^    def __init__(self,num_link,num_od,num_nodes):$/;"	m	class:ParaClass
+main	.\read.py	/^def main(mypara:para.ParaClass,nwk:mc.NwkClass):$/;"	f
+mc	.\read.py	/^import myclass as mc$/;"	i
+mc	.\run.py	/^import myclass as mc$/;"	i
+mp	.\run.py	/^    mp = para.ParaClass(num_links,num_od,num_nodes)$/;"	v
+num_dest	.\run.py	/^num_dest = 1 + 1$/;"	v
+num_links	.\run.py	/^num_links = 6 + 1$/;"	v
+num_nodes	.\run.py	/^num_nodes = 4 + 1$/;"	v
+num_od	.\run.py	/^num_od = 1 + 1$/;"	v
+nwk	.\run.py	/^    nwk = mc.NwkClass(num_links,num_nodes,num_od,num_dest)$/;"	v
+os	.\run.py	/^import os$/;"	i
+para	.\read.py	/^import para$/;"	i
+para	.\run.py	/^import para$/;"	i
+pd	.\read.py	/^import pandas as pd$/;"	i
+pr_nwk	.\read.py	/^def pr_nwk(pa:para.ParaClass,nwk:mc.NwkClass,sols):$/;"	f
+rd	.\run.py	/^import read as rd$/;"	i
+rd_link_sol	.\read.py	/^def rd_link_sol(pa,nwk:mc.NwkClass):$/;"	f
+rd_node	.\read.py	/^def rd_node(pa,nwk:mc.NwkClass):$/;"	f
+run_exe	.\run.py	/^def run_exe():$/;"	f

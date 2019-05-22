@@ -1,6 +1,6 @@
     module GraphLib
     use constpara 
-    !use mylineclass
+    use mylineclass
     implicit none 
 
     type, public::graphclass
@@ -30,10 +30,11 @@
         integer::sl(nl,maxsecline)
         integer::slc(nl)
         integer::caseindex=1
-        real*8:: tsl(8,4) ! cost, var, fare, fre
+        !real*8:: tsl(8,4) ! cost, var, fare, fre
         real*8::ndist(nn,ndest)		! the shortest distance from node all
         integer pa(nn)
         logical::isUEconverge
+        type(lineclass),dimension(nline)::mylines
     contains
 
     procedure,pass::readnwt=>readnwt
@@ -44,15 +45,20 @@
     procedure,pass::countconect=>countconect
     procedure,pass::updatesub=>updatesub
     procedure,pass::updatesub_bcm=>updatesub_bcm
+    procedure,pass::update_section_cost=>update_section_cost
+    procedure,pass::update_sec_fre=>update_sec_fre
+    procedure,pass::copynwk=>copynwk
 
     end type graphclass
     
     contains
 
-    subroutine readnwt(this)
+    subroutine readnwt(this,rhsnwk)
+    use mylineclass
     implicit none
    
     class(graphclass)::this 
+    class(graphclass),OPTIONAL::rhsnwk
     integer::i,j,k,o,d,countline,odpair,l,countcompete
     integer::compete(nl,maxcom), temp_compete(nl,maxcom)
     real*8::dta(4)  ! temperal data for reading file
@@ -73,6 +79,15 @@
     integer, allocatable :: newseed (:), oldseed(:)
     integer::tempnumcom(nl)
     real*8::inifre(nline)
+
+
+    if (present(rhsnwk)) then 
+        call this%copynwk(rhsnwk)
+        call gc_update_secfre(this%fre,this%slc,this%sl,this%sf,this%slf)
+        call this%update_section_cost
+    end if 
+
+
 
     call random_seed ( )  ! processor reinitializes the seed
     ! randomly from the date and time
@@ -97,7 +112,7 @@
     open(2,file='c:\gitcodes\BTNDP\input\testnetwork\numlinestops.txt')
     open(3,file='c:\gitcodes\BTNDP\input\testnetwork\putstops.txt')
     open(4,file='c:\gitcodes\BTNDP\input\testnetwork\destnodeset.txt')
-    open(5,file='c:\gitcodes\BTNDP\input\testnetwork\linesectiondata.txt')
+    !open(5,file='c:\gitcodes\BTNDP\input\testnetwork\linesectiondata.txt')
     open(6,file='c:\gitcodes\BTNDP\input\testnetwork\inifre.txt')
     open(7,file='c:\gitcodes\BTNDP\results\fortran_6linkdata.txt')
     open(8,file='c:\gitcodes\BTNDP\results\fortran_linecostandvar.txt')
@@ -146,10 +161,10 @@
     close(4)
 
     ! read line sectine cost variance and fare data
-    do i = 1, 8
-        read(5,*) this%tsl(i,1:3)   ! cost, var, fare
-    enddo
-    close(5)
+    !do i = 1, 8
+    !    read(5,*) this%tsl(i,1:3)   ! cost, var, fare
+    !enddo
+    !close(5)
     ! this is the initial frequency setting
     do i = 1, nline
         read(6,*) tempreal
@@ -159,6 +174,7 @@
     this%fre=this%fre/60.0	  !frequency per minute
     close(6)
 
+    ! TODO create route section network with line data
     this%sindex=0
     this%slc=0
     this%sl=0
@@ -216,25 +232,26 @@
     compete(5,1) = 2
     this%numcom(6) = 1
     compete(6,1) = 3
+    
+    !call gc_updatesectioncost(this%fre,this%tsl,this%scost,this%svar,this%fare)
+    this%anode = an
+    this%bnode = bn
+    call ini_lines(this%mylines)
+    call gc_update_secfre(this%fre,this%slc,this%sl,this%sf,this%slf)
+    call this%update_section_cost
 
-    call gc_updatesectioncost(this%fre,this%tsl,this%scost,this%svar,this%fare)
+
+    
+    
     !subroutine updatesectioncost(fre,tsl,scost,svar,fare)
 
     !***************read link cost and set link var***************************
     !************************************************
-
     write(7,*) "scost,svar,fare" 
     do i = 1, size(this%scost)
         write (7,'(f6.2,a,f6.2,a,f6.2)') this%scost(i),',', this%svar(i),',',this%fare(i)
     enddo
     close(7)
-
-    write(8,*) "check the initial input for the  6link network data"
-    write(8,'(f6.2,a,f6.2)') this%tsl(1,1),',',this%tsl(1,2)  ! line 1
-    write(8,'(f6.2,a,f6.2)') this%tsl(7,1),',',this%tsl(7,2)  ! line 2
-    write(8,'(f6.2,a,f6.2)') this%tsl(8,1),',',this%tsl(8,2)  ! line 3
-    write(8,'(f6.2,a,f6.2)') this%tsl(6,1),',',this%tsl(6,2)  ! line 4
-    close(8)
 
     ! this just initial cost
     lcost(1,4) = this%scost(1)
@@ -255,7 +272,6 @@
 
     !compete (i.j) the jth completive section in section i
     !call gc_update_secfre(this%fre,this%slc,this%sl,this%sf,this%slf)
-    call gc_update_secfre(this%fre,this%slc,this%sl,this%sf,this%slf)
 
     !subroutine update_secfre(fre,sl,sf,slf)
     !subroutine update_secfre(fre,sf)
@@ -406,49 +422,7 @@
     end subroutine
 
     
-     
-    subroutine gc_updatesectioncost(fre,tsl,scost,svar,fare)
-    use constpara
-    implicit none
-    real*8, intent(in)::fre(nline)
-    real*8, intent(inout)::tsl(8,4) ! cost, var, fare, fre
-    real*8, intent(inout)::svar(nl)
-    real*8, intent(inout)::scost(nl)
-    real*8, intent(inout)::fare(nl)
 
-
-    tsl(1,4) = 1
-    tsl(2,4) = 1
-    tsl(3,4) = fre(2)/(fre(2)+fre(3))
-    tsl(4,4) = fre(3)/(fre(2)+fre(3))
-    tsl(5,4) = fre(3)/(fre(3)+fre(4))
-    tsl(6,4) = fre(4)/(fre(3)+fre(4))
-    tsl(7,4) = 1
-    tsl(8,4) = 1
-
-    scost(1) = tsl(1,1)*tsl(1,4)
-    scost(2) = tsl(2,1)*tsl(2,4)
-    scost(3) = tsl(3,1)*tsl(3,4) + tsl(4,1)*tsl(4,4)
-    scost(4) = tsl(5,1)*tsl(5,4) + tsl(6,1)*tsl(6,4)
-    scost(5) = tsl(7,1)*tsl(7,4) + tsl(7,1)*tsl(7,4)
-    scost(6) = tsl(8,1)*tsl(8,4)
-
-    svar(1) = tsl(1,2)*(tsl(1,4)**2)
-    svar(2) = tsl(2,2)*(tsl(2,4)**2)
-    svar(3) = tsl(3,2)*(tsl(3,4)**2) + tsl(4,2)*(tsl(4,4)**2)
-    svar(4) = tsl(5,2)*(tsl(5,4)**2) + tsl(6,2)*(tsl(6,4)**2)
-    svar(5) = tsl(7,2)*(tsl(7,4)**2) + tsl(7,2)*(tsl(7,4)**2)
-    svar(6) = tsl(8,2)*(tsl(8,4)**2)
-
-    fare(1) = tsl(1,3)*tsl(1,4)
-    fare(2) = tsl(2,3)*tsl(2,4)
-    fare(3) = tsl(3,3)*tsl(3,4) + tsl(4,3)*tsl(4,4)
-    fare(4) = tsl(5,3)*tsl(5,4) + tsl(6,3)*tsl(6,4)
-    fare(5) = tsl(7,3)*tsl(7,4) + tsl(7,3)*tsl(7,4)
-    fare(6) = tsl(8,3)*tsl(8,4)
-
-    end subroutine
-    
     
     
     subroutine gc_update_secfre(fre,slc,sl,sf,slf)
@@ -752,6 +726,83 @@
     return 
     end subroutine 
 
+    
+    subroutine update_section_cost(this)
+    use mylineclass
+    implicit none 
+    class(graphclass)::this
+    integer::tail,head,lid
+    real*8::t,v,f,s,l
+    this%scost = 0
+    this%svar = 0
+    this%fare = 0
+
+    do s = 1, nl
+        do l = 1, maxsecline
+            if (this%sl(s,l).le.0) then 
+                exit
+            end if 
+            lid = this%sl(s,l)
+            tail = this%anode(s)
+            head = this%bnode(s)
+            call this%mylines(lid)%get_stop_costs(tail,head,t,v,f)
+            this%scost(s) = this%scost(s) + t*this%slf(s,lid)
+            this%svar(s) =  this%svar(s) + v*this%slf(s,lid)
+            this%fare(s) = this%fare(s) + f*this%slf(s,lid)
+        enddo 
+    end do 
+
+    end subroutine
+
+    subroutine update_sec_fre(this)
+    implicit none 
+    class(graphclass)::this 
+    integer::l
+   
+    call gc_update_secfre(this%fre,this%slc,this%sl,this%sf,this%slf)
+    
+    end subroutine
+
+    subroutine copynwk(this, rhs)
+    implicit none 
+    integer l
+    class(graphclass)::this, rhs
+        this%roots = rhs%roots
+        this%firstin= rhs%firstin
+        this%lastin = rhs%lastin
+        this%firstout = rhs%firstout
+        this%lastout = rhs%lastout
+        this%anode = rhs%anode        
+        this%bnode = rhs%bnode
+        this%backanode = rhs%backanode
+        this%backbnode = rhs%backbnode
+        this%backtoforward = rhs%backtoforward
+        this%dest = rhs%dest
+        this%origin = rhs%origin
+        this%locatecompete = rhs%locatecompete
+        this%competesec =  rhs%competesec
+        this%scost = rhs%scost
+        this%svar = rhs%svar
+        this%fare = rhs%fare
+        this%numcom = rhs%numcom
+        this%demand = rhs%demand
+        this%linestops = rhs%linestops
+        this%line = rhs%line
+        this%fre = rhs%fre
+        this%sf = rhs%sf
+        this%slf = rhs%slf
+        this%sindex = rhs%sindex
+        this%sl = rhs%sl
+        this%slc = rhs%slc
+        this%caseindex = rhs%caseindex 
+
+        do l =1, nline
+          call this%mylines(l)%copy(rhs%mylines(l))
+
+        enddo 
+
+
+    end subroutine
     end module 
 
     real*8 function fact(n)
