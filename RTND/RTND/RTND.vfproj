@@ -30,15 +30,15 @@
 		<File RelativePath=".\abc.f90"/>
 		<File RelativePath=".\bf.f90"/>
 		<File RelativePath=".\bilevel.f90"/>
-		<File RelativePath=".\dpsoslver.f90"/>
+		<File RelativePath=".\dpsolver.f90"/>
 		<File RelativePath=".\genetic.f90"/>
 		<File RelativePath=".\genetic_normval.F90"/>
 		<File RelativePath=".\genetic_simplexprojection.f90"/>
 		<File RelativePath=".\graphlib.f90"/>
 		<File RelativePath=".\lineclass.f90"/>
-		<File RelativePath=".\solclass.f90"/>
 		<File RelativePath=".\para.f90"/>
 		<File RelativePath=".\readpara.f90"/>
 		<File RelativePath=".\rspath.F90"/>
+		<File RelativePath=".\solclass.f90"/>
 		<File RelativePath=".\solverlib.f90"/></Filter></Files>
 	<Globals/></VisualStudioProject>
