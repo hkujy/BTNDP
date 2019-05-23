@@ -20,9 +20,9 @@
         if (i==3) then
             capk = value
         endif
-        !if (i==4) then
-        !    rio = value
-        !endif
+        if (i==4) then
+           rio = value
+        endif
     enddo
 
    ! read beta value file 
@@ -46,7 +46,7 @@
     use constpara   
     implicit none
     !open(1,file='..\..\results\fortran_para.txt',status='old', position='append' )
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_para.txt' )
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_para.txt',position='append',status='old' )
     
     write(1,'(i3, a, f6.2)') caseindex, ', congestion_para_n', congestion_n
     !write(1,'(i3, a, f6.2)') caseindex, ',', bs 

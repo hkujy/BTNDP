@@ -115,7 +115,7 @@
     open(4,file='c:\gitcodes\BTNDP\input\testnetwork\destnodeset.txt')
     !open(5,file='c:\gitcodes\BTNDP\input\testnetwork\linesectiondata.txt')
     open(6,file='c:\gitcodes\BTNDP\input\testnetwork\inifre.txt')
-    open(7,file='c:\gitcodes\BTNDP\results\fortran_6linkdata.txt')
+    !open(7,file='c:\gitcodes\BTNDP\results\fortran_6linkdata.txt')
     open(8,file='c:\gitcodes\BTNDP\results\fortran_linecostandvar.txt')
     ! step 1
     ! read od pairs

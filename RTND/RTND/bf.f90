@@ -17,20 +17,18 @@
     type(solclass)::sol       
     class(graphclass),intent(in)::basenwk
     call get_pool
-    caseindex = 1
+    caseindex = 0
     do l = 1, nline 
         call sol%mylines(l)%copy(basenwk%mylines(l))
     enddo
     !do p = totalfea, 1,-1
-    pool(1,1) = 5
-    pool(1,2) = 5
-    pool(1,3) = 5
-    pool(1,4) = 5
-    do p = 1, totalfea
+    do p = 1, 5
         write(*,*) pool(p,:)
         call sol%set_fleet_and_fre(pool(p,:))
         call sol%evaluate(basenwk)
-        call sol%dp%outputod(sol%dp%x,sol%dp%fx)
+        call sol%dp%outputod(sol%dp%xfa,sol%dp%fx)
+        call sol%dp%outputx
+        caseindex= caseindex + 1
     enddo 
     end subroutine
 

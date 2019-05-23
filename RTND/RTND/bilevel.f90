@@ -25,8 +25,6 @@
     ! step 1 read input data
     call cleanfiles
     call readpara
-    call writepara
-
     call Basenwk%readnwt
     call get_fleet_range(Basenwk)
  
@@ -49,24 +47,40 @@
     implicit none
     
     open(1,file='c:\gitcodes\BTNDP\results\fortran_checkmadf.txt')
-    write(1,*) 'case,i,anode,dest,x,y,ndest,maxdif' 
+    write(1,"(a5,a2,a6,a5,a2,a2,a6,a6)") "case,","i,","anode,","dest,","x,","y,","ndest,","maxdif"
     close(1)
 
 
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_outputod.txt')
-    write(1,*) "case,origin,dest,demand,y,flow"
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_output_od.txt')
+    write(1,"(a4,a,a6,a,a4,a,a6,a,a,a,a4)") "case",",","origin",",","dest",",","demand",",","y",",","flow"
     close(1)
   
     
     open(1,file='c:\gitcodes\BTNDP\results\fortran_output_link.txt')
-    write(1,*) "method,case,dest,link,flow,fx,lt,xprob,logitprob,tail,head"
+    write(1,"(a7,a5,a5,a5,a5,a3,a3,a6,a10,a5,a4)") "method,","case,","dest,","link,","flow,","fx,","lt,","xprob,","logitprob,","tail,","head"
     close(1)
     
-    open(1,file='c:\GitCodes\LogitAssign\Results\fortran_output_node.txt')
-    write(1,*) "method,case,dest,node,fout,lout,label"
+    open(1,file='c:\GitCodes\BTNDP\results\fortran_output_node.txt')
+    write(1,"(a7,a5,a5,a5,a5,a5,a5)") "method,","case,","dest,","node,","fout,","lout,","label"
     close(1)
  
 
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_para1.txt')
+    write(1,"(a5,a5,a4,a)") "case,","lama,","miu,","v"
+    close(1)
+
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_para2.txt')
+    write(1,"(a5,a5,a5,a8,a6,a6)") "case,","beta,","solc,","cputime,","error,","diserr"
+    close(1)
+    !open(17,file='..\..\results\fortran_finalerr.txt',status='old',position='append')
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_finalerr.txt')
+    write(1,"(a5,a3)") "case,","err" 
+    close(1)
+    
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_converge.txt')
+    write(1,"(a5,a5,a3)") "case,","solc,","err"
+    close(1)
+   
     end subroutine
 
 

@@ -1,5 +1,0 @@
- check the initial input for the  6link network data
-  0.00,  0.00
-  0.00,  0.00
-  0.00,  0.00
-  0.00,  0.00

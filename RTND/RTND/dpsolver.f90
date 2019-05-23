@@ -32,15 +32,10 @@
     integer::i,j
     integer::mb, nb
     !	step 1 fixed beta ! test other three
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_para1.txt')
-    write(1,*) "case,lama,miu,v"
-
-    open(2,file='c:\gitcodes\BTNDP\results\fortran_dp_para2.txt')
-    write(2,*) "case,beta,solc,cputime,error,distanceerr"
-
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_para1.txt',status='old',position='append')
+    open(2,file='c:\gitcodes\BTNDP\results\fortran_dp_para2.txt',status='old',position='append')
     !open(17,file='..\..\results\fortran_finalerr.txt',status='old',position='append')
-    open(3,file='c:\gitcodes\BTNDP\results\fortran_finalerr.txt')
-    write(3,*) "case,err" 
+    open(3,file='c:\gitcodes\BTNDP\results\fortran_finalerr.txt',status='old',position='append')
     ! just use the double project method
     this%name ='dp'
     do mb = 1, 3
@@ -97,11 +92,10 @@
     this%isNCPconverge = .false.
     this%gapfileno = 98
 
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_converge.txt')
-    write(1,*) "case,solc,err"
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_converge.txt',status='old',position='append')
     open (unit=this%gapfileno,file='c:\gitcodes\BTNDP\results\dpgap.txt',&
          status='replace',action="write")
-    write(this%gapfileno,*) 'solc,ncperr'    
+    write(this%gapfileno,"(a5,a6)") "solc,","ncperr"    
 
     call cpu_time(time_begin)
     this%solc = 0

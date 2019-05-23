@@ -36,7 +36,6 @@
     real*8, parameter::ncp_eps=0.0001
     real*8, parameter::flow_eps=0.001d0
     real*8, parameter::ncp_flow_eps = 0.1
-    real*8, PARAMETER::rio=0.0  ! variance is not considered
     real*8, PARAMETER::bcmratio = 0.5
     integer::line_links(4,10)  ! noram linke
     integer::caseindex=1
@@ -46,6 +45,7 @@
     integer::congestion_n
     real*8::bs(nl)
     real*8::capk
+    real*8::rio  ! variance is not considered
 
     ! parameter for the bilevel 
     integer::fleetsize

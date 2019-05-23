@@ -467,8 +467,8 @@
     real*8:: printfx
     largecost = 1000.0
 
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_output_link.txt')
-    write(1,*) "method,case,dest,link,flow,fx,lt,xprob,logitprob,tail,head"
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_output_link.txt',status='old',position='append')
+    ! write(1,*) "method,case,dest,link,flow,fx,lt,xprob,logitprob,tail,head"
     do i=1,ndest
         do j=1,nl
             ! if (this%xfa(j,i)/=0.0) then
@@ -480,9 +480,8 @@
     end do
     close(1)
 
-    open(1,file='c:\GitCodes\LogitAssign\Results\fortran_output_node.txt')
-    
-    write(1,*) "method,case,dest,node,fout,lout,label"
+    open(1,file='c:\GitCodes\BTNDP\results\fortran_output_node.txt',position='append')
+    ! write(1,*) "method,case,dest,node,fout,lout,label"
     do nr = 1, ndest
         do n = 1, nn
           isused = .false.
@@ -511,7 +510,7 @@
     integer q,w
 
     !open(39,file='..\..\results\fortran_outputod.txt',status='old', position='append' )
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_outputod.txt',position='append')
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_output_od.txt',position='append')
     !write(1,*) "case","origin","dest","demand","y","flow"
     !integer::dest(nod),origin(nod)
     do q = 1, nod
@@ -819,12 +818,7 @@
             end if 
         enddo 
     enddo
-
-
-
     end subroutine
-
-
 
 
     end module 
