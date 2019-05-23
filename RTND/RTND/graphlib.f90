@@ -173,6 +173,9 @@
         !inifre(i) = tempreal
     enddo
     this%fre=this%fre/60.0	  !frequency per minute
+    do i = 1, nline
+        this%mylines(i)%fre = this%fre(i)
+    enddo     
     close(6)
 
     ! TODO create route section network with line data

@@ -90,13 +90,29 @@ class CaseClass(object):
         self.id = -1
         self.fre = []
         self.od = []
-        self.total_cost = -1.0
-        self.fair_obj = -1.0
+        self.ttc= -1.0
+        self.fair= -1.0
         self.err = -999.0
         self.sols = []
         self.nwk = NwkClass()
         # self.approach_set_flow = []
         # self.approach_set_cost = []
+
+    def post_process(self):
+        """
+            procedure to post procees the case data 
+        """
+        self.get_ttc
+
+
+    def get_ttc(self):
+        """
+            get the total travel time for each case 
+        """ 
+        self.ttc = 0
+        for w in self.od:
+            self.ttc += w.demand*w.mincost
+    
 
 
 

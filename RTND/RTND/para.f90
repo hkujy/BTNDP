@@ -15,7 +15,7 @@
     integer,parameter::inputseed = 1
     integer,parameter::ndest=1  !number of distinations
     integer,parameter::nline=4	! number of line
-    integer,parameter::nod=1	! number of od pairs
+    integer,parameter::nod=2	! number of od pairs
     integer,parameter::nn=4   ! number of nodes
     integer,parameter::nl=6	!number of links== number of sections
     real*8,parameter::walkcost = 0.01

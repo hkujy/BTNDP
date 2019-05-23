@@ -14,7 +14,7 @@ def run_exe():
 
 
 if __name__ == "__main__":
-    # run_exe()
+    run_exe()
     mp = para.ParaClass()
     # nwk = mc.NwkClass()
     # TODO: set the desitnation index  

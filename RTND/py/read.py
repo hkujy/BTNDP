@@ -41,8 +41,8 @@ def rd_link_sol(pa,cases):
         cases[cid].sols[-1].fx = df["fx"][i]
         cases[cid].sols[-1].logit = df["logitprob"][i]
         cases[cid].sols[-1].dest = df["dest"][i]
-        print(cases[cid].__dict__)
-        print(cases[cid].__dict__)
+        # print(cases[cid].__dict__)
+        # print(cases[cid].__dict__)
         solid = solid + 1
     pass
 
@@ -80,15 +80,13 @@ def pr_nwk(pa:para.ParaClass,nwk:mc.NwkClass,sols):
                     hl = nwk.nodes[hn].label[nr] 
                     print("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}".format(
                         nid,s.link.id,s.link.head, s.link.cost,
-                        hl,s.link.cost+hl, s.fx,s.x,s.logit,nr))
+                        hl,s.link.cost+hl, s.fx,s.x,s.logit,nr),file=file)
 
 
 def rd_od(pa,cases):
     file = pa.output_folder +'\\fortran_output_od.txt'
     df = pd.read_csv(file)
     num_row = df.shape[0]
-    current_case_id = -999
-    od_index=0
     now = 0
     wid = 0
     for i in range(0, num_row):
@@ -101,7 +99,6 @@ def rd_od(pa,cases):
         cases[cid].od[-1].dest = df["dest"][i]
         cases[cid].od[-1].demand = df["demand"][i]
         cases[cid].od[-1].mincost = df["y"][i]
-
         wid = wid + 1
 
 
