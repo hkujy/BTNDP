@@ -615,7 +615,7 @@
 
     call cpu_time(et)
 
-    write(*,'(i4,a,f14.6,a,f12.4)')  this%solc,',',this%ncperr,',',et-st
+    !write(*,'(i4,a,f14.6,a,f12.4)')  this%solc,',',this%ncperr,',',et-st
     write(this%gapfileno,'(i4,a,f14.6)') this%solc,",",this%ncperr
 
     return 

@@ -48,6 +48,7 @@
     procedure,pass::update_section_cost=>update_section_cost
     procedure,pass::update_sec_fre=>update_sec_fre
     procedure,pass::copynwk=>copynwk
+    procedure,pass::printnwk=>printnwk
 
     end type graphclass
     
@@ -187,55 +188,61 @@
     this%line=0
 
 
+    ! TODO: Re write the network strucutre for the new link and section cost
     ! network structure
     an(1) = 1
-    bn(1) = 4
+    bn(1) = 2
     this%slc(1) = 1
-    this%sl(1,1) = 1
+    this%sl(1,1) = 2
 
     an(2) = 1
-    bn(2) = 2
+    bn(2) = 3
     this%slc(2) = 1
     this%sl(2,1) = 2
 
-    an(3) = 2
-    bn(3) = 3
-    this%slc(3) = 2
-    this%sl(3,1) = 2
-    this%sl(3,2) = 3
+    an(3) = 1
+    bn(3) = 4
+    this%slc(3) = 1
+    this%sl(3,1) = 1
 
-    an(4) = 3
-    bn(4) = 4
+    an(4) = 2
+    bn(4) = 3
     this%slc(4) = 2
-    this%sl(4,1) = 3
-    this%sl(4,2) = 4
+    this%sl(4,1) = 2
+    this%sl(4,2) = 3
 
-    an(5) = 1
-    bn(5) = 3
+    an(5) = 2
+    bn(5) = 4
     this%slc(5) = 1
-    this%sl(5,1) = 2
+    this%sl(5,1) = 3
 
-    an(6) = 2
+    an(6) = 3
     bn(6) = 4
-    this%slc(6) = 1
+    this%slc(6) = 2
     this%sl(6,1) = 3
+    this%sl(6,2) = 4
 
     ! input compete section index
     !compete=0  record the number of compete sections
     this%numcom = 0
     compete = 0
+    this%numcom(1) = 1
+    compete(1,1) = 2
 
     this%numcom(2) = 1
-    compete(2,1) = 5
-    this%numcom(3) = 2
-    compete(3,1) = 6
-    compete(3,2) = 5
-    this%numcom(4) = 1
-    compete(4,1) = 6
+    compete(2,1) = 1
+
+    this%numcom(3) = 0
+
+    this%numcom(4) = 2
+    compete(4,1) = 5
+    compete(4,2) = 2
+
     this%numcom(5) = 1
-    compete(5,1) = 2
+    compete(5,1) = 4
+
     this%numcom(6) = 1
-    compete(6,1) = 3
+    compete(6,1) = 5
     
     !call gc_updatesectioncost(this%fre,this%tsl,this%scost,this%svar,this%fare)
     this%anode = an
@@ -244,8 +251,6 @@
     call gc_update_secfre(this%fre,this%slc,this%sl,this%sf,this%slf)
     call this%update_section_cost
 
-
-    
     
     !subroutine updatesectioncost(fre,tsl,scost,svar,fare)
 
@@ -258,20 +263,20 @@
     close(7)
 
     ! this just initial cost
-    lcost(1,4) = this%scost(1)
-    lcost(1,2) = this%scost(2)
-    lcost(2,3) = this%scost(3)
-    lcost(3,4) = this%scost(4)
-    lcost(1,3) = this%scost(5)
-    lcost(2,4) = this%scost(6)
+    lcost(1,2) = this%scost(1)
+    lcost(1,3) = this%scost(2)
+    lcost(1,4) = this%scost(3)
+    lcost(2,3) = this%scost(4)
+    lcost(2,4) = this%scost(5)
+    lcost(3,4) = this%scost(6)
 
 
-    lvar(1,4) = this%svar(1)
-    lvar(1,2) = this%svar(2)
-    lvar(2,3) = this%svar(3)
-    lvar(3,4) = this%svar(4)
-    lvar(1,3) = this%svar(5)
-    lvar(2,4) = this%svar(6)
+    lvar(1,2) = this%svar(1)
+    lvar(1,3) = this%svar(2)
+    lvar(1,4) = this%svar(3)
+    lvar(2,3) = this%svar(4)
+    lvar(2,4) = this%svar(5)
+    lvar(3,4) = this%svar(6)
 
 
     !compete (i.j) the jth completive section in section i
@@ -347,18 +352,18 @@
 
     ! add code to revise compete
 
-    sindexreverse(:)=(/3,1,4,6,2,5/)
-    do i=1,nl
-        s=this%sindex(i)
-        tempnumcom(i) = this%numcom(s)
-        do j =1, maxcom
-            if (compete(s,j) > 0) then
-                temp_compete(i,j)=sindexreverse(compete(s,j))
-            endif
-        enddo
-    enddo
-    compete = temp_compete
-    this%numcom =tempnumcom
+    ! sindexreverse(:)=(/3,1,4,6,2,5/)
+    ! do i=1,nl
+    !     s=this%sindex(i)
+    !     tempnumcom(i) = this%numcom(s)
+    !     do j =1, maxcom
+    !         if (compete(s,j) > 0) then
+    !             temp_compete(i,j)=sindexreverse(compete(s,j))
+    !         endif
+    !     enddo
+    ! enddo
+    ! compete = temp_compete
+    ! this%numcom =tempnumcom
 
 
     countcompete = 1
@@ -422,6 +427,9 @@
             end if
         end do
     end do
+
+    call gc_update_secfre(this%fre,this%slc,this%sl,this%sf,this%slf)
+    call this%update_section_cost
 
     end subroutine
 
@@ -807,6 +815,48 @@
 
 
     end subroutine
+
+
+    subroutine printnwk(this)
+    use constpara
+    implicit none
+    class(graphclass):: this
+
+    integer::n, l, j
+    !print links
+    open(1,file='c:\gitcodes\btndp\results\checknwk.txt')
+    write(1,"(a5,a6,a6,a7)") "link,","anode,","bnode,","numslc,"
+   
+    do l = 1, nl
+        write(1,*) l,this%anode(l),this%bnode(l), this%slc(l)
+    enddo 
+    write(1,"(a5,a5,a5)") "node,","fout,","lout,"
+    ! print node
+    do n=1, nn
+        write(1,*) n, this%firstout(n), this%lastout(n)
+    enddo 
+    write(1,*) "******contained lines********"
+
+
+    write(1,*) "Sec,Line"
+    do l = 1, nl 
+        do j =1, this%slc(l)
+            write(1,*) l, this%sl(l,j)
+        enddo 
+    enddo 
+
+    ! write(1,*) "******compete lines********"
+
+    do l =1, nl
+        do j =this%locatecompete(l), this%locatecompete(l)+this%numcom(l)-1
+            write(1,*) l, this%competesec(j)
+        enddo 
+    enddo 
+
+
+    CLOSE(1)
+    end subroutine
+
     end module 
 
     real*8 function fact(n)

@@ -34,7 +34,9 @@
     !call dp(i)%nwk%readnwt
     !enddo
     
-    call bfmain(Basenwk)
+    call bfmain_given_fre(Basenwk)
+    call Basenwk%printnwk
+    !call bfmain(Basenwk)
     write(*,*) "good luck"
     
     

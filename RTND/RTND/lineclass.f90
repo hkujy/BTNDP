@@ -68,7 +68,7 @@
             isfind = .true.
             t = this%tt(i)
             v = this%var(i)
-            f = this%var(i)
+            f = this%fare(i)
             RETURN 
         end if 
     end do

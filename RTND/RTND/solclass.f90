@@ -56,7 +56,7 @@
 
     call this%dp%solver(basenwk)
     call this%get_obj
-    write(*,*) "Total Cost is", this%ttc
+    write(*,*) "Total Cost = ", this%ttc
 
     do l = 1, nline
         call basenwk%mylines(l)%copy(templines(l))
@@ -70,7 +70,7 @@
     implicit none 
     integer::w,o,d,j,nr,l
     class(dpsolver)::mydp
-    real*8::odpie(nod) 
+    real*8::odpie(nod)
     do w = 1, nod
         o = mydp%nwk%origin(w)
         d = mydp%nwk%dest(w)
@@ -100,7 +100,7 @@
     call get_od_cost(this%dp, this%odcost)
     do w = 1, nod
         write(*,*) "OD = ", w, " Pie = ", this%odcost(w)
-        this%ttc = this%ttc + this%odcost(w)
+        this%ttc = this%ttc + this%odcost(w)*this%dp%nwk%demand(w)
     enddo 
 
     end subroutine

@@ -12,6 +12,8 @@ class PathClass:
         self.links = []  # set of links path
         self.flow = 0
 
+    def process(self):
+        pass
 
 class ODClass:
     """
@@ -24,8 +26,13 @@ class ODClass:
         self.paths = []
         self.demand = 0
         self.mincost = -99
+        self.ttc = 0
     pass
+    def get_ttc(self):
+        self.ttc = self.demand*self.mincost
 
+    def process(self):
+        self.get_ttc
 
 class NodeClass:
     def __init__(self):
@@ -33,7 +40,8 @@ class NodeClass:
         self.outlinks = []
         self.inlinks = []
         self.label = []
-
+    def process(self):
+        pass
 
 class LinkClass:
 
@@ -44,6 +52,8 @@ class LinkClass:
         self.cost = -1
         self.flow = -1
     pass
+    def process(self):
+        pass
 
 
 class SolClass:
@@ -55,6 +65,8 @@ class SolClass:
         self.x = -1
         self.logit = -1
 
+    def process(self):
+        pass
 
 class NwkClass:
 
@@ -82,6 +94,10 @@ class NwkClass:
             self.od[-1].id = i
 
 
+    def process(self):
+        pass
+
+
 class CaseClass(object):
     """
         class for the summary
@@ -98,12 +114,11 @@ class CaseClass(object):
         # self.approach_set_flow = []
         # self.approach_set_cost = []
 
-    def post_process(self):
+    def process(self):
         """
             procedure to post procees the case data 
         """
         self.get_ttc
-
 
     def get_ttc(self):
         """

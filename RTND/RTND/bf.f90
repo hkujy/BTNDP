@@ -11,7 +11,8 @@
     contains
 
     subroutine bfmain(basenwk)
-        use GraphLib
+    use GraphLib
+    use mysolclass
     implicit none 
     integer::p,l
     type(solclass)::sol       
@@ -32,10 +33,56 @@
     enddo 
     end subroutine
 
+
+    subroutine bfmain_given_fre(basenwk)
+    use GraphLib
+    use mysolclass
+    implicit none 
+    integer::p,l
+    type(solclass)::sol       
+    class(graphclass),intent(in)::basenwk
+    call read_pool
+    caseindex = 0
+    do l = 1, nline 
+        call sol%mylines(l)%copy(basenwk%mylines(l))
+    enddo
+    !do p = totalfea, 1,-1
+    do p = 1, totalfea
+        write(*,*) pool(p,:)
+        !call sol%set_fleet_and_fre(pool(p,:))
+        do l =1, nline
+            sol%mylines(l)%fre = real(pool(p,l)/60.0)
+        end do  
+        call sol%evaluate(basenwk)
+        call sol%dp%outputod(sol%dp%xfa,sol%dp%fx)
+        call sol%dp%outputx
+        caseindex= caseindex + 1
+    enddo 
+    end subroutine
+
+
+    subroutine read_pool
+    implicit none 
+
+    real*8::tff(4)
+    integer::i 
+    open(1, file='C:\GitCodes\BTNDP\Input\TestNetwork\numcases.txt')
+    read(1,*) totalfea
+    close(1)
+    allocate(pool(totalfea,4))
+    open(1, file='C:\GitCodes\BTNDP\Input\TestNetwork\setfre.txt')
+
+    do i = 1, totalfea 
+        read(1,*) tff(:)
+        pool(i,:) =  tff(:)
+    enddo
+
+    end subroutine
+
+
     ! get the solution pool
     subroutine get_pool
     implicit none 
-
     integer::l1,l2,l3,l4
     totalfea = 0
     do l1 = fleet_lb(1), fleet_ub(1)

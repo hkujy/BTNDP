@@ -1,8 +1,8 @@
 """
     paramter class
 """
-num_links = 6 + 1
-num_od = 1 + 1
+num_links = 6 +  1 
+num_od = 2
 num_nodes = 4 + 1
 num_dest = 1 + 1
 num_cases = 10

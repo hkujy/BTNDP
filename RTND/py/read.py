@@ -14,7 +14,7 @@ def rd_link_sol(pa,cases):
     file = pa.output_folder +'\\fortran_output_link.txt'
     df = pd.read_csv(file)
     num_row = df.shape[0]
-    print(df)
+    # print(df)
     sols = []
     for i in range(num_row):
         s = mc.SolClass()
@@ -36,7 +36,7 @@ def rd_link_sol(pa,cases):
         cases[cid].nwk.links[id].cost =  df["lt"][i]
         cases[cid].nwk.links[id].flow = df["flow"][i]
         cases[cid].sols[-1].id = solid
-        cases[cid].sols[-1].link = cases[cid].nwk.links[df["link"][i]]
+        cases[cid].sols[-1].link = cases[cid].nwk.links[id]
         cases[cid].sols[-1].x = df["xprob"][i]
         cases[cid].sols[-1].fx = df["fx"][i]
         cases[cid].sols[-1].logit = df["logitprob"][i]
@@ -54,14 +54,14 @@ def rd_node(pa,cases):
         cid = df["case"][i]
         nid = df["node"][i]
         dest = df["dest"][i]
-        cases[cid].nwk.nodes[nid].label[dest] = df["label"][i]
+        cases[cid].nwk.nodes[nid-1].label[dest] = df["label"][i]
         fout = df["fout"][i]
         lout = df["lout"][i]
         for l in range(fout,lout+1):
             cases[cid].nwk.nodes[nid].outlinks.append(cases[cid].nwk.links[l])
-        print("node = {0},numlinks = {1}".format(id,len(cases[cid].nwk.nodes[nid].outlinks)))
+        # print("node = {0},numlinks = {1}".format(id,len(cases[cid].nwk.nodes[nid].outlinks)))
         # print(nwk.nodes[id].__dict__)
-    print(df)
+    # print(df)
 
 def pr_nwk(pa:para.ParaClass,nwk:mc.NwkClass,sols):
     """
@@ -80,7 +80,7 @@ def pr_nwk(pa:para.ParaClass,nwk:mc.NwkClass,sols):
                     hl = nwk.nodes[hn].label[nr] 
                     print("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}".format(
                         nid,s.link.id,s.link.head, s.link.cost,
-                        hl,s.link.cost+hl, s.fx,s.x,s.logit,nr),file=file)
+                        hl,s.link.cost+hl, s.fx,s.x,s.logit,nr),file = f)
 
 
 def rd_od(pa,cases):
@@ -93,6 +93,7 @@ def rd_od(pa,cases):
         cid = df["case"][i]
         if cid != now:
             wid = 0 
+            now = cid
         cases[cid].od.append(mc.ODClass())
         cases[cid].od[-1].id = wid
         cases[cid].od[-1].origin = df["origin"][i]
@@ -100,7 +101,7 @@ def rd_od(pa,cases):
         cases[cid].od[-1].demand = df["demand"][i]
         cases[cid].od[-1].mincost = df["y"][i]
         wid = wid + 1
-
+        cases[cid].od[-1].process
 
 def main(mypara:para.ParaClass,cases):
     
