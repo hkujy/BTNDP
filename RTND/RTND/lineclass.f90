@@ -1,4 +1,4 @@
-   
+
     module mylineclass ! the module name defines the namespace
     use constpara
     type lineclass ! classname is the class prototype name

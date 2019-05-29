@@ -8,7 +8,7 @@
     implicit none
     type, public::solclass
         integer::id
-        integer::fleet(nline)
+        ! integer::fleet(nline)
         real*8::fitness
         type(lineclass)::mylines(nline)
         type(dpsolver)::dp
@@ -17,8 +17,12 @@
         real*8::odcost(nod)
     contains 
     procedure, pass::set_fleet_and_fre=>set_fleet_and_fre
+    procedure, pass::generate=>generate
     procedure, pass::evaluate=>evaluate
     procedure, pass::get_obj=>get_obj
+    procedure, pass::assign_fleet=>assign_fleet
+    procedure, pass::remedy=>remedy
+    procedure, pass::get_neigh=>get_neigh
     end type
     
     contains 
@@ -30,7 +34,7 @@
     integer,intent(in)::newfleet(nline)
     integer l
     do l=1, nline
-        this%fleet(l) = newfleet(l)
+        ! this%fleet(l) = newfleet(l)
         this%mylines(l)%fleet = newfleet(l)
         call this%mylines(l)%get_line_fre
     enddo
@@ -105,10 +109,146 @@
 
     end subroutine
 
+    subroutine generate(this)
+    implicit none 
+    ! type(solclass), intent(inout)::sol
+    class(solclass)::this
+    integer::remain,l,i
+    integer::temp_sum
+    ! this%fleet = fleet_lb
+    do l =1, nline
+        this%mylines(l)%fleet = fleet_lb(l)
+    enddo 
+
+    temp_sum = 0
+    do l=  1, nline
+        temp_sum = temp_sum + this%mylines(l)%fleet
+    enddo
+    remain = int(fleetsize - temp_sum)
+
+    if (remain.le.0) then 
+        write(*,*) "The lower bound is greater than the total fleet"
+        pause
+    endif 
+
+    if (remain.ge.(sum(fleet_ub)-temp_sum))then 
+        write(*,*) "Total fleet size is too large to be all allocated"
+        write(*,*) "check file, abc.f90"
+        pause
+    end if
+
+    ! call assign_remain(this%fleet)
+
+    end subroutine
+
+    subroutine assign_fleet(this,assignfleet)
+    implicit none
+    class(solclass)::this
+    integer,INTENT(IN)::assignfleet
+    integer::l, i
+    integer::remain
+    real*8::ran
+    remain = assignfleet
+    
+    ! remain = fleetsize - sum(now)
+    if (remain.eq.0) then 
+        return 
+    end if
+    do i = 1, remain
+5       call random_number(ran)
+        l = int(ran*nline + 1)
+        ! if (this%fleet(l) + 1.gt.fleet_ub(l)) then 
+        if (this%mylines(l)%fleet + 1.gt.fleet_ub(l)) then 
+            goto 5
+        else 
+            ! this%fleet(l) =this%fleet(l) + 1
+            this%mylines(l)%fleet = this%mylines(l)%fleet + 1
+        end if
+    end do 
+    end subroutine
+
+
+    subroutine remedy(this)
+    implicit none 
+    class(solclass)::this
+    integer::l
+    integer::add_sum, reduce_sum
+    logical::isRemedy
+    isRemedy = .false.
+    
+    do l=1, nline
+        ! if ((this%fleet(l).lt.fleet_lb(l)).or.(this%fleet(l).gt.fleet_ub(l))) then 
+        if ((this%mylines(l)%fleet.lt.fleet_lb(l)).or. &
+            (this%mylines(l)%fleet.gt.fleet_ub(l))) then 
+            isRemedy = .true. 
+            exit
+        endif
+    enddo 
+
+    if (.not.isRemedy) then
+        return 
+    endif
+    add_sum = 0
+    reduce_sum = 0
+    do l = 1,nline
+        do while(this%mylines(l)%fleet.lt.fleet_lb(l))
+            this%mylines(l)%fleet = this%mylines(l)%fleet + 1
+            add_sum = add_sum + 1 
+        end do
+        do while(this%mylines(l)%fleet.gt.fleet_ub(l))
+            this%mylines(l)%fleet = this%mylines(l)%fleet - 1
+            reduce_sum = reduce_sum + 1
+        end do
+    end do 
+    end subroutine
+
+    subroutine get_neigh(this,replaced,basenwk)
+    use mutelib
+    use GraphLib
+    implicit none 
+    logical, INTENT(OUT)::replaced
+    class(solclass)::this
+    class(Graphclass)::basenwk
+    integer::l
+    ! integer,intent(in)::now
+    type(lineclass),DIMENSION(nline)::templines
+    real*8::temp_fit
+    integer::neigh_fleet(nline),now_fleet(nline)
+
+    do l = 1, nline
+        call templines(l)%copy(this%dp%nwk%mylines(l))
+        now_fleet(l) = this%mylines(l)%fleet
+    end do 
+
+    temp_fit = this%fitness
+    ! genertate new fleet    
+    call mute_increa(now_fleet, neigh_fleet)
+    call this%set_fleet_and_fre(neigh_fleet)
+    call this%evaluate(basenwk)
+
+    ! switch back the new fitness values is wrose
+    if (temp_fit.gt.this%fitness) then 
+        replaced = .false.
+        do l =1, nline
+        call this%mylines(l)%copy(templines(l))
+        end do
+        this%fitness = temp_fit
+    else
+        replaced = .true.
+    end if 
+
+    do l = 1, nline
+        call basenwk%mylines(l)%copy(templines(l))
+    enddo 
+
+    end subroutine 
+
+
 
 
 
     end module 
+
 
 
 

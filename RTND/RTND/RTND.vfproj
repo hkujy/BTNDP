@@ -36,6 +36,7 @@
 		<File RelativePath=".\genetic_simplexprojection.f90"/>
 		<File RelativePath=".\graphlib.f90"/>
 		<File RelativePath=".\lineclass.f90"/>
+		<File RelativePath=".\mutationlib.f90"/>
 		<File RelativePath=".\para.f90"/>
 		<File RelativePath=".\readpara.f90"/>
 		<File RelativePath=".\rspath.F90"/>

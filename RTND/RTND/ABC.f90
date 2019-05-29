@@ -4,161 +4,122 @@
     
     module ABC
     use mysolclass
-    use constpara
     implicit none 
-    integer,parameter::npop = 10   ! population size
-    real*8::ran   !random number
-    type(solclass)::chrom(npop)
-    contains 
 
-    subroutine abcmain
+    type, public::abcclass
+    integer::npop   ! population size
+    type(solclass),ALLOCATABLE::chrom(:)
+    integer, allocatable::limitcount(:)   ! count the number of limints
+    type(graphclass)::basenwk
+
+    contains 
+    
+    procedure,pass::abcmain=>abcmain
+    procedure,pass::inipara=>inipara
+    ! procedure,pass::evaluate=>evaluate
+    procedure,pass::gen_sol=>gen_sol
+    !procedure,pass::get_neigh=>get_neigh
+    
+    end type abcclass
+     
+    contains
+
+    subroutine inipara(this)
+    implicit none 
+    class(abcclass)::this
+    ! todo : read abc parametrs
+    this%npop =  20
+    ALLOCATE(this%chrom(this%npop))
+    Allocate(this%limitcount(this%npop))
+    this%limitcount = 0
+
+    end subroutine
+
+
+    subroutine abcmain(this)
     implicit none
+    CLASS(abcclass)::this
+
+    ! step 0: read basci parameters for the abc
+    call this%inipara
+    ! step 1: generate initial soluitons
+    call this%gen_sol
 
     ! call gen_sol
-
     end subroutine
 
     ! generate initla solution between upper and lower bound
-    subroutine gen_sol_one(sol)
-    implicit none 
-    type(solclass), intent(inout)::sol
-    integer::remain,l,i
-    sol%fleet = fleet_lb
-    remain = int(fleetsize - sum(sol%fleet))
-
-    if (remain.le.0) then 
-        write(*,*) "The lower bound is greater than the total fleet"
-        pause
-    endif 
-
-    if (remain.ge.(sum(fleet_ub)-sum(sol%fleet))) then 
-        write(*,*) "Total fleet size is too large to be all allocated"
-        write(*,*) "check file, abc.f90"
-        pause
-    end if
-
-    call assign_remain(sol%fleet)
-
-    end subroutine
-
-    subroutine gen_sol
+    subroutine gen_sol(this)
     implicit none
-    
-    integer i 
-    do i=1,npop
-        call gen_sol_one(chrom(i))
+    class(abcclass)::this 
+    integer::i,ts, l 
+    integer::residule
+
+
+    do i=1,this%npop
+        call this%chrom(i)%generate
+        ts = 0
+        do l = 1, nline
+            ts =  ts + this%chrom(i)%mylines(l)%fleet
+        enddo 
+        residule= fleetsize - ts
+        call this%chrom(i)%assign_fleet(residule)
+        call this%chrom(i)%evaluate(this%basenwk)
     end do 
+
     end subroutine
-
-    subroutine remedy(now)
-    implicit none 
-    integer,intent(inout)::now(nline)
-    integer::l
-    integer::add_sum, reduce_sum
-    logical::isRemedy
-    isRemedy = .false.
-    
-    do l=1, nline
-        if ((now(l).lt.fleet_lb(l)).or.(now(l).gt.fleet_ub(l))) then 
-            isRemedy = .true. 
-            exit
-        endif
-    enddo 
-
-    if (.not.isRemedy) then
-        return 
-    endif
-    add_sum = 0
-    reduce_sum = 0
-    do l = 1,nline
-        do while(now(l).lt.fleet_lb(l))
-            now(l) = now(l) + 1
-            add_sum = add_sum + 1 
-        end do
-        do while(now(l).gt.fleet_ub(l))
-            now(l) = now(l) - 1
-            reduce_sum = reduce_sum + 1
-        end do
-    end do 
-    end subroutine
-
-    subroutine assign_remain(now)
-    implicit none
-    integer,intent(inout)::now(nline)
-    integer::l, i
-    integer::remain
-    
-    remain = fleetsize - sum(now)
-    if (remain.eq.0) then 
-        return 
-    end if
-    do i = 1, remain
-5       call random_number(ran)
-        l = int(ran*nline + 1)
-        if (now(l) + 1.gt.fleet_ub(l)) then 
-            goto 5
-        else 
-            now(l) = now(l) + 1
-        end if
-    end do 
-    end subroutine
-
-
-
-
-
 
     ! generate a neighbour by randomly increase the fleet size 
-    subroutine mute_increa(now,nei)
-    implicit none 
-    integer,intent(in)::now(nline)
-    integer,intent(out)::nei(nline)
-    integer::count
-    integer::rl,il    !reduce and increase line
-    
-    ! if ((now.eq.fleet_lb).OR.(now.eq.fleet_ub)) then 
-        ! write(*,*) "no space to remove or add"
-    ! end if 
+  
 
-    nei =  now
-    count = 0 
-10  call random_number(ran)
-    rl = int(nline*ran+1)
-    if (nei(rl)-1.lt.fleet_lb(rl)) then 
-        count = count + 1
-        if (count.ge.100) then 
-            write(*,*) " can not find a line to remove"
-        end if 
-        goto 10
-    end if 
-    count = 0
-15  call random_number(ran)
-    il = int(nline*ran + 1)
-    if ((il.eq.rl).or.(nei(il)+1.gt.fleet_ub(il))) then 
-        count = count + 1
-        if (count.ge.100) then 
-            write(*,*) "can not find a line to increase"
-        end if 
-        goto 15
-    end if 
+    !subroutine get_neigh(this,replaced,basenwk)
+    !use constpara
+    !use GraphLib
+    !implicit none 
+    !logical, INTENT(OUT)::replaced
+    !class(solclass)::this
+    !! integer,intent(in)::now
+    !type(lineclass),DIMENSION(nline)::templines
+    !real*8::temp_fit
+    !real*8::neigh_fleet(nline),now_fleet(nline)
+    !
+    !do l = 1, nline
+    !    call templines(l)%copy(this%dp%nwk%mylines(l))
+    !    now_fleet(l) = this%fleet(l)
+    !end do 
+    !
+    !temp_fit = this%fitness
+    !! genertate new fleet    
+    !call mute_increa(now_fleet, neigh_fleet)
+    !call this%set_fleet_and_fre(neigh_fleet)
+    !call this%evaluate(this%basenwk)
+    !
+    !! switch back the new fitness values is wrose
+    !if (temp_fit.gt.this%fitness) then 
+    !    replaced = .false.
+    !    call this%mylines%copy(templines)
+    !    this%fitness = temp_fit
+    !else
+    !    replaced = .true.
+    !end if 
+    !
+    !do l = 1, nline
+    !    call basenwk%mylines(l)%copy(templines(l))
+    !enddo 
+    !
+    !
 
-    nei(rl) = nei(rl) - 1
-    nei(il) = nei(il) + 1
-
-    end subroutine
-
-
+    !end subroutine 
 
 ! subroutine employ_bee()
 ! end subroutine 
 
 
-! subroutine on_looker()
+!subroutine on_looker()
 
-! end subroutine 
+!end subroutine 
 
 
-
-end module 
+end module
 
 
