@@ -18,19 +18,17 @@ upper_fre = 12  # fre upper bound
 lower_fre = 3  # lower bound of the frequency 
 rio = 0.15
 incre = 1
-
 TestIndex = 1
+base_fre = [6, 4, 6, 6]
 
 def run_exe():
     debug_exe = r'C:\GitCodes\BTNDP\RTND\RTND\Debug\RTND.exe'
     os.system(debug_exe)
 
-
 def create_case(mp:para.ParaClass()):
     """
         write the case file for the frequency 
     """ 
-    base_fre = [6, 4, 6, 6]
     l =  change_fre_line - 1
     fre_list = []
     
@@ -51,13 +49,18 @@ def create_case(mp:para.ParaClass()):
     para.ParaClass.num_cases = len(fre_list)    
     write_case_files(mp,fre_list)
 
+    base_case_id = -1
     cases = []
     for i in range(0,para.ParaClass.num_cases):
         cases.append(mc.CaseClass())
         cases[-1].id = i
         for j in fre_list[i]:
             cases[-1].fre.append(j)
-    return cases
+        if (cases[-1].fre[0]==base_fre[0] and cases[-1].fre[1]==base_fre[1] 
+        and cases[-1].fre[2]==base_fre[2] and cases[-1].fre[3]==base_fre[3]):
+            mc.CaseClass.base_case_id = i
+    
+    return cases 
 
 def write_case_files(mp:para.ParaClass(),fre_list):
     of = mp.input_folder+"\\setfre.txt"
@@ -69,16 +72,14 @@ def write_case_files(mp:para.ParaClass(),fre_list):
     with open(of, 'w') as f:
         print("{0}".format(len(fre_list)), file=f)
 
-
 def test_incre_fre_case(mp:para.ParaClass()):
-
-    cases = create_case(mp)
+    cases= create_case(mp)
+    print("base case id is {0}".format(mc.CaseClass.base_case_id))
     if is_run_exe:
         run_exe()
     
     rd.main(mp,cases)
     mplt.main(mp, cases)
-
 
 if __name__ == "__main__":
 
@@ -96,5 +97,17 @@ if __name__ == "__main__":
     else: 
         print("undefined tests")
     
-
     print("Good Luck")
+
+def get_fair_obj(cs,bid):
+    """
+    cs: cases list
+    bid: base case id
+    """
+    for c in cs:
+        c.fair = 0.0
+        if c.id!=bid:
+            for w in c.od:
+                c.fair=min(c.fair, w.mincost-cs[bid].od[w.id].mincost)
+                
+        pass

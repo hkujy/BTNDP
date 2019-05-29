@@ -102,6 +102,7 @@ class CaseClass(object):
     """
         class for the summary
     """
+    base_case_id = -1
     def __init__(self):
         self.id = -1
         self.fre = []
@@ -127,7 +128,25 @@ class CaseClass(object):
         self.ttc = 0
         for w in self.od:
             self.ttc += w.demand*w.mincost
-    
+
+    @classmethod
+    def get_fair_obj(cs,bid):
+        """
+        cs: cases list
+        bid: base case id
+        """
+        
+        for c in cs:
+            c.fair = 0.0
+            if c.id!=bid:
+                for w in c.od:
+                    c.fair=min(c.fair, w.mincost-cs[bid].od[w.id].mincost)
+                    
+        pass
+
+        
+
+
 
 
 

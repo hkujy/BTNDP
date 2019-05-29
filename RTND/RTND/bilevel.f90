@@ -39,9 +39,6 @@
     !call bfmain(Basenwk)
     write(*,*) "good luck"
     
-    
-    
-
     end program
 
 
