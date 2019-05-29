@@ -8,7 +8,10 @@
 
     type, public::abcclass
     integer::npop   ! population size
-    type(solclass),ALLOCATABLE::chrom(:)
+    integer::onlooker
+    integer::maxlimit
+    integer::maxiter
+    type(solclass),allocatable::chrom(:)
     integer, allocatable::limitcount(:)   ! count the number of limints
     type(graphclass)::basenwk
 
@@ -16,9 +19,10 @@
     
     procedure,pass::abcmain=>abcmain
     procedure,pass::inipara=>inipara
-    ! procedure,pass::evaluate=>evaluate
+    procedure,pass::employ_bee=>employ_bee
+    procedure,pass::onlooker_bee=>onlooker_bee
+    procedure,pass::scouts=>scouts
     procedure,pass::gen_sol=>gen_sol
-    !procedure,pass::get_neigh=>get_neigh
     
     end type abcclass
      
@@ -29,6 +33,7 @@
     class(abcclass)::this
     ! todo : read abc parametrs
     this%npop =  20
+    this%onlooker = 5
     ALLOCATE(this%chrom(this%npop))
     Allocate(this%limitcount(this%npop))
     this%limitcount = 0
@@ -39,11 +44,21 @@
     subroutine abcmain(this)
     implicit none
     CLASS(abcclass)::this
-
+    integer:: iter
     ! step 0: read basci parameters for the abc
     call this%inipara
     ! step 1: generate initial soluitons
     call this%gen_sol
+    
+    iter = 0
+
+    do while(iter.le.this%maxiter) 
+        call this%employ_bee
+        call this%onlooker_bee
+        call this%scouts
+        iter = iter + 1
+    enddo 
+
 
     ! call gen_sol
     end subroutine
@@ -54,7 +69,6 @@
     class(abcclass)::this 
     integer::i,ts, l 
     integer::residule
-
 
     do i=1,this%npop
         call this%chrom(i)%generate
@@ -69,56 +83,69 @@
 
     end subroutine
 
-    ! generate a neighbour by randomly increase the fleet size 
-  
+    subroutine employ_bee(this)
+    implicit none 
+    class(abcclass)::this
+    integer::p
+    logical::replaced
+    do p = 1, this%npop
+       call this%chrom(p)%get_neigh(replaced, this%basenwk)
+       if (replaced) then 
+        this%limitcount(p) = 0
+       else
+        this%limitcount(p) = this%limitcount(p) + 1
+       end if
+    enddo 
+    end subroutine
 
-    !subroutine get_neigh(this,replaced,basenwk)
-    !use constpara
-    !use GraphLib
-    !implicit none 
-    !logical, INTENT(OUT)::replaced
-    !class(solclass)::this
-    !! integer,intent(in)::now
-    !type(lineclass),DIMENSION(nline)::templines
-    !real*8::temp_fit
-    !real*8::neigh_fleet(nline),now_fleet(nline)
-    !
-    !do l = 1, nline
-    !    call templines(l)%copy(this%dp%nwk%mylines(l))
-    !    now_fleet(l) = this%fleet(l)
-    !end do 
-    !
-    !temp_fit = this%fitness
-    !! genertate new fleet    
-    !call mute_increa(now_fleet, neigh_fleet)
-    !call this%set_fleet_and_fre(neigh_fleet)
-    !call this%evaluate(this%basenwk)
-    !
-    !! switch back the new fitness values is wrose
-    !if (temp_fit.gt.this%fitness) then 
-    !    replaced = .false.
-    !    call this%mylines%copy(templines)
-    !    this%fitness = temp_fit
-    !else
-    !    replaced = .true.
-    !end if 
-    !
-    !do l = 1, nline
-    !    call basenwk%mylines(l)%copy(templines(l))
-    !enddo 
-    !
-    !
-
-    !end subroutine 
-
-! subroutine employ_bee()
-! end subroutine 
+    subroutine onlooker_bee(this)
+    use mutelib
+    implicit none 
+    class(abcclass):: this
+    real*8,allocatable::fits(:)
+    integer::p,id
+    integer,allocatable::select_list(:)
+    logical::replaced
 
 
-!subroutine on_looker()
+    allocate(fits(this%npop))
+    allocate(select_list(this%onlooker))
 
-!end subroutine 
+    do p=1, this%npop
+        fits(p) = this%chrom(p)%fitness
+    enddo
 
+    call roulette(fits,this%npop,select_list,this%onlooker) 
+
+    do p = 1, this%onlooker
+        id = select_list(p)
+       call this%chrom(id)%get_neigh(replaced, this%basenwk)
+       if (replaced) then 
+            this%limitcount(id) = 0
+       else
+            this%limitcount(id) = this%limitcount(id) + 1
+       end if
+    enddo 
+
+
+    deallocate(fits)
+    deallocate(select_list)
+    end subroutine
+
+
+    subroutine scouts(this)
+    implicit none
+    CLASS(abcclass)::this
+    integer:: p
+
+    do p = 1, this%npop 
+        if (this%limitcount(p).gt.this%maxlimit) then 
+          call this%chrom(p)%generate
+
+        end if
+    enddo
+
+    end subroutine
 
 end module
 

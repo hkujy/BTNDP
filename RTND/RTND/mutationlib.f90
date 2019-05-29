@@ -44,7 +44,47 @@
     nei(il) = nei(il) + 1
 
     end subroutine
+
+   
+    subroutine roulette(fits,fitsize,list,listsize) 
+    implicit none 
     
+    integer,intent(in)::fitsize
+    real*8,intent(in)::fits(fitsize)
+    integer::id
+    real*8::ts
+    real*8::prob(fitsize)
+    real*8::ran
+    integer::p,j
+    integer::listsize
+    integer::list(listsize)
+    real*8::cum_sum
+    ts = sum(fits)
+    prob(:)=fits(:)/ts
+    cum_sum  = 0
+    do p=1, fitsize
+        prob(p) = cum_sum + prob(p)
+        cum_sum = prob(p)
+    end do 
+
+    list(:) = -1
+    do j = 1, listsize
+        id = -1
+        call random_number(ran)
+        do p = 1, fitsize
+            if (ran.le.prob(p)) then 
+                id =  p
+            exit
+            endif 
+            if(id.lt.0) then
+                write(*,*)  "roulette err: cannot find valid id"
+                pause
+            else
+                list(j) = id
+            end if
+        enddo
+    enddo
+    end subroutine
     
     
     end module
