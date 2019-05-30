@@ -11,35 +11,93 @@
     real*8,external::get_totalcost
     !type(solclass):: test_sol
     integer::newfleet(nline)
-    type(dpsolver)::dp
+    ! type(dpsolver)::dp
     type(graphclass)::Basenwk
-     
+    integer::exp_id 
     
-    fre_lb = 4
-    fre_ub = 20
-    fleetsize = 12
-    ! call set_line_links
+    
+    open (unit=logfileno,file='c:\GitCodes\BTNDP\RESULTS\log.txt',status='replace',action="write")
+    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testindex.txt')
+    read(1,*) exp_id
+    close(1)
+   
+
+   ! call set_line_links
     seed1=1
     call random_seed(put=seed1(:))
-    open (unit=logfileno,file='c:\GitCodes\BTNDP\RESULTS\log.txt',status='replace',action="write")
     ! step 1 read input data
     call cleanfiles
     call readpara
     call Basenwk%readnwt
-    call get_fleet_range(Basenwk)
- 
-    write (*,*) "lower bound = ", fleet_lb
-    write (*,*) "upper bound = ", fleet_ub
-    !do i =1, 100
-    !call dp(i)%nwk%readnwt
-    !enddo
-    
-    call bfmain_given_fre(Basenwk)
     call Basenwk%printnwk
+
+    if (exp_id==1) then 
+        write(*,*) "Experiment: Given frequency"
+        call test_given_fre(Basenwk)
+    end if
+
+    if (exp_id==2) then 
+        write(*,*) "Experiment: Enumerate fleet"
+        call test_enumerate_fleet(Basenwk)
+    end if
+
+    if (exp_id == 3) then 
+        write(*,*) "Experiment: ABC bilevel"
+        call test_abc(Basenwk)
+    end if
+    ! call bfmain_given_fre(Basenwk)
     !call bfmain(Basenwk)
     write(*,*) "good luck"
-    
     end program
+
+
+    subroutine test_given_fre(Basenwk)
+    use BruteForce
+    use GraphLib
+    implicit none
+    type(graphclass)::basenwk 
+    call bf_given_fre(Basenwk)
+    
+    end subroutine
+
+    subroutine test_enumerate_fleet(Basenwk)
+    use BruteForce
+    use GraphLib
+    implicit none 
+    type(graphclass)::basenwk
+    integer::val
+    integer::row
+    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testfleetpara.txt')
+    do row =1, 3
+       read(1,*) val
+       if (row==1) then 
+        fre_lb = real(val)
+       endif 
+       if (row==2) then 
+        fre_ub = real(val)
+       end if 
+       if (row==3) then 
+        fleetsize = val
+       end if
+    enddo 
+    close(1)
+
+    call get_fleet_range(Basenwk)
+    write (*,*) "lower bound = ", fleet_lb
+    write (*,*) "upper bound = ", fleet_ub
+    call bf_enumerate_fleet(Basenwk)
+    end subroutine
+
+    subroutine test_abc(basenwk)
+    use GraphLib
+    use ABC 
+    implicit none
+    type(graphclass)::basenwk
+    type(abcclass):: bilevel_abc
+    call bilevel_abc%abcmain
+
+    end subroutine
+
 
 
     subroutine cleanfiles

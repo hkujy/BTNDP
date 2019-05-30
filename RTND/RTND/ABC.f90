@@ -14,6 +14,10 @@
     type(solclass),allocatable::chrom(:)
     integer, allocatable::limitcount(:)   ! count the number of limints
     type(graphclass)::basenwk
+    integer::best_fleet(nline)
+    real*8::best_fit
+    integer::best_id
+ 
 
     contains 
     
@@ -23,7 +27,8 @@
     procedure,pass::onlooker_bee=>onlooker_bee
     procedure,pass::scouts=>scouts
     procedure,pass::gen_sol=>gen_sol
-    
+    procedure,pass::update_global_best=>update_global_best
+
     end type abcclass
      
     contains
@@ -31,12 +36,42 @@
     subroutine inipara(this)
     implicit none 
     class(abcclass)::this
+    integer::val, i
     ! todo : read abc parametrs
     this%npop =  20
     this%onlooker = 5
-    ALLOCATE(this%chrom(this%npop))
-    Allocate(this%limitcount(this%npop))
+
+    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\abc.txt')
+    
+    do i = 1, 4
+        read(1,*) val
+        if (i==1) then 
+            this%npop = val
+        end if 
+        if (i==2) then 
+            this%onlooker = val
+        end if 
+        if (i==3) then 
+            this%limitcount = val
+        end if 
+        if (i==4) then 
+            this%maxiter =  val
+        end if
+    enddo 
+    close(1)
+
+
+    allocate(this%chrom(this%npop))
+    allocate(this%limitcount(this%npop))
     this%limitcount = 0
+
+    write(*,*) "Num of Pop = ", this%npop
+    write(*,*) "Num of Onlooker = ", this%onlooker
+    write(*,*) "Num of Limit = ", this%limitcount
+    write(*,*) "Max iter = ", this%maxiter
+
+
+
 
     end subroutine
 
@@ -45,9 +80,11 @@
     implicit none
     CLASS(abcclass)::this
     integer:: iter
-    ! step 0: read basci parameters for the abc
+   ! step 0: read basci parameters for the abc
     call this%inipara
     ! step 1: generate initial soluitons
+    this%best_fleet = 999999
+    this%best_fleet = -1 
     call this%gen_sol
     
     iter = 0
@@ -59,9 +96,31 @@
         iter = iter + 1
     enddo 
 
+    !todo: need to find and update global best soluitons
+    deallocate(this%chrom)
+    deallocate(this%limitcount)
+ 
 
     ! call gen_sol
     end subroutine
+
+    subroutine update_global_best(this,pid)
+    implicit none 
+    class(abcclass)::this
+    integer, intent(in)::pid
+    integer::l
+    if (this%chrom(pid)%fitness.lt.this%best_fit) then 
+        this%best_fit = this%chrom(pid)%fitness
+        this%best_id = pid
+        do l = 1, nline
+            this%best_fleet(l)=this%chrom(pid)%mylines(l)%fleet
+        enddo 
+    end if
+    
+
+    end subroutine
+
+
 
     ! generate initla solution between upper and lower bound
     subroutine gen_sol(this)
@@ -79,6 +138,7 @@
         residule= fleetsize - ts
         call this%chrom(i)%assign_fleet(residule)
         call this%chrom(i)%evaluate(this%basenwk)
+        call this%update_global_best(i)
     end do 
 
     end subroutine
@@ -95,6 +155,7 @@
        else
         this%limitcount(p) = this%limitcount(p) + 1
        end if
+       call this%update_global_best(p)
     enddo 
     end subroutine
 
@@ -125,6 +186,7 @@
        else
             this%limitcount(id) = this%limitcount(id) + 1
        end if
+       call this%update_global_best(p)
     enddo 
 
 
@@ -136,12 +198,19 @@
     subroutine scouts(this)
     implicit none
     CLASS(abcclass)::this
-    integer:: p
+    integer:: p, ts, l, residule
 
     do p = 1, this%npop 
         if (this%limitcount(p).gt.this%maxlimit) then 
-          call this%chrom(p)%generate
-
+            call this%chrom(p)%generate
+            ts = 0
+            do l = 1, nline
+                ts =  ts + this%chrom(p)%mylines(l)%fleet
+            enddo 
+            residule = fleetsize - ts
+            call this%chrom(p)%assign_fleet(residule)
+            call this%chrom(p)%evaluate(this%basenwk)
+            call this%update_global_best(p)   
         end if
     enddo
 

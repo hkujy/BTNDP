@@ -352,7 +352,7 @@
                         endif
                         !end if 
                     else
-                        if (xfa(i,nr).gt.0.1.and.(fx(i,nr)-this%nwk%ndist(this%nwk%anode(i),nr))>madf) then 
+                        if (xfa(i,nr).gt.ncp_flow_eps.and.(fx(i,nr)-this%nwk%ndist(this%nwk%anode(i),nr))>madf) then 
                             madf = fx(i,nr) - this%nwk%ndist(this%nwk%anode(i),nr) 
                             write(1,'(i3,a,i5,a,i5,a,i5,a,f6.2,a,f6.2,a,f6.2,a,f6.2)') & 
                                 caseindex,',',i,',',this%nwk%anode(i),',',nr,',',xfa(i,nr),',',fx(i,nr),',', &

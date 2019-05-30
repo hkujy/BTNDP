@@ -7,10 +7,11 @@
         
     integer::totalfea
     integer, allocatable, dimension(:,:)::pool
+    real*8, allocatable, dimension(:,:)::fre_pool
 
     contains
 
-    subroutine bfmain(basenwk)
+    subroutine bf_enumerate_fleet(basenwk)
     use GraphLib
     use mysolclass
     implicit none 
@@ -34,7 +35,7 @@
     end subroutine
 
 
-    subroutine bfmain_given_fre(basenwk)
+    subroutine bf_given_fre(basenwk)
     use GraphLib
     use mysolclass
     implicit none 
@@ -48,10 +49,11 @@
     enddo
     !do p = totalfea, 1,-1
     do p = 1, totalfea
-        write(*,*) pool(p,:)
+        write(*,"(4(f6.2,2X))") fre_pool(p,:)
         !call sol%set_fleet_and_fre(pool(p,:))
         do l =1, nline
-            sol%mylines(l)%fre = real(pool(p,l)/60.0)
+            ! sol%mylines(l)%fre = real(pool(p,l)/60.0)
+            sol%mylines(l)%fre = fre_pool(p,l)/60.0
         end do  
         call sol%evaluate(basenwk)
         call sol%dp%outputod(sol%dp%xfa,sol%dp%fx)
@@ -69,12 +71,12 @@
     open(1, file='C:\GitCodes\BTNDP\Input\TestNetwork\numcases.txt')
     read(1,*) totalfea
     close(1)
-    allocate(pool(totalfea,4))
+    allocate(fre_pool(totalfea,4))
     open(1, file='C:\GitCodes\BTNDP\Input\TestNetwork\setfre.txt')
 
     do i = 1, totalfea 
         read(1,*) tff(:)
-        pool(i,:) =  tff(:)
+        fre_pool(i,:) =  tff(:)
     enddo
 
     end subroutine

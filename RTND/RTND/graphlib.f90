@@ -250,10 +250,8 @@
     call ini_lines(this%mylines)
     call gc_update_secfre(this%fre,this%slc,this%sl,this%sf,this%slf)
     call this%update_section_cost
-
     
     !subroutine updatesectioncost(fre,tsl,scost,svar,fare)
-
     !***************read link cost and set link var***************************
     !************************************************
     write(7,*) "scost,svar,fare" 

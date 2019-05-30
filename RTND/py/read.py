@@ -12,10 +12,14 @@ def rd_get_fair_obj(cs):
     bid: base case id
     """
     for c in cs:
-        c.fair = 0.0
         if c.id!=mc.CaseClass.base_case_id:
+            improve = []
             for w in c.od:
-                c.fair=min(c.fair, cs[mc.CaseClass.base_case_id].od[w.id].mincost-w.mincost)
+                improve.append(cs[mc.CaseClass.base_case_id].od[w.id].mincost-w.mincost)
+                # c.fair=min(c.fair, w.mincost-cs[mc.CaseClass.base_case_id].od[w.id].mincost )
+            c.fair = min(improve)
+        else:
+            c.fair=0
         pass
 
 def rd_link_sol(pa,cases):
@@ -119,11 +123,11 @@ def main(mypara:para.ParaClass,cases):
     rd_link_sol(mypara,cases)
     rd_node(mypara,cases)
     rd_od(mypara,cases)
+    rd_get_fair_obj(cases)
     # print(mypara.input_folder)
     file = mypara.output_folder + '\\cases.txt'
     with open(file,'w') as f:
         print("node,link,head,cost,headlabel,pie,fx,x,logitprob,dest",file=f)
-    rd_get_fair_obj(cases)
     for c in cases:
         pr_nwk(mypara,c.nwk,c.sols)
         print("caseid = {0}, fair = {1}".format(c.id,c.fair))

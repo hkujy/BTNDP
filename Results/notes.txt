@@ -1,0 +1,4 @@
+**********Test Increase Irequency**********
+Base Frequency:  [6, 6, 4, 4]
+Fre lower bound = 6
+Fre upper bound = 12

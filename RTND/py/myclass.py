@@ -129,20 +129,7 @@ class CaseClass(object):
         for w in self.od:
             self.ttc += w.demand*w.mincost
 
-    @classmethod
-    def get_fair_obj(cs,bid):
-        """
-        cs: cases list
-        bid: base case id
-        """
-        
-        for c in cs:
-            c.fair = 0.0
-            if c.id!=bid:
-                for w in c.od:
-                    c.fair=min(c.fair, w.mincost-cs[bid].od[w.id].mincost)
-                    
-        pass
+
 
         
 
