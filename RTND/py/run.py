@@ -3,6 +3,7 @@
 """
 import os
 import para
+import pandas as pd
 import read as rd
 import myclass as mc
 import myplot as mplt
@@ -15,8 +16,8 @@ import shutil
 # exp_id = 1    # given set with given frequency
 exp_id = 2  # enumerate fleet size
 # exp_id = 3  # bilevel abc
-is_run_exe = True
-# is_run_exe = False
+# is_run_exe = True
+is_run_exe = False
 
 # para for enumerate fre
 change_fre_line = 2
@@ -127,11 +128,26 @@ def test_enumerate_case(mp:para.ParaClass()):
     if is_run_exe:
         run_exe()
 
+    df = pd.read_csv(mp.input_folder+"\\setfre.txt",header=None)
+    cases = []
     # rd.main(mp, cases)
+    caseid=0
+    mc.CaseClass.base_case_id = 0
+    for row in range(0, df.shape[0]):
+        cases.append(mc.CaseClass())
+        cases[-1].id = caseid
+        cases[-1].fre.append(df[0][row])
+        cases[-1].fre.append(df[1][row])
+        cases[-1].fre.append(df[2][row])
+        cases[-1].fre.append(df[3][row])
+        caseid =  caseid + 1
+
+    rd.main(mp, cases)
+    mplt.main(mp, cases)        
 
     notes = mp.output_folder+"\\notes.txt"
     with open(notes, "a") as f:
-        print("**********Test Enumerate All Feasible Fleet Cases******")
+        print("**********Test Enumerate All Feasible Fleet Cases******",file=f)
         print("Base Frequency: ",end=" ",file=f)
         print(base_fre,file=f)
         print("Fre lower bound = {0}".format(fre_lb),file=f)
@@ -141,7 +157,6 @@ def test_enumerate_case(mp:para.ParaClass()):
     if os.path.isdir(copyinputdir):
         shutil.rmtree(copyinputdir)
     shutil.copytree(mp.input_folder,copyinputdir)
-
 
     pass
 

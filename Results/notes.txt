@@ -1,0 +1,4 @@
+**********Test Enumerate All Feasible Fleet Cases******
+Base Frequency:  [6, 5, 4, 4]
+Fre lower bound = 5
+Fre upper bound = 12

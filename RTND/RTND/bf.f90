@@ -18,8 +18,11 @@
     integer::p,l
     real*8::inifre(nline)
     type(solclass)::sol       
+    real*8,ALLOCATABLE::tmp_fre(:,:)
     class(graphclass),intent(in)::basenwk
+    
     call get_pool
+    ALLOCATE(tmp_fre(totalfea+1,4))
     caseindex = 0
     do l = 1, nline 
         call sol%mylines(l)%copy(basenwk%mylines(l))
@@ -28,14 +31,20 @@
     
     open(1, file="C:\GitCodes\BTNDP\Input\TestNetwork\inifre.txt")
     do l = 1, nline
-        read(1, "(4(f5.2,X))") inifre(l)
+        read(1, *) inifre(l)
     enddo 
-    write(*,*) "Inifre = ", inifre    
+    close(1)
+    
+    ! write cases
+    open(1, file = "C:\GitCodes\BTNDP\Input\TestNetwork\numcases.txt")
 
+    write(1,*) totalfea+1
     ! evaluate base case 
     do l =1, nline
         sol%mylines(l)%fre = inifre(l)/60.0
+        tmp_fre(1,l) =  inifre(l)
     end do  
+
     call sol%evaluate(basenwk)
     call sol%dp%outputod(sol%dp%xfa,sol%dp%fx)
     call sol%dp%outputx
@@ -47,13 +56,31 @@
         call sol%set_fleet_and_fre(pool(p,:))
         do l =1, nline
             ! sol%mylines(l)%fre = real(pool(p,l)/60.0)
+            tmp_fre(p+1,l) =  sol%mylines(l)%fre
             sol%mylines(l)%fre = sol%mylines(l)%fre/60.0
         end do  
+        write(*,*) 60*sol%mylines(1)%fre,60*sol%mylines(2)%fre,60*sol%mylines(3)%fre,60*sol%mylines(4)%fre
         call sol%evaluate(basenwk)
         call sol%dp%outputod(sol%dp%xfa,sol%dp%fx)
         call sol%dp%outputx
         caseindex= caseindex + 1
     enddo 
+    
+    open(2, file = "C:\GitCodes\BTNDP\Input\TestNetwork\setfre.txt")
+    open(3, file = "C:\GitCodes\BTNDP\Results\enumeratefleet.txt")    
+   
+    do p=1, totalfea+1
+        write(2,"(f8.3,a,f8.3,a,f8.3,a,f8.3)") tmp_fre(p,1),",",tmp_fre(p,2),",",tmp_fre(p,3),",",tmp_fre(p,4)
+    enddo
+    do p = 1, totalfea
+       WRITE(3,"(i4,a,i4,a,i4,a,i4)") pool(p,1),",",pool(p,2),",",pool(p,3),",",pool(p,4)
+       write(*,*) pool(p,:)
+    enddo 
+    close(1)
+    close(2)
+    close(3)
+ 
+    DEALLOCATE(tmp_fre) 
     end subroutine
 
 
