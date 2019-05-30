@@ -118,6 +118,12 @@ def rd_od(pa,cases):
         wid = wid + 1
         cases[cid].od[-1].process
 
+    for c in cases:
+        c.ttc = 0
+        for w in c.od:
+            c.ttc = c.ttc + w.mincost*w.demand
+
+
 def main(mypara:para.ParaClass,cases):
     
     rd_link_sol(mypara,cases)

@@ -20,10 +20,6 @@ def count_changes(vals):
 
 
 
-
-
-
-
 def plt_od_cost(mp:para.ParaClass(),cases):
 
     all_od = []
@@ -48,4 +44,13 @@ def plt_od_cost(mp:para.ParaClass(),cases):
 def main(mp:para.ParaClass(), cases):
 
     plt_od_cost(mp, cases)
+
+    with open(mp.output_folder+"\\objects.txt", "w") as f:
+        print("id,tc,fair",file=f)
+        for c in cases:
+            print("{0},{1},{2}".format(c.id,c.ttc,c.fair),file=f)
+            
+
+
+
     pass

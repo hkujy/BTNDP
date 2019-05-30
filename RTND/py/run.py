@@ -23,10 +23,10 @@ change_fre_line = 2
 # base_fre = 4   # basic frequency for computing fair
 
 # para for enumerate
-fre_lb = 6  # lower bound of the frequency 
+fre_lb = 5  # lower bound of the frequency 
 fre_up = 12 # fre upper bound 
 fleetsize = 10
-incre = 0.5
+incre = 0.1
 base_fre = [6, fre_lb, 4, 4]
 # para for abc
 abc_npop = 5
@@ -111,6 +111,8 @@ def test_incre_fre_case(mp:para.ParaClass()):
 
 
     copyinputdir = mp.output_folder+"\\exp_"+str(exp_id)
+    if os.path.isdir(copyinputdir):
+        shutil.rmtree(copyinputdir)
     shutil.copytree(mp.input_folder,copyinputdir)
 
 
