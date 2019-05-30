@@ -16,6 +16,7 @@
     use mysolclass
     implicit none 
     integer::p,l
+    real*8::inifre(nline)
     type(solclass)::sol       
     class(graphclass),intent(in)::basenwk
     call get_pool
@@ -24,9 +25,30 @@
         call sol%mylines(l)%copy(basenwk%mylines(l))
     enddo
     !do p = totalfea, 1,-1
-    do p = 1, 5
+    
+    open(1, file="C:\GitCodes\BTNDP\Input\TestNetwork\inifre.txt")
+    do l = 1, nline
+        read(1, "(4(f5.2,X))") inifre(l)
+    enddo 
+    write(*,*) "Inifre = ", inifre    
+
+    ! evaluate base case 
+    do l =1, nline
+        sol%mylines(l)%fre = inifre(l)/60.0
+    end do  
+    call sol%evaluate(basenwk)
+    call sol%dp%outputod(sol%dp%xfa,sol%dp%fx)
+    call sol%dp%outputx
+    caseindex= caseindex + 1
+
+    
+    do p = 1, totalfea
         write(*,*) pool(p,:)
         call sol%set_fleet_and_fre(pool(p,:))
+        do l =1, nline
+            ! sol%mylines(l)%fre = real(pool(p,l)/60.0)
+            sol%mylines(l)%fre = sol%mylines(l)%fre/60.0
+        end do  
         call sol%evaluate(basenwk)
         call sol%dp%outputod(sol%dp%xfa,sol%dp%fx)
         call sol%dp%outputx

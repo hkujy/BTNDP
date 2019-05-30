@@ -12,8 +12,8 @@ import shutil
 
 # remark: the index from fortrain starts from 1
 
-exp_id = 1    # given set with given frequency
-# exp_id = 2  # enumerate fleet size
+# exp_id = 1    # given set with given frequency
+exp_id = 2  # enumerate fleet size
 # exp_id = 3  # bilevel abc
 is_run_exe = True
 # is_run_exe = False
@@ -40,8 +40,8 @@ rio = 0.15
 
 
 def run_exe():
-    # debug_exe = r'C:\GitCodes\BTNDP\RTND\RTND\Debug\RTND.exe'
-    debug_exe = r'C:\GitCodes\BTNDP\RTND\RTND\Release\RTND.exe'
+    debug_exe = r'C:\GitCodes\BTNDP\RTND\RTND\Debug\RTND.exe'
+    # debug_exe = r'C:\GitCodes\BTNDP\RTND\RTND\Release\RTND.exe'
     os.system(debug_exe)
 
 def create_case(mp:para.ParaClass()):
@@ -93,7 +93,7 @@ def write_case_files(mp:para.ParaClass(),fre_list):
 
 def test_incre_fre_case(mp:para.ParaClass()):
 
-    cases= create_case(mp)
+    cases = create_case(mp)
     print("Base case id is {0}".format(mc.CaseClass.base_case_id))
     print("Test Case: Enumerate Freqeuncy")
 
@@ -116,7 +116,7 @@ def test_incre_fre_case(mp:para.ParaClass()):
     shutil.copytree(mp.input_folder,copyinputdir)
 
 
-def test_enuerate_case(mp:para.ParaClass()):
+def test_enumerate_case(mp:para.ParaClass()):
 
     with open(mp.input_folder+"\\testfleetpara.txt","w") as f:
         print("{0}".format(fre_lb),file = f)
@@ -126,6 +126,22 @@ def test_enuerate_case(mp:para.ParaClass()):
 
     if is_run_exe:
         run_exe()
+
+    # rd.main(mp, cases)
+
+    notes = mp.output_folder+"\\notes.txt"
+    with open(notes, "a") as f:
+        print("**********Test Enumerate All Feasible Fleet Cases******")
+        print("Base Frequency: ",end=" ",file=f)
+        print(base_fre,file=f)
+        print("Fre lower bound = {0}".format(fre_lb),file=f)
+        print("Fre upper bound = {0}".format(fre_up),file=f)
+
+    copyinputdir = mp.output_folder+"\\exp_"+str(exp_id)
+    if os.path.isdir(copyinputdir):
+        shutil.rmtree(copyinputdir)
+    shutil.copytree(mp.input_folder,copyinputdir)
+
 
     pass
 
@@ -154,7 +170,7 @@ if __name__ == "__main__":
     if exp_id == 1:
         test_incre_fre_case(mp)
     elif exp_id == 2:
-        test_enuerate_case(mp)
+        test_enumerate_case(mp)
     elif exp_id == 3:
         test_abc_case(mp)
     else:
