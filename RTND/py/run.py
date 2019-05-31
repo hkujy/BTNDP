@@ -9,26 +9,28 @@ import myclass as mc
 import myplot as mplt
 from shutil import copyfile
 import shutil
+import pareto
+import matplotlib.pyplot as plt
 
 
 # remark: the index from fortrain starts from 1
 
-# exp_id = 1    # given set with given frequency
-exp_id = 2  # enumerate fleet size
+exp_id = 1    # given set with given frequency
+# exp_id = 2  # enumerate fleet size
 # exp_id = 3  # bilevel abc
-# is_run_exe = True
-is_run_exe = False
+is_run_exe = True
+# is_run_exe = False
 
 # para for enumerate fre
 change_fre_line = 2
 # base_fre = 4   # basic frequency for computing fair
 
 # para for enumerate
-fre_lb = 5  # lower bound of the frequency 
+fre_lb = 4  # lower bound of the frequency 
 fre_up = 12 # fre upper bound 
 fleetsize = 10
 incre = 0.1
-base_fre = [6, fre_lb, 4, 4]
+base_fre = [6,fre_lb,6,15]
 # para for abc
 abc_npop = 5
 abc_onlooker = 5
@@ -125,6 +127,10 @@ def test_enumerate_case(mp:para.ParaClass()):
         print("{0}".format(fleetsize),file = f)
     print("Test Case: Enumerate all based on fleet")
 
+    with open(mp.input_folder+"\\inifre.txt","w") as f:
+        for fre in base_fre:
+            print(fre,file=f)
+
     if is_run_exe:
         run_exe()
 
@@ -157,6 +163,18 @@ def test_enumerate_case(mp:para.ParaClass()):
     if os.path.isdir(copyinputdir):
         shutil.rmtree(copyinputdir)
     shutil.copytree(mp.input_folder,copyinputdir)
+    xval = []
+    yval = []
+    for c in cases:
+        if c.id!=mc.CaseClass.base_case_id:
+            xval.append(c.ttc)
+            yval.append(c.fair)
+    
+    (px,py) = pareto.pareto_frontier(xval,yval,maxX=False,maxY=True)
+    plt.figure("pareto")     
+    plt.scatter(px,py)
+    plt.show()
+
 
     pass
 

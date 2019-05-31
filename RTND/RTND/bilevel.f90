@@ -149,9 +149,9 @@
     integer l
     
     do l = 1, nline
-        call nwk%mylines(l)%get_fleet(fre_lb(l))
+        call nwk%mylines(l)%get_fleet(fre_lb(l),islb=.true.)
         fleet_lb(l) = nwk%mylines(l)%fleet
-        call nwk%mylines(l)%get_fleet(fre_ub(l))
+        call nwk%mylines(l)%get_fleet(fre_ub(l),isub=.true.)
         fleet_ub(l) = nwk%mylines(l)%fleet
     end do 
 

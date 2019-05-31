@@ -156,7 +156,9 @@
         do l2 =  fleet_lb(2),fleet_ub(2)
             do l3 = fleet_lb(3), fleet_ub(3)
                 do l4 =  fleet_lb(4),fleet_ub(4)
+                    !if (l1+l2+l3+l4.eq.fleetsize) then 
                     if (l1+l2+l3+l4.le.fleetsize) then 
+
                         totalfea = totalfea + 1
                         pool(totalfea,1) = l1
                         pool(totalfea,2) = l2

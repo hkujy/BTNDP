@@ -60,16 +60,30 @@
     class(lineclass)::this 
     integer, intent(in)::start,ends
     real*8::t,v,f
-    integer i 
+    integer i,j
     logical::isfind
-    isfind = .true.
+    isfind = .false.
+    t=0
+    v=0
+    f=0
     do i=1, size(this%stops)-1
-        if ((this%stops(i).eq.start).and.(this%stops(i+1).eq.ends)) then 
-            isfind = .true.
-            t = this%tt(i)
-            v = this%var(i)
-            f = this%fare(i)
-            RETURN 
+        if (this%stops(i).eq.start) then
+            do j = i+1, size(this%stops)
+                t = this%tt(i)+t
+                v = this%var(i)+v
+                f = this%fare(i)+f
+                if (this%stops(j).eq.ends) then 
+                    isfind = .true.
+                    return 
+                end if 
+            end do 
+        
+        !.and.(this%stops(i+1).eq.ends)) then 
+        !    isfind = .true.
+        !    t = this%tt(i)
+        !    v = this%var(i)
+        !    f = this%fare(i)
+            !RETURN 
         end if 
     end do
 
@@ -124,12 +138,21 @@
     this%fre = 60 * (this%fleet / this%exptime) *(1 + this%vartime/(this%exptime**2))
     end subroutine
 
-    subroutine get_fleet(this,fre)
+    subroutine get_fleet(this,fre,isub,islb)
     implicit none
     class(lineclass)::this
     real*8, intent(in)::fre
+    LOGICAL,OPTIONAL::isub, islb
     call this%get_line_time
     this%fleet = ceiling((this%exptime/60)*(fre)/(1+this%vartime/(this%exptime**2)))   
+    if(PRESENT(isub)) then 
+        this%fleet = FLOOR((this%exptime/60)*(fre)/(1+this%vartime/(this%exptime**2)))   
+    end if 
+    if(PRESENT(islb)) then
+        this%fleet = CEILING((this%exptime/60)*(fre)/(1+this%vartime/(this%exptime**2)))   
+    endif
+
+    
     end subroutine
 
 

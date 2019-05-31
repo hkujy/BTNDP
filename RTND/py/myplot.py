@@ -33,10 +33,10 @@ def plt_od_cost(mp:para.ParaClass(),cases):
             map_od =[sw for sw in s.od if sw.id == w][0] 
             od.append(map_od.demand*map_od.mincost)
             x.append(s.id)
-        # plt.figure("OD "+str(w))
+        plt.figure("OD "+str(w))
         plt.plot(x, od)
-        all_od.append(od)
-        # plt.show()
+        # all_od.append(od)
+        plt.show()
         # tpt.plot(od)
 
 
