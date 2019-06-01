@@ -1,4 +1,4 @@
-**********Test Increase Irequency**********
-Base Frequency:  [6, 4, 6, 15]
+**********Test Enumerate All Feasible Fleet Cases******
+Base Frequency:  [6, 6, 6, 10]
 Fre lower bound = 4
-Fre upper bound = 12
+Fre upper bound = 15

@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 
 # remark: the index from fortrain starts from 1
 
-exp_id = 1    # given set with given frequency
-# exp_id = 2  # enumerate fleet size
+# exp_id = 1    # given set with given frequency
+exp_id = 2  # enumerate fleet size
 # exp_id = 3  # bilevel abc
 is_run_exe = True
 # is_run_exe = False
@@ -27,10 +27,10 @@ change_fre_line = 2
 
 # para for enumerate
 fre_lb = 4  # lower bound of the frequency 
-fre_up = 12 # fre upper bound 
-fleetsize = 10
+fre_up = 15 # fre upper bound 
+fleetsize = 12
 incre = 0.1
-base_fre = [6,fre_lb,6,15]
+base_fre = [6,8,6,10]
 # para for abc
 abc_npop = 5
 abc_onlooker = 5
@@ -43,8 +43,8 @@ rio = 0.15
 
 
 def run_exe():
-    debug_exe = r'C:\GitCodes\BTNDP\RTND\RTND\Debug\RTND.exe'
-    # debug_exe = r'C:\GitCodes\BTNDP\RTND\RTND\Release\RTND.exe'
+    # debug_exe = r'C:\GitCodes\BTNDP\RTND\RTND\Debug\RTND.exe'
+    debug_exe = r'C:\GitCodes\BTNDP\RTND\RTND\Release\RTND.exe'
     os.system(debug_exe)
 
 def create_case(mp:para.ParaClass()):
