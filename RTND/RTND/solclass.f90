@@ -10,11 +10,11 @@
         integer::id
         ! integer::fleet(nline)
         real*8::fitness
-        type(lineclass)::mylines(nline)
+        type(lineclass),allocatable::mylines(:)
         type(dpsolver)::dp
         real*8::ttc
         real*8::fair
-        real*8::odcost(nod)
+        real*8,allocatable::odcost(:)
     contains 
     procedure, pass::set_fleet_and_fre=>set_fleet_and_fre
     procedure, pass::generate=>generate

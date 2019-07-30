@@ -1,4 +1,4 @@
-    !include "myclass.f90"
+    
     program bilevel
     use constpara
     use GraphLib
@@ -8,15 +8,14 @@
     integer:: i,l
     integer allseed(20),seed_cycle,seed1(1)
     real*8::totalcost
-    real*8,external::get_totalcost
+    !real*8,external::get_totalcost
     !type(solclass):: test_sol
-    integer::newfleet(nline)
+    ! integer,allocatable::newfleet(:)
     ! type(dpsolver)::dp
     type(graphclass)::Basenwk
     integer::exp_id 
     
-    
-    open (unit=logfileno,file='c:\GitCodes\BTNDP\RESULTS\log.txt',status='replace',action="write")
+    open(unit=logfileno,file='c:\GitCodes\BTNDP\RESULTS\log.txt',status='replace',action="write")
     open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testindex.txt')
     read(1,*) exp_id
     close(1)
@@ -24,7 +23,7 @@
 
    ! call set_line_links
     seed1=1
-    call random_seed(put=seed1(:))
+    !call random_seed(put=seed1(:))
     ! step 1 read input data
     call cleanfiles
     call readpara
@@ -48,6 +47,7 @@
     ! call bfmain_given_fre(Basenwk)
     !call bfmain(Basenwk)
     write(*,*) "good luck"
+    
     end program
 
 
@@ -56,7 +56,7 @@
     use GraphLib
     implicit none
     type(graphclass)::basenwk 
-    call bf_given_fre(Basenwk)
+    ! call bf_given_fre(Basenwk)
     
     end subroutine
 
@@ -85,9 +85,11 @@
     call get_fleet_range(Basenwk)
     write (*,*) "lower bound = ", fleet_lb
     write (*,*) "upper bound = ", fleet_ub
-    call bf_enumerate_fleet(Basenwk)
+    ! call bf_enumerate_fleet(Basenwk)
     end subroutine
 
+    
+    
     subroutine test_abc(basenwk)
     use GraphLib
     use ABC 
@@ -95,23 +97,17 @@
     type(graphclass)::basenwk
     type(abcclass):: bilevel_abc
     call bilevel_abc%abcmain
-
     end subroutine
-
 
 
     subroutine cleanfiles
     implicit none
-    
     open(1,file='c:\gitcodes\BTNDP\results\fortran_checkmadf.txt')
     write(1,"(a5,a2,a6,a5,a2,a2,a6,a6)") "case,","i,","anode,","dest,","x,","y,","ndest,","maxdif"
     close(1)
-
-
     open(1,file='c:\gitcodes\BTNDP\results\fortran_output_od.txt')
     write(1,"(a4,a,a6,a,a4,a,a6,a,a,a,a4)") "case",",","origin",",","dest",",","demand",",","y",",","flow"
     close(1)
-  
     
     open(1,file='c:\gitcodes\BTNDP\results\fortran_output_link.txt')
     write(1,"(a7,a5,a5,a5,a5,a3,a3,a6,a10,a5,a4)") "method,","case,","dest,","link,","flow,","fx,","lt,","xprob,","logitprob,","tail,","head"
@@ -129,7 +125,7 @@
     open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_para2.txt')
     write(1,"(a5,a5,a5,a8,a6,a6)") "case,","beta,","solc,","cputime,","error,","diserr"
     close(1)
-    !open(17,file='..\..\results\fortran_finalerr.txt',status='old',position='append')
+
     open(1,file='c:\gitcodes\BTNDP\results\fortran_finalerr.txt')
     write(1,"(a5,a3)") "case,","err" 
     close(1)

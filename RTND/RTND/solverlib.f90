@@ -6,81 +6,166 @@
     type,public::methods
         character(len = 10)::name
         type(graphclass)::nwk
-        real*8::x(nl,ndest) ! percentage
-        real*8::fx(nl,ndest)
-        real*8::xfa(nl,ndest)
-        real*8::logitprob(nl,ndest)  ! logit probability
-        real*8::ncperr,cputime
-        real*8::lf(nl)
-        real*8::lt(nl)
-        real*8::nf(nn,ndest)
-        ! real*8::stt(nl)  ! section travel time
-        real*8::node_exp_sum(nn,ndest)
+        real*8,allocatable::x(:,:) ! percentage, approach proportion
+        real*8,allocatable::fx(:,:) !mapping function
+        real*8,allocatable::xfa(:,:) ! link flow for each dest
+        real*8,allocatable::logitprob(:,:)  ! logit probability
+        real*8,allocatable::lf(:),lt(:)
+        real*8,allocatable::nf(:,:)  ! node flow for each dest
+        real*8,ALLOCATABLE::node_exp_sum(:,:)
+        real*8,ALLOCATABLE::dial_link_like(:,:)
+        real*8,ALLOCATABLE::dial_rlabel(:,:),dial_slabel(:,:)
+        integer,ALLOCATABLE::rorder(:,:),sorder(:,:) ! ascend order
+        real*8,ALLOCATABLE::dial_Wsd(:,:)
+        real*8::ncperr,cputime,max_dist_gap
         logical::isNCPconverge
         integer::solc
-        integer::tests
         integer::gapfileno
     contains
       !procedure,pass::minsp=>method_init_arc_flow
       procedure,pass::initial_x=>initial_x
       procedure,pass::forward_update_flow=>forward_update_flow
       procedure,pass::backward_update_fx=>backward_update_fx
+      procedure,pass::update_bush=>update_bush
       procedure,pass::getncperr=>getncperr
       procedure,pass::outputx=>outputx
       procedure,pass::outputod=>outputod
       procedure,pass::init_arc_flow=>init_arc_flow
       procedure,pass::node_flow=>node_flow
       procedure,pass::cal_fx=>cal_fx
-      procedure,pass::cal_bcm_fx=>cal_bcm_fx
       procedure,pass::geninisol=>geninisol
       procedure,nopass::get_bcmval=>get_bcmval
+      procedure,PASS::inimethod=>inimethod
+      procedure,pass::delmethod=>delmethod
+      procedure,pass::dial_load_main =>dial_load_main
+      procedure,pass::dial_sub_graph=>dial_sub_graph
+      procedure,pass::dial_get_link_like=>dial_get_link_like
+      procedure,pass::dial_foward=>dial_forward
+      procedure,pass::dial_backward=>dial_backward
+
     end type methods
     contains
-    
-   function get_bcmval(baseval) result(res)
 
+    subroutine inimethod(this)
+    implicit none 
+    CLASS(methods)::this
+    call this%nwk%inigraph
+    ALLOCATE(this%x(nl,ndest))
+    this%x=0
+    ALLOCATE(this%fx(nl,ndest))
+    this%fx=0
+    ALLOCATE(this%xfa(nl,ndest))
+    this%xfa=0
+    ALLOCATE(this%logitprob(nl,ndest))
+    this%logitprob = 0
+    ALLOCATE(this%lf(nl))
+    this%lf=0
+    ALLOCATE(this%lt(nl))
+    this%lt=0
+    ALLOCATE(this%nf(nn,ndest))
+    this%nf=0
+    ALLOCATE(this%node_exp_sum(nn,ndest))
+    this%node_exp_sum=0
+    ALLOCATE(this%dial_link_like(nl,ndest))
+    this%dial_link_like = 0
+    ALLOCATE(this%dial_Wsd(nl,ndest))
+    this%dial_Wsd = 0
+    ALLOCATE(this%dial_rlabel(nn,ndest),this%dial_slabel(nn,ndest))
+    allocate(this%rorder(nn,ndest),this%sorder(nn,ndest))
+    this%rorder = 0
+    this%sorder = 0
+ 
+    end subroutine
+
+    subroutine delmethod(this)
+    implicit none 
+    class(methods)::this
+    deallocate(this%x,this%fx,this%xfa,this%logitprob,this%lf,this%lt)
+    deallocate(this%nf,this%node_exp_sum)
+    deallocate(this%dial_wsd,this%dial_link_like,this%dial_rlabel,this%dial_slabel)
+    DEALLOCATE(this%sorder,this%rorder)
+    call this%nwk%delgraph
+
+    end subroutine
+
+    !TODO: check this
+    function get_bcmval(baseval) result(res)
     reaL*8::res,baseval
     if (isConstBcm) then 
-        res = 10
+        res = const_bcm_value
     else 
        res =  baseval*bcmratio
     endif 
-    
-   return
-   end function
-    
-    
-    
+    return
+    end function
+   
+    subroutine update_bush(this)
+    implicit none 
+    class(methods)::this
+    call this%nwk%minspantree(this%lt)
+    call this%nwk%bfs_torder
+    call this%nwk%getorder
+    call this%nwk%countconect
+    if (islogit) then 
+        call this%nwk%getsuebush
+    end if 
+    end subroutine
+
     subroutine geninisol(this,set_nwk)
     implicit none
     CLASS(methods)::this
+    integer::l
     CLASS(graphclass),optional::set_nwk
+    real*8::max_dist_err_2
     ! read network -> create topological order -> check connectivity
     ! compute inital x and intial y
-    call this%nwk%readnwt(set_nwk)
-    call this%nwk%minspantree
+    call this%nwk%readnwt
+    this%lt = this%nwk%scost
+    !call this%nwk%readnwt(set_nwk,numlink=nl,numnode=nn,numline=nline,&
+    !maxcomsec=maxcom,maxseclineval=maxsecline,maxlinestopval=maxlinestops)
+    if (load_index.eq.1) then 
+        this%lt = this%nwk%scost
+        call this%dial_sub_graph
+        this%nwk%torder = this%sorder
+    else
+        call this%update_bush
+    endif 
     call this%init_arc_flow
-    call this%nwk%getorder
-    call this%nwk%countconect
     call this%initial_x
-    call this%forward_update_flow(this%x)
+    call this%forward_update_flow(this%x,d1=nl,d2=ndest)
     call this%nwk%link_time(this%lf,this%lt)
-    call this%nwk%updatesub(this%lt,.false.,this%xfa)
-    call this%backward_update_fx(this%fx,this%logitprob)
+
+    ! *******the following codes are created to compare with the stoch algorihtm 
+    !this%lt = this%nwk%scost
+    !this%nf = 10
+    !this%x = 1
+    !this%nwk%sublink(5,1)=.false.
+    !this%nwk%sublink(7,1) =.false.
+    !**************************************************************************
+    ! call this%nwk%updatesub(this%lt,.false.,this%xfa)
+    ! this%lt = this%nwk%scost
+    call this%backward_update_fx(this%fx,this%logitprob,d1=nl,d2=ndest)
+    
+    !this%ncperr = this%getncperr(this%x,this%xfa,this%fx,this%logitprob,nl,ndest,nn)
     this%ncperr = this%getncperr(this%x,this%xfa,this%fx,this%logitprob)
+    this%max_dist_gap = max_dist_err_2(this%x,this%logitprob,this%xfa,ncp_flow_eps,nl,ndest)
+
+    if (iswriteconverge) then 
+        if (isdebug) then 
+            write(*,'(i4,a,f16.8,a,f16.8)')  this%solc,',',this%ncperr,',',this%max_dist_gap
+        end if
+        write(this%gapfileno,'(i4,a,f16.8,a,f16.8)') this%solc,",",this%ncperr,",",this%max_dist_gap
+    end if 
+
     
     return 
     end subroutine
-
-
-
-  
     
     subroutine iniassignflow(this)
     implicit none 
     class(methods)::this 
 	
-    call this%nwk%minspantree
+    call this%nwk%minspantree(this%nwk%scost)
     call this%init_arc_flow
 
     return
@@ -109,11 +194,15 @@
     use constpara
     implicit none
     class(methods)::this
-    integer::i,l,node
+    integer::i,l,node,nr
     integer::lcount
 
     this%x=0.0
+    if (islogit) then 
+        goto 10
+    end if
     call this%node_flow  	! intial node flow
+
     do i = 1, ndest
         do l = 1, nl
             node = this%nwk%anode(l)
@@ -139,19 +228,22 @@
         end do 
     end do 
 
-    if (islogit) then 
-        do i = 1, ndest
+10  if (islogit) then 
+        do nr = 1, ndest
             do node =1, nn
-                if (this%nwk%subnode(node,i)) then
+                if (this%nwk%subnode(node,nr)) then
                     lcount = 0
                     do l = this%nwk%firstout(node),this%nwk%lastout(node)	
-                        if (this%nwk%sublink(l,i)) then 
+                        if (this%nwk%sublink(l,nr)) then 
                             lcount=lcount + 1 
+                            !if (lcount.ge.2) then 
+                            !    write(*,*) " wft:2 links"
+                            !end if
                         end if 
                     end do 
                     do l = this%nwk%firstout(node),this%nwk%lastout(node)	
-                        if(this%nwk%sublink(l,i)) then 
-                            this%x(l,i)=1.0/lcount 
+                        if(this%nwk%sublink(l,nr)) then 
+                            this%x(l,nr)=1.0/lcount 
                         end if 
                     end do 
                 end if 
@@ -161,20 +253,30 @@
     return 
     end subroutine
 
-    subroutine backward_update_fx(this,fx1,logitprob)
+    subroutine backward_update_fx(this,fx1,logitprob,d1,d2)
     use constpara
     implicit none 
 	! tail(a)--------->head(b)
     class(methods)::this
-    real*8,intent(out)::fx1(nl,ndest)
-    integer::i,j,node,nr,link,ll
-    real*8,optional::logitprob(nl,ndest)
+    ! real*8,intent(out)::fx1(nl,ndest)
+    integer::d1,d2
+    real*8,intent(out),DIMENSION(d1,d2)::fx1
+    real*8,optional,DIMENSION(d1,d2)::logitprob
+    integer::i,j,node,nr,link,ll,l
+    real*8::link_dest_flow
     !update the label on the subnetwork	
-    this%node_exp_sum = 0
+    logitprob = 0
+    ! if (load_index.eq.1) then 
+        ! if load is based on Dial's method
+    !call this%nwk%BFS_torder
+    !if (islogit) then
+    !    call this%nwk%minspantree(this%lt)   
+    !    call this%nwk%bfs_torder
+    !    call this%nwk%getorder
+    !    call this%nwk%getsuebush
+    !end if
 
-    if (isusebcm) then 
-        goto 66
-    end if 
+    ! endif
     if (.not.islogit) then
         fx1=large
         this%nwk%ndist = large
@@ -182,6 +284,10 @@
             this%nwk%ndist(this%nwk%roots(nr),nr) = 0.0
             do i = nn,1,-1
                 node = this%nwk%torder(i,nr)
+                if ((i.eq.nn).and.(node.ne.this%nwk%roots(nr))) then 
+                    write(*,*) "Solverlib: backward update fx: check torder"
+                    pause
+                end if 
                 if ((node.ne.0).and.this%nwk%subnode(node,nr)) then 
                     do j=this%nwk%firstin(node),this%nwk%lastin(node)
                         link = this%nwk%backtoforward(j)
@@ -199,57 +305,106 @@
         end do 
      else ! else if logit model
         fx1 = large
-        ! TODO
         this%nwk%ndist = 0		
+        this%node_exp_sum = 0
         !TODO "solver bwd check ndist label large or zero"
         do nr = 1, ndest
             this%nwk%ndist(this%nwk%roots(nr),nr) = 0.0
             do i = nn,1,-1
+            !do i = 1,nn
                 node = this%nwk%torder(i,nr)
-                if (node.eq.0) then 
-                    continue
+                if ((node.eq.0)) then 
+                    cycle
                 end if 
+                if (this%nwk%toder_level(node,nr).lt.0) then 
+                    this%nwk%ndist(node,nr) = large
+                    !cycle
+                end if
                 if (this%nwk%subnode(node,nr)) then 
+                    if (node.eq.this%nwk%roots(nr)) then 
+                        this%nwk%ndist(node,nr) = 0
+                    else
+                    this%nwk%ndist(node,nr) = &
+                        !(-1/theta)*log(this%node_exp_sum(this%nwk%anode(link),nr)) 
+                        (-1/theta)*log(max(this%node_exp_sum(node,nr),zero))
+                    end if
                     do j = this%nwk%firstin(node),this%nwk%lastin(node)
                         link = this%nwk%backtoforward(j) 
-                        !write(*,*) "link=,",link,"anode=",anode(link) 
-                        if((this%x(link,nr).gt.0).and.(this%lf(link).gt.0)) then
-                            this%node_exp_sum(this%nwk%anode(link),nr) = this%node_exp_sum(this%nwk%anode(link),nr) &
-                                + exp((-theta)*(this%lt(link) &
-                                + this%nwk%ndist(this%nwk%bnode(link),nr)))
-                        end if 
-                        if (this%node_exp_sum(this%nwk%anode(link),nr).lt.0) then 
-                            write(*,*) "node = ",this%nwk%anode(link)," link = ", link
-                            write(*,*) "expvalue = ",exp((-theta)*(this%lt(link)+this%nwk%ndist(this%nwk%bnode(link),nr)))
-                            write(*,*) "backward: expum is less than 0" 
-                        endif 
-                        this%nwk%ndist(this%nwk%anode(link),nr) = &
-                            (-1/theta)*log(this%node_exp_sum(this%nwk%anode(link),nr)) 
-                            !(-1/theta)*log(max(this%node_exp_sum(this%nwk%anode(link),nr),zero))
-                        if (this%lf(link).eq.0) then 
-                            fx1(link,nr) = this%nwk%ndist(this%nwk%bnode(link),nr) &
-                            + this%lt(link) + 1/theta
-                        else 
-                            fx1(link,nr) = this%nwk%ndist(this%nwk%bnode(link),nr) &
-                            + this%lt(link)+(1+log(this%lf(link)))/theta 
-                        end if
-                        do ll = this%nwk%firstout(this%nwk%anode(link)),this%nwk%lastout(this%nwk%anode(link))
-                            if((this%x(ll,nr).gt.0).and.(this%lf(ll).gt.0)) then 
-                                logitprob(ll,nr) = exp((-theta)*(this%lt(ll) &
-                                + this%nwk%ndist(this%nwk%bnode(ll),nr)))/this%node_exp_sum(this%nwk%anode(link),nr) 
-                            end if 
-                        end do 
+                        !if (link.eq.66) then 
+                        !   write(*,*) "wtf" 
+                        !end if 
+                        if (this%nwk%sublink(link,nr)) then 
+                            ! if((this%x(link,nr).gt.0).and.(this%lf(link).gt.0)) then
+                            !if((this%x(link,nr).gt.0).and.(this%nf(this%nwk%anode(link),nr).gt.0.0)) then
+                                this%node_exp_sum(this%nwk%anode(link),nr) = this%node_exp_sum(this%nwk%anode(link),nr) &
+                                    + exp((-theta)*(this%lt(link) + this%nwk%ndist(this%nwk%bnode(link),nr)))
+                            !end if 
+                            
+                            if (this%node_exp_sum(this%nwk%anode(link),nr).lT.0.0) then
+                                write(*,*) "node = ",this%nwk%anode(link)," link = ", link
+                                write(*,*) "expvalue = ",exp((-theta)*(this%lt(link)+this%nwk%ndist(this%nwk%bnode(link),nr)))
+                                write(*,*) "backward: expum is less than 0" 
+                            endif 
+                        
+                                ! if ((this%nwk%anode(link).eq.18).and.(nr.eq.1)) then 
+                                ! write (*,*) "debug"
+                                ! write (*,*) this%node_exp_sum(this%nwk%anode(link),nr)
+                                ! write (*,*) log(this%node_exp_sum(this%nwk%anode(link),nr)) 
+                            ! end if 
+                            ! this%nwk%ndist(this%nwk%anode(link),nr) = &
+                            !(-1/theta)*log(this%node_exp_sum(this%nwk%anode(link),nr)) 
+                                ! (-1/theta)*log(max(this%node_exp_sum(this%nwk%anode(link),nr),zero))
+                            link_dest_flow =  this%nf(this%nwk%anode(link),nr) * this%x(link,nr)
+                            ! if (this%lf(link).eq.0) then 
+                            if (link_dest_flow.eq.0) then
+                                fx1(link,nr) = this%nwk%ndist(this%nwk%bnode(link),nr) &
+                                    + this%lt(link) + 1/theta
+                                ! if ( fx1(link,nr) .gt.10000) then 
+                                !    write (*,*) " wtf"
+                                !end if
+                            else 
+                                fx1(link,nr) = this%nwk%ndist(this%nwk%bnode(link),nr) &
+                                    ! + this%lt(link)+(1+log(this%lf(link)))/theta 
+                                    + this%lt(link)+(1+log(link_dest_flow))/theta 
+                                !if ( fx1(link,nr) .gt.10000) then 
+                                !    write (*,*) " wtf"
+                                !endif
+                            end if
+                      
+                        endif
                     end do 
                 end if 
-            end do
-        end do
+            end do ! do torder nodes
+        end do  ! do ndest
+    
      endif 
-    
-    
-66  if (isusebcm) then 
-        call this%cal_bcm_fx(fx1,logitprob)
-    end if
-    
+   
+    if (islogit) then 
+       if(load_index.eq.0) then 
+            do nr = 1, ndest
+              do l = 1, nl
+                if (this%nwk%sublink(l,nr)) then
+                    if((this%x(l,nr).gt.0).and.(this%nf(this%nwk%anode(l),nr).gt.0)) then 
+                        logitprob(l,nr) = &
+                         exp((-theta)*(this%lt(l)+this%nwk%ndist(this%nwk%bnode(l),nr))) &
+                         /this%node_exp_sum(this%nwk%anode(l),nr) 
+                    end if
+                    if (logitprob(l,nr).gt.1+zero) then 
+                        write(*,*) "get prob larger than 1"
+                    endif
+                    if (isnan(logitprob(l,nr))) then 
+                        write(*,*) "wtf"
+                    end if 
+                end if 
+               end do
+            end do
+        else    
+            call this%dial_load_main(logitprob)
+        endif
+        
+    end if 
+
+
     return
     end subroutine 
 
@@ -257,11 +412,13 @@
     ! input is the flow proportion 
     ! out put is the link flow and node flow
     ! Algorithm
-    subroutine forward_update_flow(this,x0)
+    subroutine forward_update_flow(this,x0,d1,d2)
     use constpara
     implicit none 
     class(methods)::this 
-    real*8,intent(in)::x0(nl,ndest)
+    ! real*8,intent(in)::x0(nl,ndest)
+    integer::d1,d2
+    real*8,intent(in),DIMENSION(d1,d2)::x0
     integer i,j,nr,node,link,o,d
 
     this%xfa = 0.0
@@ -307,17 +464,21 @@
     use constpara
     implicit none
     class(methods)::this
-    real*8::x(nl,ndest),xfa(nl,ndest),fx(nl,ndest)
-    real*8,optional::logitprob(nl,ndest)
+    ! real*8::x(nl,ndest),xfa(nl,ndest),fx(nl,ndest)
+    real*8,dimension(nl,ndest)::x,xfa,fx
+    real*8,optional,dimension(nl,ndest)::logitprob
     real*8::madf
     integer::i,nr,node,j, link, tail, head
-    real*8::lf(nl)
-    real*8::nodefx(nn,ndest)
-    real*8::lamda, mincost,minfx,bcm
+    ! real*8::lf(nl)
+    real*8,dimension(nl)::lf
+    ! logical::isupdated(nn,ndest)
+    logical,dimension(nn,ndest)::isupdated
+    ! real*8::nodefx(nn,ndest)
+    real*8,dimension(nn,ndest)::nodefx
+    real*8::lamda, mincost,minfx,bcm,thismdf
     integer::bcmcount
     logical::isbcm(5)
-    logical::isupdated(nn,ndest)
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_checkmadf.txt',position="append") 
+    open(1,file='c:\gitcodes\logitassign\results\fortran_checkmadf.txt',position="append") 
     madf = 0.0d0 
     ! Todo: Check Whether i need to update xfa 
     if (islogit) then 
@@ -329,12 +490,12 @@
                 if (this%nwk%anode(i)/=this%nwk%roots(nr)) then 
                   node =  this%nwk%anode(i)
                   if (isupdated(node,nr)) then 
-                    continue
+                    cycle
                   endif 
                   do j = this%nwk%firstout(node), this%nwk%lastout(node)
-                    if(xfa(j,nr).gt.ncp_flow_eps) then 
+                    !if(xfa(j,nr).gt.ncp_flow_eps) then 
                       nodefx(node,nr) = min(fx(j,nr),nodefx(node,nr))
-                    end if 
+                    !end if 
                   enddo
                    isupdated(node,nr) = .true.
                 end if 
@@ -347,12 +508,18 @@
             if (this%nwk%sublink(i,nr).and.this%nwk%subnode(this%nwk%anode(i),nr).and.this%nwk%subnode(this%nwk%bnode(i),nr)) then 
                 if (this%nwk%anode(i)/=this%nwk%roots(nr)) then 
                     if (islogit) then 
-                        if (xfa(i,nr).gt.ncp_flow_eps) then 
-                          madf = max(madf,fx(i,nr)-nodefx(this%nwk%anode(i),nr))
+                        if (this%nf(this%nwk%anode(i),nr)*this%x(i,nr).gt.ncp_flow_eps) then 
+                            !if (abs(this%x(i,nr)-this%logitprob(i,nr)).gt.0.001) then 
+                                madf = max(madf,fx(i,nr)-nodefx(this%nwk%anode(i),nr))
+                                if (this%solc.gt.100.and.(fx(i,nr)-nodefx(this%nwk%anode(i),nr)).gt.490)  then 
+                                    write(*,*) "wtf"
+                                end if
+                            !endif
                         endif
+                        !endif
                         !end if 
                     else
-                        if (xfa(i,nr).gt.ncp_flow_eps.and.(fx(i,nr)-this%nwk%ndist(this%nwk%anode(i),nr))>madf) then 
+                        if (xfa(i,nr).gt.0.1.and.(fx(i,nr)-this%nwk%ndist(this%nwk%anode(i),nr))>madf) then 
                             madf = fx(i,nr) - this%nwk%ndist(this%nwk%anode(i),nr) 
                             write(1,'(i3,a,i5,a,i5,a,i5,a,f6.2,a,f6.2,a,f6.2,a,f6.2)') & 
                                 caseindex,',',i,',',this%nwk%anode(i),',',nr,',',xfa(i,nr),',',fx(i,nr),',', &
@@ -364,66 +531,6 @@
         end do 
     end do 
  
-    if(isusebcm) then 
-        madf = 0.0d0 
-        do nr = 1,ndest
-            do i = 1,nn
-                node = this%nwk%torder(i,nr)
-                if (node.ne.0) then 
-                ! step 1: find the minimum cost
-                    mincost = large
-                    minfx = large
-                    do j = this%nwk%firstout(node),this%nwk%lastout(node)
-                        link = j
-                        tail = this%nwk%anode(link)
-                        head = this%nwk%bnode(link)
-                        if(this%nwk%sublink(link,nr).and.this%nwk%subnode(this%nwk%bnode(link),nr)) then 
-                            if (this%lt(link)+this%nwk%ndist(head,nr).lt.mincost) then 
-                                mincost = this%lt(link) + this%nwk%ndist(head,nr)
-                            end if 
-                        end if
-                    end do 
-                    !bcm = mincost*bcmratio
-                    bcm = get_bcmval(mincost)
-                    !bcm = 5
-                ! step 2: add bcm links
-                    isbcm = .false.
-                    bcmcount = 1
-                    do j = this%nwk%firstout(node),this%nwk%lastout(node)
-                        link = j
-                        tail = this%nwk%anode(link)
-                        head = this%nwk%bnode(link)
-                        if(this%nwk%sublink(link,nr).and.this%nwk%subnode(this%nwk%bnode(link),nr)) then 
-                            if ((this%lt(link) + this%nwk%ndist(head,nr)).lt.(mincost + bcm)) then 
-                                isbcm(bcmcount) = .true.
-                                if (minfx.gt.fx(link,nr)) then 
-                                    minfx =  fx(link,nr)
-                                endif 
-                            end if 
-                        end if
-                        bcmcount = bcmcount + 1 
-                    end do 
-                !step 3: compute gap w.r.t. the minfx
-                    bcmcount = 1
-                    do j = this%nwk%firstout(node),this%nwk%lastout(node)
-                        link = j
-                        tail = this%nwk%anode(link)
-                        head = this%nwk%bnode(link)
-                        if(this%nwk%sublink(link,nr).and.this%nwk%subnode(this%nwk%bnode(link),nr)) then 
-                            if (isbcm(bcmcount)) then 
-                                if (xfa(link,nr).gt.ncp_flow_eps) then 
-                                    madf = max(abs(minfx - fx(link,nr)),madf)
-                                end if
-                                !write(*,*) "madf = ",madf, "fx = ",fx(link,nr)," minfx = ", minfx
-                            end if
-                        end if
-                        bcmcount = bcmcount + 1 
-                    end do 
-                end if
-            end do
-        end do 
-    end if
-
     if (madf.lt.ncp_eps) then 
         this%isNCPconverge =  .true.
     else 
@@ -467,12 +574,12 @@
     real*8:: printfx
     largecost = 1000.0
 
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_output_link.txt',status='old',position='append')
+    open(1,file='c:\gitcodes\LogitAssign\results\fortran_output_link.txt',status='old',position='append')
     ! write(1,*) "method,case,dest,link,flow,fx,lt,xprob,logitprob,tail,head"
     do i=1,ndest
         do j=1,nl
             ! if (this%xfa(j,i)/=0.0) then
-                write(1,"(a5,a,i3,a,i2,a,i3,a,f6.2,a,f7.2,a,f6.2,a,f6.4,a,f6.4,a,i3,a,i3)") &
+                write(1,"(a5,a,i3,a,i2,a,i3,a,f10.2,a,f7.2,a,f6.2,a,f6.4,a,f6.4,a,i3,a,i3)") &
                     this%name,',',caseindex,',', i,',',j,',',this%xfa(j,i),',',dmin1(largecost,this%fx(j,i)), ',', &
                     this%lt(j),',',this%x(j,i),',', this%logitprob(j,i),',',this%nwk%anode(j),',',this%nwk%bnode(j)
             ! endif
@@ -480,7 +587,7 @@
     end do
     close(1)
 
-    open(1,file='c:\GitCodes\BTNDP\results\fortran_output_node.txt',position='append')
+    open(1,file='c:\GitCodes\LogitAssign\results\fortran_output_node.txt',position='append')
     ! write(1,*) "method,case,dest,node,fout,lout,label"
     do nr = 1, ndest
         do n = 1, nn
@@ -501,18 +608,16 @@
 
     end subroutine
 
-    subroutine outputod(this,flow,y)
+    subroutine outputod(this,flow,y,d1,d2)
     use constpara
     implicit none
     class(methods)::this
     integer i,j
-    real*8::flow(nl,ndest),y(nl,ndest)
+    ! real*8::flow(nl,ndest),y(nl,ndest)
+    integer::d1,d2
+    real*8,DIMENSION(d1,d2)::flow,y
     integer q,w
-
-    !open(39,file='..\..\results\fortran_outputod.txt',status='old', position='append' )
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_output_od.txt',position='append')
-    !write(1,*) "case","origin","dest","demand","y","flow"
-    !integer::dest(nod),origin(nod)
+    open(1,file='c:\gitcodes\logitassign\results\fortran_output_od.txt',position='append')
     do q = 1, nod
         do w=1,ndest
             if (this%nwk%roots(w).eq.this%nwk%dest(q)) then
@@ -537,64 +642,40 @@
     end subroutine
 
 
-    subroutine method_outputpath(this,linktime, xfa)
-    use constpara
-    implicit none
-    class(methods)::this
-    integer i,j
-    real*8::linktime(nl)
-    real*8,intent(in)::xfa(nl,ndest)
+    ! subroutine method_outputpath(this,linktime, xfa)
+    ! use constpara
+    ! implicit none
+    ! class(methods)::this
+    ! integer i,j
+    ! real*8::linktime(nl)
+    ! real*8,intent(in)::xfa(nl,ndest)
 
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_linkcost.txt' )
-    open(2,file='c:\gitcodes\BTNDP\results\fortran_pathcost.txt' ) 
+    ! open(1,file='c:\gitcodes\logitassign\results\fortran_linkcost.txt' )
+    ! open(2,file='c:\gitcodes\logitassign\results\fortran_pathcost.txt' ) 
     
-    write(1,*) "case,linkid,linktime"
-    do i = 1, nl
-        write(1,'(i2,a,i3,a,f8.4)') caseindex,',',i,',',linktime(i)
-    enddo
+    ! write(1,*) "case,linkid,linktime"
+    ! do i = 1, nl
+    !     write(1,'(i2,a,i3,a,f8.4)') caseindex,',',i,',',linktime(i)
+    ! enddo
 
-    close(1)
-
-
-    write(2,*) "case,x,approchtime" 
-    ! the second demmension of the xfa is the destination index
-    ! the first three paths blong to od pair 1-4
-    write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(3,1),',',linktime(3)
-    write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(2,1),',',linktime(2)+linktime(6)
-    write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(1,1),',',linktime(1)+linktime(4)+linktime(6)
-    ! the following two belongs to od pair 2-4
-    write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(4,1),',',linktime(4)+linktime(6)
-    write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(5,1),',',linktime(5)
-    ! the last belong to od pair  3-4
-    write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(6,1),',',linktime(6)
-
-    close(2)
-
-    end subroutine
+    ! close(1)
 
 
-    !
-    !subroutine outputpara
-    !use graph
-    !implicit none
-    !integer i
-    !
-    !open(1,file='c:\gitcodes\logitassign\results\fortran_6linkdata.txt')
-    !write(1,*) 'scost,svar,fare'
-    !do i = 1, 6
-    !    write (1,'(f6.2,a,f6.2,a,f6.2)') scost(i),',', svar(i),',',fare(i)
-    !enddo
-    !close(1)
-    !
-    !
-    !!open(1,file='..\..\results\fortran_linecostandvar.txt')
-    !!write(1,'(f6.2,a,f6.2)') tsl(1,1),',',tsl(1,2)  ! line 1
-    !!write(1,'(f6.2,a,f6.2)') tsl(7,1),',',tsl(7,2)  ! line 2
-    !!write(1,'(f6.2,a,f6.2)') tsl(8,1),',',tsl(8,2)  ! line 3
-    !!write(1,'(f6.2,a,f6.2)') tsl(6,1),',',tsl(6,2)  ! line 4
-    !!close(1)
-    !
-    !end subroutine
+    ! write(2,*) "case,x,approchtime" 
+    ! ! the second demmension of the xfa is the destination index
+    ! ! the first three paths blong to od pair 1-4
+    ! write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(3,1),',',linktime(3)
+    ! write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(2,1),',',linktime(2)+linktime(6)
+    ! write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(1,1),',',linktime(1)+linktime(4)+linktime(6)
+    ! ! the following two belongs to od pair 2-4
+    ! write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(4,1),',',linktime(4)+linktime(6)
+    ! write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(5,1),',',linktime(5)
+    ! ! the last belong to od pair  3-4
+    ! write(2,'(i3,a,f8.4,a,f8.4)') caseindex,',',xfa(6,1),',',linktime(6)
+
+    ! close(2)
+
+    ! end subroutine
 
     subroutine cal_fx(this,x,fx)
     ! x => fx
@@ -603,20 +684,30 @@
     class(methods)::this
     real*8,intent(out)::fx(nl,ndest)
     real*8,intent(in)::x(nl,ndest)
-    real*8::st,et
+    real*8::st,et,max_dist_err_2
     call cpu_time(st)
+
     this%solc =  this%solc + 1 
-    call this%forward_update_flow(x)
+    if (this%solc.eq.33) then 
+        write(*,*) "wtf"
+    endif 
+    call this%forward_update_flow(x,d1=nl,d2=ndest)
     ! call this%nwk%link_time(this%lf,this%stt)
     call this%nwk%link_time(this%lf,this%lt)
-    call this%backward_update_fx(fx,this%logitprob)
-
+    call this%backward_update_fx(fx,this%logitprob,d1=nl,d2=ndest)
+    !this%ncperr = this%getncperr(x,this%xfa,fx,this%logitprob,nl,ndest,nn)
     this%ncperr = this%getncperr(x,this%xfa,fx,this%logitprob)
+
+    this%max_dist_gap = max_dist_err_2(x,this%logitprob,this%xfa,ncp_flow_eps,nl,ndest)
 
     call cpu_time(et)
 
-    !write(*,'(i4,a,f14.6,a,f12.4)')  this%solc,',',this%ncperr,',',et-st
-    write(this%gapfileno,'(i4,a,f14.6)') this%solc,",",this%ncperr
+    if (iswriteconverge) then 
+        if(isdebug) then 
+            write(*,'(i4,a,f16.8,a,f16.8)')  this%solc,',',this%ncperr,',',this%max_dist_gap
+        end if
+        write(this%gapfileno,'(i4,a,f16.8,a,f16.8)') this%solc,",",this%ncperr,",",this%max_dist_gap
+    end if 
 
     return 
     end subroutine
@@ -628,20 +719,31 @@
     integer::i,o,root,nr,node,arc
 
     if (islogit) then 
-        this%nwk%subnode = .true.
-        this%nwk%sublink = .true.
+        return
+        ! this%nwk%subnode = .false.
+        ! this%nwk%sublink = .false.
         this%xfa=0.0
         do nr =1, ndest
             root = this%nwk%roots(nr)
+            ! first set the subnode and sublink
+            do i = 1, nn
+                if (this%nwk%pa(i,nr).ne.0) then 
+                    arc = this%nwk%pa(i,nr)
+                    arc = this%nwk%backtoforward(arc)
+                    ! this%nwk%sublink(arc,nr)=.true.
+                    ! this%nwk%subnode(this%nwk%anode(arc),nr)=.true.
+                    ! this%nwk%subnode(this%nwk%bnode(arc),nr)=.true.
+                end if 
+            end do
             do i = 1,nod
                 o = this%nwk%origin(i)
                 node = o
                 do while (node.ne.root)
-                    arc = this%nwk%pa(node)	
-                    this%nwk%sublink(arc,nr)=.true.
+                    arc = this%nwk%pa(node,nr)	
                     node = this%nwk%backanode(arc)	
                     arc = this%nwk%backtoforward(arc)
-                    this%xfa(arc,nr) = this%xfa(arc,nr) + this%nwk%demand(i)
+                    ! this%nwk%sublink(arc,nr)=.true.
+                    ! this%xfa(arc,nr) = this%xfa(arc,nr) + this%nwk%demand(i)
                 end do 
             enddo 
         end do 
@@ -653,8 +755,8 @@
         do nr =1,ndest
             root = this%nwk%roots(nr)
             do i = 1, nn
-                if (this%nwk%pa(i).ne.0) then 
-                    arc = this%nwk%pa(i)
+                if (this%nwk%pa(i,nr).ne.0) then 
+                    arc = this%nwk%pa(i,nr)
                     arc = this%nwk%backtoforward(arc)
                     this%nwk%sublink(arc,nr)=.true.
                     this%nwk%subnode(this%nwk%anode(arc),nr)=.true.
@@ -665,7 +767,7 @@
                 o=this%nwk%origin(i)
                 node=o
                 do while (node.ne.root)
-                    arc = this%nwk%pa(node)	
+                    arc = this%nwk%pa(node,nr)	
                     this%nwk%sublink(arc,nr)=.true.
                     node = this%nwk%backanode(arc)	
                     arc = this%nwk%backtoforward(arc)
@@ -677,148 +779,173 @@
 
     end subroutine
 
-    subroutine cal_bcm_fx(this,fx1,logitprob)
-    use constpara
-    implicit none 
-    class(methods)::this
-    integer::i,j,node,nr,link,ll
-    real*8::logitprob(nl,ndest)
-    real*8::lamda(nn,ndest)
-    real*8::expsum
-    real*8::mincost
-    integer:: tail, head
-    integer:: bcmcount
-    real*8::bcm
-    real*8::val
-    logical:: isbcm(5) 
-    real*8::fx1(nl,ndest)
-    real*8::temp_min(nl),bcmvalue
-    integer::num_bcm_link,bl
-    INTEGER::upnodes(10) ! update nodes, maxmum number of incomling links
-    integer::numupnode, unode,unn  ! number of updated nodes 
-    ! step 1 compute ndist under bcm
-    do nr = 1, ndest
-        this%nwk%ndist=large
-        this%nwk%ndist(this%nwk%roots(nr),nr) = 0.0
-        temp_min = large
-        temp_min(this%nwk%roots(nr)) = 0
-        do i = nn,1,-1
-            node = this%nwk%torder(i,nr)
-            if (node.eq.0) then 
-                continue
-            end if 
-            if (this%nwk%subnode(node,nr)) then 
-                numupnode = 0
-                upnodes = 0 
-                do j = this%nwk%firstin(node),this%nwk%lastin(node)
-                    link = this%nwk%backtoforward(j) 
-                    tail = this%nwk%anode(link)                    
-                    head = node
-                    if (this%lt(link) + this%nwk%ndist(head,nr) < temp_min(tail)) then 
-                        temp_min(tail) = this%lt(link) + this%nwk%ndist(head,nr)  
-                    end if
-                    numupnode =  numupnode +  1
-                    upnodes(numupnode)  = tail
-                end do 
-                do unn = 1, numupnode
-                    tail = upnodes(unn)
-                    !bcmvalue = temp_min(tail)*bcmratio
-                    bcmvalue = get_bcmval(temp_min(tail))
-                    this%node_exp_sum(tail, nr) = 0 
-                    do bl = this%nwk%firstout(tail), this%nwk%lastout(tail)
-                        if ((this%lt(bl) + this%nwk%ndist(this%nwk%bnode(bl),nr)).lt.temp_min(tail) + bcmvalue) then 
-                            this%node_exp_sum(tail,nr) = this%node_exp_sum(tail,nr)-1&
-                                    + exp((-theta)*(this%lt(bl) &
-                                    + this%nwk%ndist(this%nwk%bnode(bl),nr)-temp_min(tail)-bcmvalue))
-                        endif
-                    end do 
-                    this%nwk%ndist(tail,nr) = &
-                            !(-1/theta)*log(max(this%node_exp_sum(tail,nr),zero))
-                            (-1/theta)*log(this%node_exp_sum(tail,nr))
-                    
-                    if (this%node_exp_sum(this%nwk%anode(link),nr).lt.0) then 
-                            write(*,*) "node = ",this%nwk%anode(link)," link = ", link
-                            write(*,*) "expvalue = ",exp((-theta)*(this%lt(link)+this%nwk%ndist(this%nwk%bnode(link),nr)))
-                            write(*,*) "backward: expum is less than 0" 
-                    endif 
-                end do
-            endif
-        end do 
-    end do
-    
-               
+!  dial algorithm solver
 
-    ! step compute lameda s
-    do nr = 1,ndest
-        do i = 1,nn
-            node = this%nwk%torder(i,nr)
-            if (node.ne.0) then 
-                ! step 1: find the minimum cost
-                mincost = large
-                do j = this%nwk%firstout(node),this%nwk%lastout(node)
-                    link = j
-                    tail = this%nwk%anode(link)
-                    head = this%nwk%bnode(link)
-                    if(this%nwk%sublink(link,nr).and.this%nwk%subnode(this%nwk%bnode(link),nr)) then 
-                        if (this%lt(link)+this%nwk%ndist(head,nr).lt.mincost) then 
-                            mincost = this%lt(link) + this%nwk%ndist(head,nr)
-                        end if 
-                    end if
-                end do 
-                !bcm = mincost*bcmratio
-                
-                bcm = get_bcmval(mincost)
-                ! step 2: add bcm links
-                isbcm = .false.
-                bcmcount = 1
-                expsum = 0 
-                do j = this%nwk%firstout(node),this%nwk%lastout(node)
-                    link = j
-                    tail = this%nwk%anode(link)
-                    head = this%nwk%bnode(link)
-                    if(this%nwk%sublink(link,nr).and.this%nwk%subnode(this%nwk%bnode(link),nr)) then 
-                      if ((this%lt(link) + this%nwk%ndist(head,nr)).lt.mincost + bcm) then 
-                        isbcm(bcmcount) = .true.
-                        val = -theta*(this%lt(link)+this%nwk%ndist(head,nr)-mincost-bcm)
-                        !expsum =expsum +exp(max(val,0.0)) - 1
-                        expsum =expsum +exp(val) - 1
-                        !expsum =  expsum + exp(-theta*(this%lt(link)+this%nwk%ndist(head,nr)-mincost-bcm))-1
-                      end if
-                    endif 
-                    bcmcount = bcmcount + 1 
-                end do 
-                !write(*,*) "nf = ",this%nf(node,nr),"expsu = ", expsum
-                lamda(node,nr) = (1/theta)*(log(this%nf(node,nr)/expsum))
-                lamda(node,nr) =  max(lamda(node,nr),0.0)
-                !write(*,*) "lamda = ",lamda(node,nr)
-                !step 3: compute update mapping function fx
-                
-                bcmcount = 1
-                do j = this%nwk%firstout(node),this%nwk%lastout(node)
-                    link = j
-                    tail = this%nwk%anode(link)
-                    head = this%nwk%bnode(link)
-                    !bcm = temp_min(tail)*bcmratio
-                    bcm = get_bcmval(temp_min(tail))
-                    if(this%nwk%sublink(link,nr).and.this%nwk%subnode(this%nwk%bnode(link),nr)) then 
-                        if (isbcm(bcmcount)) then 
-                            fx1(link,nr) =  this%lt(link) + this%nwk%ndist(head,nr) - mincost - bcm &
-                            + (1/theta)*log(max(this%xfa(link,nr),0.00000001)+exp(theta*lamda(node,nr)))
-                            ! compute the lgit prob
-                            logitprob(link,nr) = (exp((-theta)*(this%lt(link)+this%nwk%ndist(this%nwk%bnode(link),nr)  &
-                            -temp_min(tail) -bcm))-1)/this%node_exp_sum(this%nwk%anode(link),nr) 
-                        else
 
-                            fx1(link,nr) = large + 1
-                            logitprob(link,nr) = 0
-                        end if
-                    endif
-                    bcmcount =  bcmcount + 1
-                end do 
-            end if 
+
+
+
+
+
+subroutine dial_load_main(this,prob)
+implicit none 
+CLASS(methods)::this
+
+real*8,intent(inout)::prob(nl,ndest)
+! this%lt= this%nwk%scost
+call this%dial_sub_graph
+this%nwk%torder = this%sorder
+call this%dial_get_link_like
+call this%dial_backward
+call this%dial_foward(prob)
+
+end subroutine
+
+
+subroutine dial_sub_graph(this)
+use constpara
+implicit none 
+
+integer::r,s,w,i,nr,l,j
+class(methods)::this
+this%nwk%sublink =.false.
+this%nwk%subnode =.false.
+do w = 1,nod
+    r = this%nwk%origin(w)
+    s = this%nwk%dest(w)
+    do i = 1, ndest
+        if (s.eq.this%nwk%roots(i)) then 
+            nr = i
+            exit  
+        end if 
+    enddo 
+    ! from r to all nodes 
+    call sp(r,this%lt,this%nwk%firstout,this%nwk%lastout,this%nwk%pa(:,nr),this%nwk%bnode)
+    this%dial_rlabel(:,nr) = dist(:)
+    call sort(-1*this%dial_rlabel(:,nr),this%rorder(:,nr),nn)
+    ! from s to all nodes
+    call rsp(s,this%nwk%scost,this%nwk%firstin,this%nwk%lastin,this%nwk%pa(:,nr),this%nwk%backbnode,this%nwk%backtoforward)
+    this%dial_slabel(:,nr) = dist(:)
+    call sort(-1*this%dial_slabel(:,nr),this%sorder(:,nr),nn)
+
+    do l = 1,nl
+        i = this%nwk%anode(l)
+        j = this%nwk%bnode(l)
+        if ((this%dial_rlabel(i,nr).lt.this%dial_rlabel(j,nr)).and.(this%dial_slabel(i,nr).gt.this%dial_slabel(j,nr))) then 
+            this%nwk%sublink(l,nr) = .true.  
+            this%nwk%subnode(i,nr) = .true.
+            this%nwk%subnode(j,nr) = .true.
+        end if
+    end do 
+enddo 
+
+end subroutine 
+
+
+! compute the link likelyhood
+subroutine dial_get_link_like(this)
+implicit none 
+
+integer::l,nr,i,j
+CLASS(methods)::this
+
+do nr = 1, ndest
+    do l = 1, nl
+        i = this%nwk%anode(l)
+        j = this%nwk%bnode(l)
+        if (this%nwk%sublink(l,nr)) then 
+            this%dial_link_like(l,nr) = exp(theta*(this%dial_rlabel(j,nr)-this%dial_rlabel(i,nr)-this%lt(l)))
+            ! write(*,*) "i = ",i," j = ",j," val = ",this%dial_rlabel(j,nr)-this%dial_rlabel(i,nr)-this%lt(l),&
+                        ! " L = ", this%dial_link_like(l,nr)
+        else
+            this%dial_link_like(l,nr) = 0
+        endif
+    end do 
+end do 
+
+end subroutine
+
+subroutine dial_backward(this)
+implicit none 
+integer::nr,i,now,l,ol,link
+class(methods)::this
+real*8::sumwsd
+
+do nr = 1, ndest
+    this%dial_Wsd(:,nr) = 0
+    ! call sort(-1*this%dial_slabel(:,nr),this%sorder(:,nr),nn)
+    do i = 1, nn
+        now = this%sorder(i,nr)
+        do link = this%nwk%firstin(now),this%nwk%lastin(now)
+            l=this%nwk%backtoforward(link)
+           if (now.eq.this%nwk%roots(nr)) then 
+                !this%dial_Wsd(l,nr) = 1 
+               this%dial_Wsd(l,nr) = this%dial_link_like(l,nr)
+           else
+                sumwsd = 0
+                do ol = this%nwk%firstout(now), this%nwk%lastout(now)
+                    sumwsd = sumwsd + this%dial_Wsd(ol,nr)
+                enddo 
+                this%dial_Wsd(l,nr) = this%dial_link_like(l,nr)*sumwsd
+           endif 
+        !    write(*,*) "i = ",this%nwk%anode(l), " j =",this%nwk%bnode(l), " val=",&
+                ! this%dial_Wsd(l,nr)
+        enddo
+    enddo 
+end do
+
+end subroutine
+
+
+subroutine dial_forward(this,prob)
+implicit none
+
+class(methods)::this
+integer::nr,i,now,l,a,b
+real*8::sumwsd
+real*8::prob(nl,ndest)
+
+do nr = 1, ndest
+    ! call sort(-1*this%dial_rlabel(:,nr),this%rorder(:,nr),nn)
+    do i = 1, nn
+        now = this%rorder(i,nr)
+        sumwsd = 0
+        do l = this%nwk%firstout(now), this%nwk%lastout(now)
+            sumwsd = this%dial_Wsd(l,nr) + sumwsd
+        enddo
+        do l = this%nwk%firstout(now), this%nwk%lastout(now)
+            if (sumwsd .eq.0) then
+                prob(l,nr) = 0 
+            else
+                prob(l,nr) = this%dial_Wsd(l,nr)/sumwsd 
+            end if
         enddo 
     enddo
-    end subroutine
+    do l = 1, nl
+       a = this%nwk%anode(l) 
+       b = this%nwk%bnode(l)
+    enddo
+end do
+
+end subroutine
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     end module 

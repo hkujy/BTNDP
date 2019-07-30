@@ -14,7 +14,7 @@
     type(solclass),allocatable::chrom(:)
     integer, allocatable::limitcount(:)   ! count the number of limints
     type(graphclass)::basenwk
-    integer::best_fleet(nline)
+    integer,allocatable::best_fleet(:)
     real*8::best_fit
     integer::best_id
  

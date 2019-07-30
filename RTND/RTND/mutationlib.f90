@@ -2,8 +2,6 @@
     
     module mutelib
     use constpara
-    
-   
     contains 
    
     subroutine mute_increa(now,nei)

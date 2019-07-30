@@ -1,4 +1,5 @@
 !projection on the simplex splace
+    
     subroutine simplex_projection(x,z,d,n)
     implicit none
     integer,intent(in)::n

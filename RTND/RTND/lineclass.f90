@@ -1,4 +1,4 @@
-
+   
     module mylineclass ! the module name defines the namespace
     use constpara
     type lineclass ! classname is the class prototype name
@@ -8,6 +8,7 @@
        real*8::exptime
        real*8::vartime
        integer::stops(10)  ! maximum number of stops 
+       integer::numstops
        real*8::tt(10)    ! lines times 
        real*8::var(10)
        real*8::fare(10)
@@ -22,14 +23,40 @@
 
    contains
 
+
     subroutine read_lines(mylines)
+    use constpara
     implicit none 
     integer::i,l,lid,ls
-    real*8::val(5)
+    real*8::val(5),f
     INTEGER::ss(4)
     type(lineclass),dimension(nline)::mylines
+    
+    select case(networktype) 
+    case(0) 
+        open(1,file='c:\gitcodes\BTNDP\input\testnetwork\Stops.txt')
+        open(2,file='c:\gitcodes\BTNDP\input\testnetwork\LineSegData.txt')
+        open(3,file='c:\gitcodes\BTNDP\input\testnetwork\IniFre.txt')
+        num_line_seg_file_rows = 6
+    case(1)
+        open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\Stops.txt')
+        open(2,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\LineSegData.txt')
+        open(3,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\IniFre.txt')
+        num_line_seg_file_rows = 110
 
-    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\Stops.txt')
+    case(2)
+        open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\Stops.txt')
+        open(2,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\LineSegData.txt')
+        open(3,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\IniFre.txt')
+        num_line_seg_file_rows = 110
+    end select
+    
+    ! if (networktype.eq.0) then 
+    !     open(1,file='c:\gitcodes\BTNDP\input\testnetwork\Stops.txt')
+    ! end if 
+    ! if (networktype.eq.1) then 
+    !     open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Stops.txt')
+    ! endif
 
     do l = 1, nline
        read(1,*) ss
@@ -40,50 +67,72 @@
             endif 
         enddo 
     enddo 
+    do l =1, nline
+        mylines(l)%numstops = 0
+        do i = 1, 10
+            if (mylines(l)%stops(i).gt.0) then 
+                mylines(l)%numstops =  mylines(l)%numstops + 1
+            end if 
+        end do 
+    enddo
+
+
+
     close(1)
 !*****************************************!
-    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\LineSegData.txt')
+    ! if (networktype.eq.0) then 
+    !     open(1,file='c:\gitcodes\BTNDP\input\testnetwork\LineSegData.txt')
+    !     num_line_seg_file_rows = 6
+    ! end if 
+    ! if (networktype.eq.1) then
+    !     open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\LineSegData.txt')
+    !     num_line_seg_file_rows = 110
+    ! end if 
 
-
-   do l = 1, 6
-        read(1,*) val 
+   do l = 1, num_line_seg_file_rows
+        read(2,*) val 
         lid = IDINT(val(1))
         ls = IDINT(val(2))
         mylines(lid)%tt(ls) = val(3)
         mylines(lid)%var(ls) = val(4)
         mylines(lid)%fare(ls) = val(5)
     enddo
-    CLOSE(1)
+    close(2)
+
+    ! if (networktype.eq.0) then  
+    !     open(2,file='C:\GitCodes\BTNDP\Input\TestNetwork\IniFre.txt')
+    ! end if 
+    ! if (networktype.eq.1) then 
+    !     open(2,file='C:\GitCodes\OpenTransportData\SiouxFallNet\IniFre.txt')
+    ! end if 
+    do l = 1, nline
+        read(3,*) f
+        mylines(l)%fre = f/60.0
+    end do
+    close(3)
+
     end subroutine
+
 
     subroutine get_stop_costs(this,start,ends,t,v,f)
     class(lineclass)::this 
     integer, intent(in)::start,ends
-    real*8::t,v,f
-    integer i,j
+    real*8::t
+    real*8,optional::v,f
+    integer i 
     logical::isfind
-    isfind = .false.
-    t=0
-    v=0
-    f=0
+    isfind = .true.
     do i=1, size(this%stops)-1
-        if (this%stops(i).eq.start) then
-            do j = i+1, size(this%stops)
-                t = this%tt(i)+t
-                v = this%var(i)+v
-                f = this%fare(i)+f
-                if (this%stops(j).eq.ends) then 
-                    isfind = .true.
-                    return 
-                end if 
-            end do 
-        
-        !.and.(this%stops(i+1).eq.ends)) then 
-        !    isfind = .true.
-        !    t = this%tt(i)
-        !    v = this%var(i)
-        !    f = this%fare(i)
-            !RETURN 
+        if ((this%stops(i).eq.start).and.(this%stops(i+1).eq.ends)) then 
+            isfind = .true.
+            t = this%tt(i)
+            if(present(v)) then 
+                v = this%var(i)
+            endif
+            if (present(f)) then
+                f = this%fare(i)
+            end if
+            RETURN 
         end if 
     end do
 
@@ -114,7 +163,7 @@
    implicit none
    class(lineclass)::this
    ! this purpose of this subroutine is to get the expected travel time of lines
-   integer::l,i
+   integer::i
    !linksid
    this%exptime = 0
    this%vartime = 0
@@ -138,7 +187,7 @@
     this%fre = 60 * (this%fleet / this%exptime) *(1 + this%vartime/(this%exptime**2))
     end subroutine
 
-    subroutine get_fleet(this,fre,isub,islb)
+   subroutine get_fleet(this,fre,isub,islb)
     implicit none
     class(lineclass)::this
     real*8, intent(in)::fre
