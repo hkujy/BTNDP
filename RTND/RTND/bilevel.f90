@@ -19,15 +19,21 @@
     open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testindex.txt')
     read(1,*) exp_id
     close(1)
-   
-
-   ! call set_line_links
-    seed1=1
+    
+    call read_test_para
+    
+    seed1 = 1
     !call random_seed(put=seed1(:))
     ! step 1 read input data
     call cleanfiles
     call readpara
+    call Basenwk%inigraph
     call Basenwk%readnwt
+    call read_fleet_para
+
+    call get_fleet_range(Basenwk)
+    write (*,*) "lower bound = ", fleet_lb
+    write (*,*) "upper bound = ", fleet_ub
     call Basenwk%printnwk
 
     if (exp_id==1) then 
@@ -59,7 +65,29 @@
     ! call bf_given_fre(Basenwk)
     
     end subroutine
+    
+    subroutine read_fleet_para
+    use GraphLib
+    implicit none 
+    integer::val
+    integer::row 
+    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testfleetpara.txt')
+    do row =1, 3
+       read(1,*) val
+       if (row==1) then 
+        fre_lb = real(val)
+       endif 
+       if (row==2) then 
+        fre_ub = real(val)
+       end if 
+       if (row==3) then 
+        fleetsize = val
+       end if
+    enddo 
+    close(1)
 
+    end subroutine 
+    
     subroutine test_enumerate_fleet(Basenwk)
     use BruteForce
     use GraphLib
@@ -96,7 +124,7 @@
     implicit none
     type(graphclass)::basenwk
     type(abcclass):: bilevel_abc
-    call bilevel_abc%abcmain
+    call bilevel_abc%abcmain(basenwk)
     end subroutine
 
 

@@ -1,7 +1,7 @@
 """
     define my class
 """
-import para
+import mypara
 
 class PathClass:
     """
@@ -70,7 +70,7 @@ class SolClass:
 
 class NwkClass:
 
-    def __init__(self):
+    def __init__(self,mp:mypara.ParaClass()):
 
         self.name = ""
         self.links = []
@@ -78,21 +78,20 @@ class NwkClass:
         self.od = []
         self.dest = []
 
-        for i in range(para.ParaClass.num_links):
+        for i in range(mp.num_links):
             l = LinkClass()
             self.links.append(l)
             self.links[-1].id = i 
-        for i in range(para.ParaClass.num_nodes):
+        for i in range(mp.num_nodes):
             n = NodeClass()
             self.nodes.append(n)
             self.nodes[-1].id = i
-            for j in range(para.ParaClass.num_dest):
+            for j in range(mp.num_dest):
                 self.nodes[-1].label.append(-1)
-        for i in range(para.ParaClass.num_od):
+        for i in range(mp.num_od):
             d = ODClass()
             self.od.append(d)
             self.od[-1].id = i
-
 
     def process(self):
         pass
@@ -103,7 +102,7 @@ class CaseClass(object):
         class for the summary
     """
     base_case_id = -1
-    def __init__(self):
+    def __init__(self,mp:mypara.ParaClass()):
         self.id = -1
         self.fre = []
         self.od = []
@@ -111,7 +110,7 @@ class CaseClass(object):
         self.fair= -1.0
         self.err = -999.0
         self.sols = []
-        self.nwk = NwkClass()
+        self.nwk = NwkClass(mp)
         # self.approach_set_flow = []
         # self.approach_set_cost = []
 

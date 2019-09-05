@@ -34,9 +34,9 @@
     
     select case(networktype) 
     case(0) 
-        open(1,file='c:\gitcodes\BTNDP\input\testnetwork\Stops.txt')
-        open(2,file='c:\gitcodes\BTNDP\input\testnetwork\LineSegData.txt')
-        open(3,file='c:\gitcodes\BTNDP\input\testnetwork\IniFre.txt')
+        open(1,file='c:\gitcodes\logitassign\input\testnetwork\Stops.txt')
+        open(2,file='c:\gitcodes\LogitAssign\input\testnetwork\LineSegData.txt')
+        open(3,file='c:\gitcodes\LogitAssign\input\testnetwork\IniFre.txt')
         num_line_seg_file_rows = 6
     case(1)
         open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\Stops.txt')
@@ -52,7 +52,7 @@
     end select
     
     ! if (networktype.eq.0) then 
-    !     open(1,file='c:\gitcodes\BTNDP\input\testnetwork\Stops.txt')
+    !     open(1,file='c:\gitcodes\LogitAssign\input\testnetwork\Stops.txt')
     ! end if 
     ! if (networktype.eq.1) then 
     !     open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Stops.txt')
@@ -81,7 +81,7 @@
     close(1)
 !*****************************************!
     ! if (networktype.eq.0) then 
-    !     open(1,file='c:\gitcodes\BTNDP\input\testnetwork\LineSegData.txt')
+    !     open(1,file='c:\gitcodes\LogitAssign\input\testnetwork\LineSegData.txt')
     !     num_line_seg_file_rows = 6
     ! end if 
     ! if (networktype.eq.1) then
@@ -100,7 +100,7 @@
     close(2)
 
     ! if (networktype.eq.0) then  
-    !     open(2,file='C:\GitCodes\BTNDP\Input\TestNetwork\IniFre.txt')
+    !     open(2,file='C:\GitCodes\LogitAssign\Input\TestNetwork\IniFre.txt')
     ! end if 
     ! if (networktype.eq.1) then 
     !     open(2,file='C:\GitCodes\OpenTransportData\SiouxFallNet\IniFre.txt')
@@ -119,21 +119,41 @@
     integer, intent(in)::start,ends
     real*8::t
     real*8,optional::v,f
-    integer i 
+    integer i, j
     logical::isfind
     isfind = .true.
     do i=1, size(this%stops)-1
-        if ((this%stops(i).eq.start).and.(this%stops(i+1).eq.ends)) then 
-            isfind = .true.
-            t = this%tt(i)
+        if (this%stops(i).eq.start) then 
+            t=0
             if(present(v)) then 
-                v = this%var(i)
-            endif
-            if (present(f)) then
-                f = this%fare(i)
+                v=0
             end if
-            RETURN 
-        end if 
+            if (present(f)) then
+                f=0
+            end if
+            do j = i+1, size(this%stops)
+                if (this%stops(j).eq.ends) then 
+                    isfind = .true.
+                    t = t + this%tt(j-1)
+                    if(present(v)) then 
+                        v = v + this%var(j-1)
+                    endif
+                    if (present(f)) then
+                        f = f + this%fare(j-1)
+                    end if
+                    exit
+                else 
+                    t = t + this%tt(j-1)
+                    if(present(v)) then 
+                        v = v + this%var(j-1)
+                    endif
+                    if (present(f)) then
+                        f = f + this%fare(j-1)
+                    end if
+                end if 
+            end do 
+        endif
+    RETURN 
     end do
 
     if (.not.isfind) then 
@@ -187,21 +207,12 @@
     this%fre = 60 * (this%fleet / this%exptime) *(1 + this%vartime/(this%exptime**2))
     end subroutine
 
-   subroutine get_fleet(this,fre,isub,islb)
+    subroutine get_fleet(this,fre)
     implicit none
     class(lineclass)::this
     real*8, intent(in)::fre
-    LOGICAL,OPTIONAL::isub, islb
     call this%get_line_time
     this%fleet = ceiling((this%exptime/60)*(fre)/(1+this%vartime/(this%exptime**2)))   
-    if(PRESENT(isub)) then 
-        this%fleet = FLOOR((this%exptime/60)*(fre)/(1+this%vartime/(this%exptime**2)))   
-    end if 
-    if(PRESENT(islb)) then
-        this%fleet = CEILING((this%exptime/60)*(fre)/(1+this%vartime/(this%exptime**2)))   
-    endif
-
-    
     end subroutine
 
 

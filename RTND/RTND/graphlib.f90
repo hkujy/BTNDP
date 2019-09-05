@@ -309,6 +309,7 @@
 
     if (present(rhsnwk)) then 
         write(*,*) "copy nwk is called, which should not be presented"
+        ! call this%inigraph
         call this%copynwk(rhsnwk)
         call gc_update_secfre(this%mylines%fre,this%slc,this%sl,this%sf,this%slf)
         call this%update_section_cost
@@ -359,15 +360,15 @@
     end subroutine
     
     subroutine gc_update_secfre(fre,slc,sl,sf,slf)
+    !call gc_update_secfre(this%mylines%fre,this%slc,this%sl,this%sf,this%slf)
     use constpara
     implicit none
     integer i,j
-    integer::numlink,numline,maxseclineval
     real*8,intent(in),dimension(nline)::fre
     integer,intent(in),dimension(nl)::slc
     integer,intent(in),dimension(nl,maxsecline)::sl
     real*8,intent(inout),dimension(nl)::sf
-    real*8,intent(inout),dimension(nl,nl)::slf
+    real*8,intent(out),dimension(nl,nline)::slf
 
     sf=0.0
     do i=1,nl
@@ -964,6 +965,7 @@
         this%origin = rhs%origin
         this%locatecompete = rhs%locatecompete
         this%competesec =  rhs%competesec
+        this%competesec_line= rhs%competesec_line
         this%scost = rhs%scost
         this%svar = rhs%svar
         this%fare = rhs%fare

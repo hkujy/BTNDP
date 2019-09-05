@@ -1,0 +1,1 @@
+ lama,miu,v,inibeta,betastep,solc,cputime,ncperr

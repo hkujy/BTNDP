@@ -3,7 +3,7 @@
 """
 
 import myclass as mc
-import para
+import mypara
 import pandas as pd
 
 def rd_get_fair_obj(cs):
@@ -78,7 +78,7 @@ def rd_node(pa,cases):
         # print(nwk.nodes[id].__dict__)
     # print(df)
 
-def pr_nwk(pa:para.ParaClass,nwk:mc.NwkClass,sols):
+def pr_nwk(pa:mypara.ParaClass,nwk:mc.NwkClass,sols):
     """
         print network after read
     """
@@ -124,7 +124,7 @@ def rd_od(pa,cases):
             c.ttc = c.ttc + w.mincost*w.demand
 
 
-def main(mypara:para.ParaClass,cases):
+def main(mypara:mypara.ParaClass,cases):
     
     rd_link_sol(mypara,cases)
     rd_node(mypara,cases)

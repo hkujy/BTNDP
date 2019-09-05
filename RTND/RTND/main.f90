@@ -94,7 +94,6 @@
     write(1,"(a5,a2,a6,a5,a2,a2,a6,a6)") "case,","i,","anode,","dest,","x,","y,","ndest,","maxdif"
     close(1)
 
-
     open(1,file='c:\gitcodes\LogitAssign\results\fortran_output_od.txt')
     write(1,"(a4,a,a6,a,a4,a,a6,a,a,a,a4)") "case",",","origin",",","dest",",","demand",",","y",",","flow"
     close(1)
@@ -106,7 +105,6 @@
     open(1,file='c:\GitCodes\LogitAssign\results\fortran_output_node.txt')
     write(1,"(a7,a5,a5,a5,a5,a5,a5)") "method,","case,","dest,","node,","fout,","lout,","label"
     close(1)
- 
 
     open(dp_tune_para_file_part1,file='c:\gitcodes\LogitAssign\results\fortran_dp_para1.txt')
     write(dp_tune_para_file_part1,"(a5,a5,a4,a)") "case,","lama,","miu,","v"

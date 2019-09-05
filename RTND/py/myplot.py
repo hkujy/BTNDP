@@ -2,7 +2,7 @@
     plot graphs
 """
 
-import para
+import mypara
 import matplotlib.pyplot as plt
 
 
@@ -20,11 +20,11 @@ def count_changes(vals):
 
 
 
-def plt_od_cost(mp:para.ParaClass(),cases):
+def plt_od_cost(mp:mypara.ParaClass(),cases):
 
     all_od = []
     
-    for w in range(0, para.ParaClass.num_od):
+    for w in range(0, mypara.ParaClass.num_od):
         od = []
         x = []
         for s in cases:
@@ -41,7 +41,7 @@ def plt_od_cost(mp:para.ParaClass(),cases):
 
 
 
-def main(mp:para.ParaClass(), cases):
+def main(mp:mypara.ParaClass(), cases):
 
     plt_od_cost(mp, cases)
 

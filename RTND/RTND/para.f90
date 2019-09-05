@@ -31,7 +31,6 @@
     real*8::capk
     real*8::rio  ! variance is not considered
     integer::fleetsize
-    integer,parameter::totalfleet = 15
     ! number of method to generate_neighbour solutions
     integer,parameter::inputseed = 1
     real*8,parameter::walkcost = 0.01
@@ -174,7 +173,7 @@
 
     subroutine writepara
     implicit none
-    open(1,file='c:\gitcode\BTNDP\results\test_setting_para.txt')
+    open(1,file='c:\gitcodes\BTNDP\results\test_setting_para.txt')
     write(1,*) "NetworkType,",networktype
     write(1,*) "AssignMode,",assignmode
     write(1,*) "RunExe,",isdebug

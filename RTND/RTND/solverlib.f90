@@ -119,7 +119,7 @@
     real*8::max_dist_err_2
     ! read network -> create topological order -> check connectivity
     ! compute inital x and intial y
-    call this%nwk%readnwt
+    call this%nwk%readnwt(set_nwk)
     this%lt = this%nwk%scost
     !call this%nwk%readnwt(set_nwk,numlink=nl,numnode=nn,numline=nline,&
     !maxcomsec=maxcom,maxseclineval=maxsecline,maxlinestopval=maxlinestops)

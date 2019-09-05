@@ -23,10 +23,37 @@
     procedure, pass::assign_fleet=>assign_fleet
     procedure, pass::remedy=>remedy
     procedure, pass::get_neigh=>get_neigh
+    procedure, pass::inisol=>inisol 
+    procedure, pass::delsol=>delsol
     end type
     
     contains 
-   
+    
+    subroutine inisol(this,basenwk)
+    implicit none 
+    CLASS(solclass)::this
+    type(graphclass)::basenwk
+    integer::l
+    this%fitness = -99
+    this%fair = -1
+    allocate(this%odcost(nod))
+    allocate(this%mylines(nline))
+    do l = 1, nline
+        call this%mylines(l)%copy(basenwk%mylines(l))
+    enddo
+
+    end subroutine
+
+    subroutine delsol(this)
+    implicit none 
+    class(solclass)::this
+    this%fitness = -99
+    this%fair = -1
+    deallocate(this%odcost)
+    deallocate(this%mylines)
+
+    end subroutine
+
     subroutine set_fleet_and_fre(this, newfleet)
     use GraphLib
     implicit none
@@ -50,13 +77,12 @@
     type(lineclass),DIMENSION(nline)::templines
     integer::l
  
-
+    call this%dp%ini
     ! step 1: set lines 
     do l = 1, nline
         call templines(l)%copy(basenwk%mylines(l))
         call basenwk%mylines(l)%copy(this%mylines(l))
     end do 
-
 
     call this%dp%solver(basenwk)
     call this%get_obj
@@ -109,13 +135,15 @@
 
     end subroutine
 
-    subroutine generate(this)
+    subroutine generate(this,basenwk)
     implicit none 
     ! type(solclass), intent(inout)::sol
     class(solclass)::this
+    type(graphclass)::basenwk
     integer::remain,l,i
     integer::temp_sum
     ! this%fleet = fleet_lb
+    call this%inisol(basenwk)
     do l =1, nline
         this%mylines(l)%fleet = fleet_lb(l)
     enddo 

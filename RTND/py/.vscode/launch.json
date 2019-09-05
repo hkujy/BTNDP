@@ -5,12 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: run.py",
+            "name": "Python: Debug",
             "type": "python",
             "request": "launch",
             // "program": "${file}",
-            "program": "${workspaceFolder}/run.py",
-            "console": "integratedTerminal"
+            "program": "${workspaceFolder}/main.py",
+            "stopOnEntry": true,
+            "console": "none"
         }
     ]
 }

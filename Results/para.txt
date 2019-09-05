@@ -1,0 +1,11 @@
+ netwroktype,           0
+ assignmode,           2
+ ishardcodebcm F
+ congestion_n,           2
+ cap_k,   30.0000000000000     
+ rio,  0.000000000000000E+000
+ theta,  0.200000002980232     
+ Solverindex,           1
+ islogit, T
+ isdebug, T
+ iswriteconverge, T

@@ -17,7 +17,8 @@
     integer,allocatable::best_fleet(:)
     real*8::best_fit
     integer::best_id
- 
+    real*8,allocatable::BaseODcost(:)
+    real*8,allocatable::baselinkflow(:,:)
 
     contains 
     
@@ -70,18 +71,21 @@
     write(*,*) "Num of Limit = ", this%limitcount
     write(*,*) "Max iter = ", this%maxiter
 
-
-
+    allocate(this%baseodcost(nod))
+    allocate(this%baselinkflow(nl,ndest))
 
     end subroutine
 
 
-    subroutine abcmain(this)
+    subroutine abcmain(this,basenwk)
     implicit none
     CLASS(abcclass)::this
+    type(graphclass)::basenwk
     integer:: iter
    ! step 0: read basci parameters for the abc
     call this%inipara
+    call this%basenwk%inigraph
+    call this%basenwk%copynwk(basenwk)
     ! step 1: generate initial soluitons
     this%best_fleet = 999999
     this%best_fleet = -1 
@@ -92,7 +96,7 @@
     do while(iter.le.this%maxiter) 
         call this%employ_bee
         call this%onlooker_bee
-        call this%scouts
+        call this%scouts(this%basenwk)
         iter = iter + 1
     enddo 
 
@@ -116,8 +120,6 @@
             this%best_fleet(l)=this%chrom(pid)%mylines(l)%fleet
         enddo 
     end if
-    
-
     end subroutine
 
 
@@ -130,7 +132,7 @@
     integer::residule
 
     do i=1,this%npop
-        call this%chrom(i)%generate
+        call this%chrom(i)%generate(this%basenwk)
         ts = 0
         do l = 1, nline
             ts =  ts + this%chrom(i)%mylines(l)%fleet
@@ -195,14 +197,15 @@
     end subroutine
 
 
-    subroutine scouts(this)
+    subroutine scouts(this,basenwk)
     implicit none
     CLASS(abcclass)::this
+    type(graphclass)::basenwk
     integer:: p, ts, l, residule
 
     do p = 1, this%npop 
         if (this%limitcount(p).gt.this%maxlimit) then 
-            call this%chrom(p)%generate
+            call this%chrom(p)%generate(basenwk)
             ts = 0
             do l = 1, nline
                 ts =  ts + this%chrom(p)%mylines(l)%fleet
