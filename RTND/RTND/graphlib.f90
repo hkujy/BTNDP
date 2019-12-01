@@ -55,7 +55,7 @@
     procedure,pass::printnwk=>printnwk
     procedure,pass::construct=>construct
     procedure,pass::outputsub=>outputsub
-    procedure,PASS,public::inigraph=>inigraph
+    procedure,pass,public::inigraph=>inigraph
     procedure,pass::delgraph=>delgraph
     procedure,pass::BFS_torder=>BFS_torder
     ! procedure,pass::DFS_visit=>DFS_visit

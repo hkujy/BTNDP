@@ -1,4 +1,3 @@
-    
     program bilevel
     use constpara
     use GraphLib
@@ -173,9 +172,9 @@
     integer l
     
     do l = 1, nline
-        call nwk%mylines(l)%get_fleet(fre_lb(l),islb=.true.)
+        call nwk%mylines(l)%get_fleet(fre_lb(l))
         fleet_lb(l) = nwk%mylines(l)%fleet
-        call nwk%mylines(l)%get_fleet(fre_ub(l),isub=.true.)
+        call nwk%mylines(l)%get_fleet(fre_ub(l))
         fleet_ub(l) = nwk%mylines(l)%fleet
     end do 
 

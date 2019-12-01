@@ -8,12 +8,13 @@
     implicit none
     type, public::solclass
         integer::id
-        ! integer::fleet(nline)
         real*8::fitness
         type(lineclass),allocatable::mylines(:)
         type(dpsolver)::dp
-        real*8::ttc
+        real*8::ttc   
         real*8::fair
+        real*8::obj(2)  ! Two objectives
+                        ! 1: Total cost, 2: fairness values
         real*8,allocatable::odcost(:)
     contains 
     procedure, pass::set_fleet_and_fre=>set_fleet_and_fre
@@ -25,10 +26,23 @@
     procedure, pass::get_neigh=>get_neigh
     procedure, pass::inisol=>inisol 
     procedure, pass::delsol=>delsol
+    !procedure, pass::isDominated =>isDominated  ! function is dominated or not
     end type
     
     contains 
-    
+    !
+    !function isDominated(RHS) result (isDominatedByRHS)
+    !implicit none
+    !
+    !logical::isDominatedByRHS
+    !type(solclass)::RHS 
+    !isDominatedByRHS = .false.
+    !
+    !
+    !end function
+
+
+
     subroutine inisol(this,basenwk)
     implicit none 
     CLASS(solclass)::this
@@ -132,6 +146,8 @@
         write(*,*) "OD = ", w, " Pie = ", this%odcost(w)
         this%ttc = this%ttc + this%odcost(w)*this%dp%nwk%demand(w)
     enddo 
+    this%obj(1) = this%ttc
+    ! TODO: get fairness obj
 
     end subroutine
 
@@ -172,7 +188,7 @@
     subroutine assign_fleet(this,assignfleet)
     implicit none
     class(solclass)::this
-    integer,INTENT(IN)::assignfleet
+    integer,intent(in)::assignfleet
     integer::l, i
     integer::remain
     real*8::ran
@@ -205,7 +221,6 @@
     isRemedy = .false.
     
     do l=1, nline
-        ! if ((this%fleet(l).lt.fleet_lb(l)).or.(this%fleet(l).gt.fleet_ub(l))) then 
         if ((this%mylines(l)%fleet.lt.fleet_lb(l)).or. &
             (this%mylines(l)%fleet.gt.fleet_ub(l))) then 
             isRemedy = .true. 
@@ -234,12 +249,12 @@
     use mutelib
     use GraphLib
     implicit none 
-    logical, INTENT(OUT)::replaced
+    logical, intent(out)::replaced
     class(solclass)::this
     class(Graphclass)::basenwk
     integer::l
     ! integer,intent(in)::now
-    type(lineclass),DIMENSION(nline)::templines
+    type(lineclass),dimension(nline)::templines
     real*8::temp_fit
     integer::neigh_fleet(nline),now_fleet(nline)
 

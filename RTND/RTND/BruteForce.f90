@@ -12,6 +12,7 @@
 
     subroutine bfmain(basenwk)
         use GraphLib
+        use mysolclass
     implicit none 
     integer::p
     type(solclass)::sol       

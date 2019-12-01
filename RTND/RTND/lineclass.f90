@@ -113,7 +113,7 @@
 
     end subroutine
 
-
+    ! Give start and end point, return the cost, var, and fare
     subroutine get_stop_costs(this,start,ends,t,v,f)
     class(lineclass)::this 
     integer, intent(in)::start,ends

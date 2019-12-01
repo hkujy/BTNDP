@@ -1,9 +1,9 @@
 ! Main code the ABC algorithm 
 ! Solution representation 
 ! each gen represents the number of fleet allocated to for a ABC
-    
     module ABC
     use mysolclass
+    use GraphLib
     implicit none 
 
     type, public::abcclass
