@@ -6,7 +6,7 @@
     use mylineclass
     use dpsolverlib
     implicit none
-    type, public::solclass
+    type,public::solclass
         integer::id
         real*8::fitness
         type(lineclass),allocatable::mylines(:)
@@ -20,7 +20,8 @@
     procedure, pass::set_fleet_and_fre=>set_fleet_and_fre
     procedure, pass::generate=>generate
     procedure, pass::evaluate=>evaluate
-    procedure, pass::get_obj=>get_obj
+    procedure, pass::get_obj_ttc=>get_obj_ttc
+    procedure, pass::get_obj_fare=>get_obj_fare
     procedure, pass::assign_fleet=>assign_fleet
     procedure, pass::remedy=>remedy
     procedure, pass::get_neigh=>get_neigh
@@ -40,8 +41,6 @@
     !
     !
     !end function
-
-
 
     subroutine inisol(this,basenwk)
     implicit none 
@@ -99,8 +98,11 @@
     end do 
 
     call this%dp%solver(basenwk)
-    call this%get_obj
+    call get_od_cost(this%dp, this%odcost)
+    call this%get_obj_ttc
+    call this%get_obj_fare
     write(*,*) "Total Cost = ", this%ttc
+    write(*,*) "Fare Obj =  ", this%obj(2)
 
     do l = 1, nline
         call basenwk%mylines(l)%copy(templines(l))
@@ -133,23 +135,34 @@
     enddo 
     end subroutine
 
-    subroutine get_obj(this)    
+    subroutine get_obj_ttc(this)    
     use GraphLib
     use dpsolverlib
     implicit none
     class(solclass):: this
     integer::w
     this%ttc = 0
-
-    call get_od_cost(this%dp, this%odcost)
     do w = 1, nod
         write(*,*) "OD = ", w, " Pie = ", this%odcost(w)
         this%ttc = this%ttc + this%odcost(w)*this%dp%nwk%demand(w)
     enddo 
     this%obj(1) = this%ttc
-    ! TODO: get fairness obj
 
     end subroutine
+
+    subroutine get_obj_fare(this,BaseSol)
+    implicit none
+
+    class(solclass)::this
+    type(solclass), INTENT(IN)::BaseSol
+    integer::w
+    this%obj(2) = 100000 
+    do w = 1, nod
+        this%obj(2) = min(this%obj(2), BaseSol%odcost(w)-this%odcost(w))
+    end do 
+     
+    end subroutine
+
 
     subroutine generate(this,basenwk)
     implicit none 

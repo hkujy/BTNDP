@@ -12,6 +12,7 @@
     integer::maxlimit
     integer::maxiter
     type(solclass),allocatable::chrom(:)
+    type(solclass)::BaseCaseSol
     integer, allocatable::limitcount(:)   ! count the number of limints
     type(graphclass)::basenwk
     integer,allocatable::best_fleet(:)
@@ -21,9 +22,9 @@
     real*8,allocatable::baselinkflow(:,:)
 
     contains 
-    
     procedure,pass::abcmain=>abcmain
     procedure,pass::inipara=>inipara
+    procedure,pass::getBaseCaseOd=>getBaseCaseOd
     procedure,pass::employ_bee=>employ_bee
     procedure,pass::onlooker_bee=>onlooker_bee
     procedure,pass::scouts=>scouts
@@ -77,9 +78,21 @@
     end subroutine
 
 
+    ! get base case OD cost
+    ! this is for the computing fairness values
+    subroutine getBaseCaseOd(this)
+    implicit none 
+    class(abcclass)::this
+   
+    call this%BaseCaseSol%inisol(this%basenwk)
+    call this%BaseCaseSol%dp%solver(this%basenwk)
+    call get_od_cost(this%BaseCaseSol%dp,this%BaseCaseSol%odcost)
+
+    end subroutine
+
     subroutine abcmain(this,basenwk)
     implicit none
-    CLASS(abcclass)::this
+    class(abcclass)::this
     type(graphclass)::basenwk
     integer:: iter
    ! step 0: read basci parameters for the abc

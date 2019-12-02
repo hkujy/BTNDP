@@ -229,7 +229,6 @@
         this%tt = rhs%tt
         this%var= rhs%var
         this%fare = rhs%fare
-    
 
     end subroutine
 

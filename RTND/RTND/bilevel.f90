@@ -114,8 +114,6 @@
     write (*,*) "upper bound = ", fleet_ub
     ! call bf_enumerate_fleet(Basenwk)
     end subroutine
-
-    
     
     subroutine test_abc(basenwk)
     use GraphLib
