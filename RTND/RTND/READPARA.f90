@@ -4,7 +4,7 @@
     implicit none
     integer::i, i_val 
     real*8::value
-   
+
     select case(networktype)
     case(-2)
         OPEN(1,file='c:/GitCodes/OpenTransportData/STOCH/networkpara.txt')
@@ -20,7 +20,7 @@
         open(1,file='c:\gitcodes\BTNDP\input\testnetwork\networkpara.txt')
         open(2,file='c:\gitcodes\BTNDP\input\testnetwork\para.txt')
         open(3,file='c:\gitcodes\BTNDP\input\testnetwork\bsvalue.txt')
-        write(*,*) "Network:           four nodes"
+        write(*,*) "Network:           Four nodes Net in TestNet"
     case(1)
         open(1,file='C:\GitCodes\OpenTransportData\SiouxFallNet\Transit_Toy\networkpara.txt')
         open(2,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\para.txt')
@@ -44,15 +44,6 @@
         write(*,*) "Network:           SiouxFall Transport All OD"
     end select
 
-    ! ! if (networktype.eq.0) then 
-
-    !     ! open(1,file='c:\gitcodes\BTNDP\input\testnetwork\networkpara.txt')
-    ! end if 
-
-    ! if (networktype.eq.1) then 
-    !     open(1,file='C:\GitCodes\OpenTransportData\SiouxFallNet\networkpara.txt')
-    ! end if 
-
     do i=1, 5
         read(1,*) i_val
         select case (i)
@@ -68,23 +59,15 @@
             nline = i_val
         end select
     end do 
-
+   
     
+    ! I think these are global parameters
     allocate(dist(nn)) ! node laber for shortest cost
     allocate(lndist(nn,ndest))	! the longest distance from node all
     allocate(fleet_lb(nline), fleet_ub(nline)) ! lower and upper bound of fleet
     allocate(fre_lb(nline), fre_ub(nline)) ! lower and upper bound of frequency 
     allocate(bs(nl))
 
-    ! if (networktype.eq.0) then
-    !     open(1,file='c:\gitcodes\BTNDP\input\testnetwork\para.txt')
-    !     open(2,file='c:\gitcodes\BTNDP\input\testnetwork\bsvalue.txt')
-    !     ! open(3,file='c:\gitcodes\BTNDP\results\fortran_bsvalue.txt' )
-    ! end if 
-    ! if (networktype.eq.1) then 
-    !     open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\para.txt')
-    !     open(2,file='c:\gitcodes\OpenTransportData\SiouxFallNet\bsvalue.txt')
-    ! end if
     do i = 1,4
         read(2,*) value 
         select case(i)
@@ -105,23 +88,5 @@
     close(1)
     close(2)
     close(3)
-!     if (networktype.eq.1) then 
-!         write(*,*) "use Sioux Fall network, beta values are given"
-!         close(1)
-!         close(2)
-!         return 
-!     end if 
-!    ! read beta value file 
-
-    ! write(3,*) "linkid,bsvalue"
-
-    ! do i=1,nl
-    !     write(3,*) i,",",bs(i)
-    ! enddo
-
-    ! close(1)
-    ! close(2)
-    ! ! close(3)
-    
     call writepara
     end subroutine

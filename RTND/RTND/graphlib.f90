@@ -55,7 +55,7 @@
     procedure,pass::printnwk=>printnwk
     procedure,pass::construct=>construct
     procedure,pass::outputsub=>outputsub
-    procedure,pass,public::inigraph=>inigraph
+    procedure,pass::inigraph=>inigraph
     procedure,pass::delgraph=>delgraph
     procedure,pass::BFS_torder=>BFS_torder
     ! procedure,pass::DFS_visit=>DFS_visit
@@ -67,60 +67,84 @@
     implicit none 
     CLASS(graphclass):: this
 
-    allocate(this%connect(nn,nn,ndest))
+    if(.not.allocated(this%connect)) then 
+        allocate(this%connect(nn,nn,ndest))
+    end if
     this%connect = .false.
-    ALLOCATE(this%numconnect(nn,nn,ndest))
+    if (.not.allocated(this%numconnect)) then
+        allocate(this%numconnect(nn,nn,ndest))
+    end if
     this%numconnect = 0
-    allocate(this%roots(ndest))
+    if (.not.allocated(this%roots)) then
+        allocate(this%roots(ndest))
+    end if
     this%roots=-1
-    allocate(this%torder(nn,ndest)) ! topoloy oreder
+    if (.not.allocated(this%torder)) then
+        allocate(this%torder(nn,ndest)) ! topoloy oreder
+    end if
     this%torder=-1
-    allocate(this%sublink(nl,ndest),this%subnode(nn,ndest),this%firstin(nn),this%lastin(nn))
+    if (.not.allocated(this%sublink)) then
+        allocate(this%sublink(nl,ndest),this%subnode(nn,ndest),this%firstin(nn),this%lastin(nn))
+    end if
     this%sublink=.false.
     this%subnode=.false.
     this%firstin= -1
     this%lastin=-1
-    allocate(this%firstout(nn),this%lastout(nn),this%anode(nl),this%bnode(nl))
+    if (.not.allocated(this%firstout)) then 
+        allocate(this%firstout(nn),this%lastout(nn),this%anode(nl),this%bnode(nl))
+    end if
     this%firstout = -1
     this%lastout = -1 
     this%anode = -1
     this%bnode = -1
-    allocate(this%backanode(nl),this%backbnode(nl),this%backtoforward(nl))
+    if (.not.allocated(this%backanode)) then
+        allocate(this%backanode(nl),this%backbnode(nl),this%backtoforward(nl))
+    end if
     this%backanode = -1
     this%backbnode = -1
     this%backtoforward = -1
-    allocate(this%dest(nod),this%origin(nod),this%locatecompete(nl+1))
+    if (.not.allocated(this%dest)) then
+        allocate(this%dest(nod),this%origin(nod),this%locatecompete(nl+1))
+    end if
     this%dest = -1
     this%origin = -1
     this%locatecompete = -1
+    if (.not.allocated(this%competesec)) then
     allocate(this%competesec(max_total_compete_sec),this%competesec_line(max_total_compete_sec))
+    end if
     this%competesec = -1
     this%competesec_line = -1
-    allocate(this%scost(nl),this%svar(nl))
+    if (.not.allocated(this%scost)) then
+        allocate(this%scost(nl),this%svar(nl))
+    end if
     this%scost = 0
     this%svar = 0
-    allocate(this%bpr_t0(nl))
+    if (.not.allocated(this%bpr_t0)) then
+        allocate(this%bpr_t0(nl))
+        allocate(this%bpr_cap(nl))
+    end if
     this%bpr_t0 =  0
-    allocate(this%bpr_cap(nl))
     this%bpr_cap = 0
-    allocate(this%numcom(nl))
+    if (.not.allocated(this%numcom)) then 
+        allocate(this%numcom(nl))
+        allocate(this%fare(nl),this%demand(nod))
+        allocate(this%sf(nl))       ! section frequency sum
+        allocate(this%slf(nl,nline),this%sindex(nl))
+        allocate(this%sl(nl,maxsecline),this%slc(nl))
+        allocate(this%ndist(nn,ndest),this%pa(nn,ndest))
+        allocate(this%toder_level(nn,ndest))
+        allocate(this%mylines(nline))
+    end if
     this%numcom = 0
-    allocate(this%fare(nl),this%demand(nod))
     this%fare = 0
     this%demand = 0
-    allocate(this%sf(nl))       ! section frequency sum
     this%sf = 0
-    allocate(this%slf(nl,nline),this%sindex(nl))
     this%slf = 0
     this%sindex = 0
-    allocate(this%sl(nl,maxsecline),this%slc(nl))
     this%sl = 0
     this%slc = 0
-    allocate(this%ndist(nn,ndest),this%pa(nn,ndest))
     this%ndist = 0
     this%pa = 0
-    allocate(this%toder_level(nn,ndest))
-    allocate(this%mylines(nline))
     
     this%caseindex=1
 
@@ -333,30 +357,6 @@
        path_link(4,1) = 2
        path_link(4,2) = 6
     end if 
-    ! select case(networktype)
-    ! case (0) !small network 
-
-    !     call this%createcompetenwk
-
-    !     write(*,*) "create comete"
-
-    ! case (1)
-        
-    !     if (assignmode.eq.1) then 
-    !         write(*,*) "Read original sioux fall network"
-    !         !call this%readsioux_origin(numlink=nl,numnode=nn)
-    !         call this%readsioux_origin
-    !     else
-    !         write(*,*) "Create transit network for sioux fall"
-    !         call this%createcompetenwk
-    !         !call this%createcompetenwk(numlink=nl,numline=nline,numnode=nn,&
-    !             !maxcomval=maxcomsec,maxseclineval=maxcomsec,maxlinestopsval=maxlinestops)
-    !     end if
-    ! case default 
-    !     write(*,*) "network index has not been set"
-    !     pause
-    ! end select
-
     end subroutine
     
     subroutine gc_update_secfre(fre,slc,sl,sf,slf)
@@ -1006,7 +1006,6 @@
     enddo 
     write(1,*) "******contained lines********"
 
-
     write(1,*) "Sec,Line"
     do l = 1, nl 
         do j =1, this%slc(l)
@@ -1021,7 +1020,6 @@
             write(1,*) l, this%competesec(j)
         enddo 
     enddo 
-
 
     close(1)
     end subroutine

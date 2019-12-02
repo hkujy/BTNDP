@@ -1,5 +1,5 @@
     include 'genetic.f90' 
-    include 'msasolver.f90'
+    ! include 'msasolver.f90'
     program la
     !use GraphLib
     !use SolverLib

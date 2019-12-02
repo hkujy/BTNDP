@@ -1,7 +1,7 @@
    
     module mylineclass ! the module name defines the namespace
     use constpara
-    type lineclass ! classname is the class prototype name
+    type,public::lineclass ! classname is the class prototype name
        integer::id
        real*8::fre
        integer::fleet

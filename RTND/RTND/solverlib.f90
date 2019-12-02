@@ -50,28 +50,30 @@
     implicit none 
     CLASS(methods)::this
     call this%nwk%inigraph
-    ALLOCATE(this%x(nl,ndest))
+    if(.not.allocated(this%x)) then
+        allocate(this%x(nl,ndest))
+        allocate(this%fx(nl,ndest))
+        allocate(this%xfa(nl,ndest))
+        allocate(this%logitprob(nl,ndest))
+        allocate(this%lf(nl))
+        allocate(this%lt(nl))
+        allocate(this%nf(nn,ndest))
+        allocate(this%node_exp_sum(nn,ndest))
+        allocate(this%dial_link_like(nl,ndest))
+        allocate(this%dial_rlabel(nn,ndest),this%dial_slabel(nn,ndest))
+        allocate(this%rorder(nn,ndest),this%sorder(nn,ndest))
+        allocate(this%dial_wsd(nl,ndest))
+    end if
     this%x=0
-    ALLOCATE(this%fx(nl,ndest))
     this%fx=0
-    ALLOCATE(this%xfa(nl,ndest))
     this%xfa=0
-    ALLOCATE(this%logitprob(nl,ndest))
     this%logitprob = 0
-    ALLOCATE(this%lf(nl))
     this%lf=0
-    ALLOCATE(this%lt(nl))
     this%lt=0
-    ALLOCATE(this%nf(nn,ndest))
     this%nf=0
-    ALLOCATE(this%node_exp_sum(nn,ndest))
     this%node_exp_sum=0
-    ALLOCATE(this%dial_link_like(nl,ndest))
     this%dial_link_like = 0
-    ALLOCATE(this%dial_Wsd(nl,ndest))
     this%dial_Wsd = 0
-    ALLOCATE(this%dial_rlabel(nn,ndest),this%dial_slabel(nn,ndest))
-    allocate(this%rorder(nn,ndest),this%sorder(nn,ndest))
     this%rorder = 0
     this%sorder = 0
  

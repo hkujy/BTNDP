@@ -77,10 +77,10 @@
     ! read the test para
     INTEGER::i 
     integer::i_val
-    OPEN(1,file='C:\GitCodes\BTNDP\Input\testsetting.txt') 
+    open(1,file='c:\gitcodes\btndp\input\testsetting.txt') 
     do i = 1,8
         read(1,*) i_val
-        SELECT CASE (i)
+        select case (i)
         case(1)
             networktype =  i_val
             select case(networktype)
@@ -125,8 +125,7 @@
             end if 
         case (5) ! model index
             if (i_val.eq.0) then 
-                write(*,*) "SovlveModel:       UE model"
-                pause
+                write(*,*) "SovlveModel:       UE model for Network Design"
             end if 
             if (i_val.eq.1) then 
                 write(*,*)  "SolveModel:        Logit Sue"

@@ -31,7 +31,6 @@
     end type pbcmsolver
     contains 
     
-    !TODO: ini solve
 
     subroutine ini(this)
     use constpara

@@ -1,5 +1,8 @@
 # Todo list
-1. plot pareto frontier of for the fleet
+1. add trial solution count for each colony 
+2. 
+
+
 
 
 

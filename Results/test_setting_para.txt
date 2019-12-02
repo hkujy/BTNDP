@@ -1,20 +1,20 @@
- NetworkType,           4
- AssignMode,           1
+ NetworkType,           0
+ AssignMode,           2
  RunExe, T
  WriteConvegeFile, T
  SovlveMode,           1
  SolverIndex,               1
  TuneSolver,                1
  LoadIndex,                 0
- NumNodes,                 24
- NumDest,                  24
- NumOd,                   528
- NumBusLine,                0
- NumLink,                  76
+ NumNodes,                  4
+ NumDest,                   1
+ NumOd,                     2
+ NumBusLine,                4
+ NumLink,                   6
  congestion_n,              2
  cap_k,             30.0000000000000     
  rio,              0.000000000000000E+000
  theta,            0.500000000000000     
- islogit,         T
+ islogit,         F
  isdebug,         T
  iswriteconverge, T

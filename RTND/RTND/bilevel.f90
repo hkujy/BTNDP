@@ -5,35 +5,29 @@
     use BruteForce
     implicit none
     integer:: i,l
-    integer allseed(20),seed_cycle,seed1(1)
-    real*8::totalcost
-    !real*8,external::get_totalcost
-    !type(solclass):: test_sol
-    ! integer,allocatable::newfleet(:)
-    ! type(dpsolver)::dp
     type(graphclass)::Basenwk
-    integer::exp_id 
+    integer::exp_id  ! id for the experiments
     
-    open(unit=logfileno,file='c:\GitCodes\BTNDP\RESULTS\log.txt',status='replace',action="write")
+    open(unit=logfileno,file='c:\gitcodes\btndp\results\log.txt',status='replace',action="write")
     open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testindex.txt')
     read(1,*) exp_id
     close(1)
     
     call read_test_para
-    
-    seed1 = 1
-    !call random_seed(put=seed1(:))
-    ! step 1 read input data
     call cleanfiles
     call readpara
     call Basenwk%inigraph
     call Basenwk%readnwt
     call read_fleet_para
-
     call get_fleet_range(Basenwk)
     write (*,*) "lower bound = ", fleet_lb
     write (*,*) "upper bound = ", fleet_ub
     call Basenwk%printnwk
+    call test_abc(Basenwk)
+
+    write(*,*) "complete test abc"
+    pause
+
 
     if (exp_id==1) then 
         write(*,*) "Experiment: Given frequency"
@@ -56,14 +50,6 @@
     end program
 
 
-    subroutine test_given_fre(Basenwk)
-    use BruteForce
-    use GraphLib
-    implicit none
-    type(graphclass)::basenwk 
-    ! call bf_given_fre(Basenwk)
-    
-    end subroutine
     
     subroutine read_fleet_para
     use GraphLib
@@ -116,7 +102,6 @@
     end subroutine
     
     subroutine test_abc(basenwk)
-    use GraphLib
     use ABC 
     implicit none
     type(graphclass)::basenwk
@@ -133,35 +118,28 @@
     open(1,file='c:\gitcodes\BTNDP\results\fortran_output_od.txt')
     write(1,"(a4,a,a6,a,a4,a,a6,a,a,a,a4)") "case",",","origin",",","dest",",","demand",",","y",",","flow"
     close(1)
-    
     open(1,file='c:\gitcodes\BTNDP\results\fortran_output_link.txt')
     write(1,"(a7,a5,a5,a5,a5,a3,a3,a6,a10,a5,a4)") "method,","case,","dest,","link,","flow,","fx,","lt,","xprob,","logitprob,","tail,","head"
     close(1)
-    
     open(1,file='c:\GitCodes\BTNDP\results\fortran_output_node.txt')
     write(1,"(a7,a5,a5,a5,a5,a5,a5)") "method,","case,","dest,","node,","fout,","lout,","label"
     close(1)
- 
-
     open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_para1.txt')
     write(1,"(a5,a5,a4,a)") "case,","lama,","miu,","v"
     close(1)
-
     open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_para2.txt')
     write(1,"(a5,a5,a5,a8,a6,a6)") "case,","beta,","solc,","cputime,","error,","diserr"
     close(1)
-
     open(1,file='c:\gitcodes\BTNDP\results\fortran_finalerr.txt')
     write(1,"(a5,a3)") "case,","err" 
     close(1)
-    
     open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_converge.txt')
     write(1,"(a5,a5,a3)") "case,","solc,","err"
     close(1)
    
     end subroutine
 
-
+    ! compute upper and lower bound of the fleetsize
     subroutine get_fleet_range(nwk)
     use constpara
     use GraphLib
@@ -178,3 +156,17 @@
 
 
     end subroutine
+
+
+
+!!! TODO: Maybe Del the following codes
+
+    subroutine test_given_fre(Basenwk)
+    use BruteForce
+    use GraphLib
+    implicit none
+    type(graphclass)::basenwk 
+    ! call bf_given_fre(Basenwk)
+    
+    end subroutine
+

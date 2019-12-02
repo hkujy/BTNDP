@@ -6,24 +6,25 @@
     use GraphLib
     implicit none 
 
-    type, public::abcclass
+    type,public::abcclass
     integer::npop   ! population size
     integer::onlooker
     integer::maxlimit
     integer::maxiter
-    type(solclass),allocatable::chrom(:)
     type(solclass)::BaseCaseSol
-    integer, allocatable::limitcount(:)   ! count the number of limints
     type(graphclass)::basenwk
-    integer,allocatable::best_fleet(:)
     real*8::best_fit
     integer::best_id
+    type(solclass),allocatable::chrom(:)
+    integer,allocatable::limitcount(:)   ! count the number of limints
+    integer,allocatable::best_fleet(:)
     real*8,allocatable::BaseODcost(:)
     real*8,allocatable::baselinkflow(:,:)
 
     contains 
     procedure,pass::abcmain=>abcmain
-    procedure,pass::inipara=>inipara
+    procedure,pass::iniabc=>iniabc
+    procedure,pass::delabc=>delabc
     procedure,pass::getBaseCaseOd=>getBaseCaseOd
     procedure,pass::employ_bee=>employ_bee
     procedure,pass::onlooker_bee=>onlooker_bee
@@ -32,19 +33,14 @@
     procedure,pass::update_global_best=>update_global_best
 
     end type abcclass
-     
     contains
-
-    subroutine inipara(this)
+    subroutine iniabc(this,input_basenwk)
     implicit none 
     class(abcclass)::this
+    type(graphclass)::input_basenwk
     integer::val, i
-    ! todo : read abc parametrs
-    this%npop =  20
-    this%onlooker = 5
 
-    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\abc.txt')
-    
+    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\abcpara.txt')
     do i = 1, 4
         read(1,*) val
         if (i==1) then 
@@ -62,63 +58,85 @@
     enddo 
     close(1)
 
-
     allocate(this%chrom(this%npop))
     allocate(this%limitcount(this%npop))
     this%limitcount = 0
-
+    allocate(this%baselinkflow(nl,ndest))
+    this%baselinkflow = -1
+    allocate(this%BaseODcost(nod))
+    this%BaseODcost = -1
+    allocate(this%best_fleet(nline))
+    this%best_fleet = -1
     write(*,*) "Num of Pop = ", this%npop
     write(*,*) "Num of Onlooker = ", this%onlooker
     write(*,*) "Num of Limit = ", this%limitcount
     write(*,*) "Max iter = ", this%maxiter
-
-    allocate(this%baseodcost(nod))
-    allocate(this%baselinkflow(nl,ndest))
-
+    call this%basenwk%inigraph
+    call this%basenwk%copynwk(input_basenwk)
+   
     end subroutine
-
+    
+    subroutine delabc(this)
+    implicit none
+    class(abcclass)::this
+    deallocate(this%chrom)
+    deallocate(this%limitcount)
+    deallocate(this%baselinkflow)
+    deallocate(this%BaseODcost)
+    deallocate(this%best_fleet)
+    end subroutine
 
     ! get base case OD cost
     ! this is for the computing fairness values
     subroutine getBaseCaseOd(this)
     implicit none 
     class(abcclass)::this
-   
+    integer l
+
     call this%BaseCaseSol%inisol(this%basenwk)
+    call this%BaseCaseSol%dp%ini
     call this%BaseCaseSol%dp%solver(this%basenwk)
     call get_od_cost(this%BaseCaseSol%dp,this%BaseCaseSol%odcost)
+    
+    write(*,*) "Write initial fleet szie"
+    do l = 1, nline 
+      write(*,*) l, this%BaseCaseSol%mylines(l)%fleet 
+    enddo
+
+    write(*,*) "Write initial OD cost"
+    do l = 1, nod
+      write(*,*) l,this%BaseCaseSol%odcost(l)
+    enddo 
+    call this%BaseCaseSol%dp%del
 
     end subroutine
 
-    subroutine abcmain(this,basenwk)
+    subroutine abcmain(this,input_basenwk)
+    use mysolclass
     implicit none
     class(abcclass)::this
-    type(graphclass)::basenwk
+    type(graphclass)::input_basenwk
     integer:: iter
-   ! step 0: read basci parameters for the abc
-    call this%inipara
-    call this%basenwk%inigraph
-    call this%basenwk%copynwk(basenwk)
-    ! step 1: generate initial soluitons
-    this%best_fleet = 999999
-    this%best_fleet = -1 
+   ! step 0: read bass parameters for the ABC
+    call this%iniabc(input_basenwk)
+    call this%getBaseCaseOd
+    ! step 1: generate initial solutions
     call this%gen_sol
     
     iter = 0
 
     do while(iter.le.this%maxiter) 
         call this%employ_bee
-        call this%onlooker_bee
-        call this%scouts(this%basenwk)
+        !TODO: write the fitness function
+        ! call this%onlooker_bee
+        ! call this%scouts(this%basenwk)
         iter = iter + 1
     enddo 
 
-    !todo: need to find and update global best soluitons
-    deallocate(this%chrom)
-    deallocate(this%limitcount)
- 
+    write(*,*) "need to write onlook and new fitness function"
+    
+    call this%delabc 
 
-    ! call gen_sol
     end subroutine
 
     subroutine update_global_best(this,pid)
@@ -135,9 +153,7 @@
     end if
     end subroutine
 
-
-
-    ! generate initla solution between upper and lower bound
+    ! generate initial solution between upper and lower bound
     subroutine gen_sol(this)
     implicit none
     class(abcclass)::this 
@@ -152,7 +168,7 @@
         enddo 
         residule= fleetsize - ts
         call this%chrom(i)%assign_fleet(residule)
-        call this%chrom(i)%evaluate(this%basenwk)
+        call this%chrom(i)%evaluate(this%basenwk,this%BaseCaseSol)
         call this%update_global_best(i)
     end do 
 
@@ -164,12 +180,13 @@
     integer::p
     logical::replaced
     do p = 1, this%npop
-       call this%chrom(p)%get_neigh(replaced, this%basenwk)
+       call this%chrom(p)%get_neigh(replaced, this%basenwk,this%BaseCaseSol)
        if (replaced) then 
         this%limitcount(p) = 0
        else
         this%limitcount(p) = this%limitcount(p) + 1
        end if
+       ! wtf print
        call this%update_global_best(p)
     enddo 
     end subroutine
@@ -195,7 +212,7 @@
 
     do p = 1, this%onlooker
         id = select_list(p)
-       call this%chrom(id)%get_neigh(replaced, this%basenwk)
+       call this%chrom(id)%get_neigh(replaced, this%basenwk, this%BaseCaseSol)
        if (replaced) then 
             this%limitcount(id) = 0
        else
@@ -204,16 +221,16 @@
        call this%update_global_best(p)
     enddo 
 
-
     deallocate(fits)
     deallocate(select_list)
     end subroutine
 
 
-    subroutine scouts(this,basenwk)
+    subroutine scouts(this,basenwk,basesol)
     implicit none
     CLASS(abcclass)::this
     type(graphclass)::basenwk
+    type(solclass)::basesol
     integer:: p, ts, l, residule
 
     do p = 1, this%npop 
@@ -225,7 +242,7 @@
             enddo 
             residule = fleetsize - ts
             call this%chrom(p)%assign_fleet(residule)
-            call this%chrom(p)%evaluate(this%basenwk)
+            call this%chrom(p)%evaluate(this%basenwk,basesol)
             call this%update_global_best(p)   
         end if
     enddo

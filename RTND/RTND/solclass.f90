@@ -11,8 +11,8 @@
         real*8::fitness
         type(lineclass),allocatable::mylines(:)
         type(dpsolver)::dp
-        real*8::ttc   
-        real*8::fair
+        ! real*8::ttc   
+        ! real*8::fair
         real*8::obj(2)  ! Two objectives
                         ! 1: Total cost, 2: fairness values
         real*8,allocatable::odcost(:)
@@ -27,6 +27,7 @@
     procedure, pass::get_neigh=>get_neigh
     procedure, pass::inisol=>inisol 
     procedure, pass::delsol=>delsol
+    procedure, pass::printsol=>printsol
     !procedure, pass::isDominated =>isDominated  ! function is dominated or not
     end type
     
@@ -44,11 +45,10 @@
 
     subroutine inisol(this,basenwk)
     implicit none 
-    CLASS(solclass)::this
+    class(solclass)::this
     type(graphclass)::basenwk
     integer::l
     this%fitness = -99
-    this%fair = -1
     allocate(this%odcost(nod))
     allocate(this%mylines(nline))
     do l = 1, nline
@@ -61,7 +61,6 @@
     implicit none 
     class(solclass)::this
     this%fitness = -99
-    this%fair = -1
     deallocate(this%odcost)
     deallocate(this%mylines)
 
@@ -81,12 +80,13 @@
     end subroutine 
 
 
-    subroutine evaluate(this,basenwk)
+    subroutine evaluate(this,basenwk, baseSol)
     use graphlib
     use dpsolverlib
     implicit none
     class(solclass),intent(inout)::this
-    class(graphclass)::basenwk
+    type(solclass),optional::basesol
+    type(graphclass)::basenwk
     type(lineclass),DIMENSION(nline)::templines
     integer::l
  
@@ -100,9 +100,11 @@
     call this%dp%solver(basenwk)
     call get_od_cost(this%dp, this%odcost)
     call this%get_obj_ttc
-    call this%get_obj_fare
-    write(*,*) "Total Cost = ", this%ttc
-    write(*,*) "Fare Obj =  ", this%obj(2)
+    if (present(basesol)) then 
+        call this%get_obj_fare(BaseSol)
+    end if
+
+    call this%printsol
 
     do l = 1, nline
         call basenwk%mylines(l)%copy(templines(l))
@@ -141,12 +143,11 @@
     implicit none
     class(solclass):: this
     integer::w
-    this%ttc = 0
+    this%obj(1) = 0
     do w = 1, nod
         write(*,*) "OD = ", w, " Pie = ", this%odcost(w)
-        this%ttc = this%ttc + this%odcost(w)*this%dp%nwk%demand(w)
+        this%obj(1)= this%obj(1) + this%odcost(w)*this%dp%nwk%demand(w)
     enddo 
-    this%obj(1) = this%ttc
 
     end subroutine
 
@@ -258,13 +259,14 @@
     end do 
     end subroutine
 
-    subroutine get_neigh(this,replaced,basenwk)
+    subroutine get_neigh(this,replaced,basenwk,baseSol)
     use mutelib
     use GraphLib
     implicit none 
     logical, intent(out)::replaced
     class(solclass)::this
-    class(Graphclass)::basenwk
+    type(solclass)::baseSol
+    type(graphclass)::basenwk
     integer::l
     ! integer,intent(in)::now
     type(lineclass),dimension(nline)::templines
@@ -280,7 +282,7 @@
     ! genertate new fleet    
     call mute_increa(now_fleet, neigh_fleet)
     call this%set_fleet_and_fre(neigh_fleet)
-    call this%evaluate(basenwk)
+    call this%evaluate(basenwk,baseSol)
 
     ! switch back the new fitness values is wrose
     if (temp_fit.gt.this%fitness) then 
@@ -299,7 +301,22 @@
 
     end subroutine 
 
+    subroutine printsol(this)
+        implicit none
+        class(solclass)::this
+        integer::l
+        write(*,*) "fleet ="
+        do l = 1, nline
+            write(*,*) this%mylines(l)%fleet
+        end do
+        write(*,*) "Od cost = "
+        do l= 1, nod
+            write(*,*) l, this%odcost(l)
+        enddo
+        write(*,*) "obj(1)=",this%obj(1)
+        write(*,*) "obj(2)=",this%obj(2)
 
+    end subroutine
 
 
 

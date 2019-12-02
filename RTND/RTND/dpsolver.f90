@@ -23,9 +23,11 @@
     implicit none 
     class(dpsolver)::this
     call this%inimethod
-    allocate(this%x_bar(nl,ndest))
+    if (.not.allocated(this%x_bar)) then 
+        allocate(this%x_bar(nl,ndest))
+        allocate(this%fx_bar(nl,ndest))
+    end if
     this%x_bar=0
-    allocate(this%fx_bar(nl,ndest))
     this%fx_bar = 0
     end subroutine 
 
@@ -82,7 +84,6 @@
                     
                     write(dp_converge_file,'(f4.2,a,f4.2,a,f4.2,a,f4.2,a,f4.2,a,i6,a,f8.4,a,f10.6)') this%lama,",",this%miu,",",this%v,",",&
                         beta0,",",this%betastep,",",this%solc,",",this%cputime,",",this%ncperr
-                    pause 
                     if (this%isNCPconverge) then
                         write(*,*) "Ncp Converge = True"
                         ! write(dp_converge_file,'(f4.2,a,f4.2,a,f4.2,a,f4.2,a,f4.2,a,i6,a,f8.4,a,f10.6)') this%lama,",",this%miu,",",this%v,",",&
@@ -90,8 +91,6 @@
                         write(*,'(f4.2,a,f4.2,a,f4.2,a,f4.2,a,f4.2,a,i6,a,f8.4,a,f10.6)') this%lama,",",this%miu,",",this%v,",",&
                         beta0,",", this%betastep,",",this%solc,",",this%cputime,",",this%ncperr
                          ! call this%outputx
-                        pause
-
                         ! goto 999
                     endif
                     write(dp_tune_para_file_part1,'(i3,a,f4.2,a,f4.2,a,f4.2)') caseindex,',',&
@@ -144,7 +143,6 @@
                     call this%dpmain(set_nwk)
                     if (this%isNCPconverge) then
                         write(3,'(i3,a,f8.4)') caseindex,',',this%ncperr
-                        pause
                         goto 999
                     endif
                 end if
@@ -243,8 +241,6 @@
                 endif
             enddo 
         enddo 
-        WRITE(*,*) "count=:",cc
-        pause
         if (.not.issubequal) then 
             call this%backward_update_fx(this%fx,this%logitprob,d1=nl,d2=ndest)
             goto 10
