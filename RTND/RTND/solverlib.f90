@@ -480,7 +480,7 @@
     real*8::lamda, mincost,minfx,bcm,thismdf
     integer::bcmcount
     logical::isbcm(5)
-    open(1,file='c:\gitcodes\logitassign\results\fortran_checkmadf.txt',position="append") 
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_checkmadf.txt',position="append") 
     madf = 0.0d0 
     ! Todo: Check Whether i need to update xfa 
     if (islogit) then 

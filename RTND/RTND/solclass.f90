@@ -23,7 +23,7 @@
     procedure, pass::get_obj_ttc=>get_obj_ttc
     procedure, pass::get_obj_fare=>get_obj_fare
     procedure, pass::assign_fleet=>assign_fleet
-    procedure, pass::remedy=>remedy
+    !procedure, pass::remedy=>remedy
     procedure, pass::get_neigh=>get_neigh
     procedure, pass::inisol=>inisol 
     procedure, pass::delsol=>delsol
@@ -95,8 +95,12 @@
     type(graphclass)::basenwk
     integer::l
     this%fitness = -99
-    allocate(this%odcost(nod))
-    allocate(this%mylines(nline))
+    if(.not.ALLOCATED(this%odcost)) then 
+        allocate(this%odcost(nod))
+    end if
+    if(.not.ALLOCATED(this%mylines)) then
+        allocate(this%mylines(nline))
+    end if
     do l = 1, nline
         call this%mylines(l)%copy(basenwk%mylines(l))
     enddo
@@ -276,39 +280,39 @@
     end do 
     end subroutine
 
-
-    subroutine remedy(this)
-    implicit none 
-    class(solclass)::this
-    integer::l
-    integer::add_sum, reduce_sum
-    logical::isRemedy
-    isRemedy = .false.
-    
-    do l=1, nline
-        if ((this%mylines(l)%fleet.lt.fleet_lb(l)).or. &
-            (this%mylines(l)%fleet.gt.fleet_ub(l))) then 
-            isRemedy = .true. 
-            exit
-        endif
-    enddo 
-
-    if (.not.isRemedy) then
-        return 
-    endif
-    add_sum = 0
-    reduce_sum = 0
-    do l = 1,nline
-        do while(this%mylines(l)%fleet.lt.fleet_lb(l))
-            this%mylines(l)%fleet = this%mylines(l)%fleet + 1
-            add_sum = add_sum + 1 
-        end do
-        do while(this%mylines(l)%fleet.gt.fleet_ub(l))
-            this%mylines(l)%fleet = this%mylines(l)%fleet - 1
-            reduce_sum = reduce_sum + 1
-        end do
-    end do 
-    end subroutine
+    !
+    !subroutine remedy(this)
+    !implicit none 
+    !class(solclass)::this
+    !integer::l
+    !integer::add_sum, reduce_sum
+    !logical::isRemedy
+    !isRemedy = .false.
+    !
+    !do l=1, nline
+    !    if ((this%mylines(l)%fleet.lt.fleet_lb(l)).or. &
+    !        (this%mylines(l)%fleet.gt.fleet_ub(l))) then 
+    !        isRemedy = .true. 
+    !        exit
+    !    endif
+    !enddo 
+    !
+    !if (.not.isRemedy) then
+    !    return 
+    !endif
+    !add_sum = 0
+    !reduce_sum = 0
+    !do l = 1,nline
+    !    do while(this%mylines(l)%fleet.lt.fleet_lb(l))
+    !        this%mylines(l)%fleet = this%mylines(l)%fleet + 1
+    !        add_sum = add_sum + 1 
+    !    end do
+    !    do while(this%mylines(l)%fleet.gt.fleet_ub(l))
+    !        this%mylines(l)%fleet = this%mylines(l)%fleet - 1
+    !        reduce_sum = reduce_sum + 1
+    !    end do
+    !end do 
+    !end subroutine
 
     subroutine get_neigh(this,replaced,basenwk,baseSol)
         use mutelib
@@ -330,7 +334,7 @@
         end do 
         oldobj = this%obj
         ! genertate new fleet    
-        call mute_increa(now_fleet, neigh_fleet)
+        call mutation_main(now_fleet, neigh_fleet)
         call this%set_fleet_and_fre(neigh_fleet)
         call this%evaluate(basenwk,baseSol)
 

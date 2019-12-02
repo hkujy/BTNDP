@@ -34,9 +34,9 @@
     
     select case(networktype) 
     case(0) 
-        open(1,file='c:\gitcodes\logitassign\input\testnetwork\Stops.txt')
-        open(2,file='c:\gitcodes\LogitAssign\input\testnetwork\LineSegData.txt')
-        open(3,file='c:\gitcodes\LogitAssign\input\testnetwork\IniFre.txt')
+        open(1,file='c:\gitcodes\BTNDP\input\testnetwork\Stops.txt')
+        open(2,file='c:\gitcodes\BTNDP\input\testnetwork\LineSegData.txt')
+        open(3,file='c:\gitcodes\BTNDP\input\testnetwork\IniFre.txt')
         num_line_seg_file_rows = 6
     case(1)
         open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\Stops.txt')

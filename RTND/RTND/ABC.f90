@@ -254,13 +254,12 @@
     subroutine scouts(this)
     implicit none
     CLASS(abcclass)::this
-    type(graphclass)::basenwk
     type(solclass)::basesol
     integer:: p, ts, l, residule
 
     do p = 1, this%npop 
         if (this%limitcount(p).gt.this%maxlimit) then 
-            call this%chrom(p)%generate(basenwk)
+            call this%chrom(p)%generate(this%basenwk)
             ! ts = 0
             ! do l = 1, nline
             !     ts =  ts + this%chrom(p)%mylines(l)%fleet
