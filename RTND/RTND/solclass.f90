@@ -11,8 +11,8 @@
         real*8::fitness
         type(lineclass),allocatable::mylines(:)
         type(dpsolver)::dp
-        ! real*8::ttc   
-        ! real*8::fair
+        integer::NumBeat ! Number of solutions dominated by this
+        integer::NumLoss ! Number of solution  that are noted domintaed
         real*8::obj(2)  ! Two objectives
                         ! 1: Total cost, 2: fairness values
         real*8,allocatable::odcost(:)
@@ -28,20 +28,66 @@
     procedure, pass::inisol=>inisol 
     procedure, pass::delsol=>delsol
     procedure, pass::printsol=>printsol
+    procedure, pass::compare=>compare
     !procedure, pass::isDominated =>isDominated  ! function is dominated or not
     end type
     
     contains 
-    !
-    !function isDominated(RHS) result (isDominatedByRHS)
-    !implicit none
-    !
-    !logical::isDominatedByRHS
-    !type(solclass)::RHS 
-    !isDominatedByRHS = .false.
-    !
-    !
-    !end function
+   
+    function comparevec(vec1,vec2) result(status)
+        implicit none 
+        real*8,INTENT(IN)::vec1(2)
+        real*8,INTENT(IN)::vec2(2)
+        integer::status
+        status = -1
+        ! case 1 
+        if ((vec1(1).lt.vec2(1)).and.(vec1(2).ge.vec2(2))) then 
+            status = 1
+            return 
+        end if 
+        if ((vec1(1).le.vec2(1)).and.(vec1(2).gt.vec2(2))) then 
+            status = 1
+            return
+        end if
+
+        if ((vec1(1).gt.vec2(1)).and.(vec1(2).le.vec2(2))) then 
+            status = 2
+            return 
+        end if
+        if ((vec1(1).ge.vec2(1)).and.(vec1(2).lt.vec2(2))) then 
+            status = 2
+            RETURN
+        endif
+        if ((vec1(1).lt.vec2(1)).and.(vec1(2).lt.vec2(2))) then 
+            status = 3
+            return 
+        end if
+        if ((vec1(1).gt.vec2(1)).and.(vec1(2).gt.vec2(2))) then
+            status =  3
+            return 
+        end if
+        ! if ((vec1(1).eq.vec2(1)).and.(vec1(2).eq.vec2(2))) then 
+        if ((abs(vec1(1)-vec2(1)).lt.1E-6).and.(abs(vec1(2)-vec2(2)).lt.1E-6)) then 
+            status = 3 
+            return 
+        end if
+        if (status.eq.-1) then
+            write(*,*) "this =",vec1(1), vec1(2) 
+            write(*,*) "rhs =",vec2(1), vec2(2)
+            write(*,*) "undetermined dominate relationship"
+            pause
+        end if
+    end function
+
+    function compare(this, rhs) result (status)
+        implicit none
+        ! 1 : win, 2:lose , 3: both nondominated 
+        class(solclass)::this
+        type(solclass),intent(in)::rhs 
+        integer::status
+        status = -1
+        status = comparevec(this%obj,RHS%obj)
+    end function
 
     subroutine inisol(this,basenwk)
     implicit none 
@@ -63,7 +109,6 @@
     this%fitness = -99
     deallocate(this%odcost)
     deallocate(this%mylines)
-
     end subroutine
 
     subroutine set_fleet_and_fre(this, newfleet)
@@ -78,7 +123,6 @@
         call this%mylines(l)%get_line_fre
     enddo
     end subroutine 
-
 
     subroutine evaluate(this,basenwk, baseSol)
     use graphlib
@@ -171,7 +215,7 @@
     class(solclass)::this
     type(graphclass)::basenwk
     integer::remain,l,i
-    integer::temp_sum
+    integer::temp_sum,ts,residule
     ! this%fleet = fleet_lb
     call this%inisol(basenwk)
     do l =1, nline
@@ -194,6 +238,13 @@
         write(*,*) "check file, abc.f90"
         pause
     end if
+
+    ts = 0
+    do l = 1, nline
+        ts =  ts + this%mylines(l)%fleet
+    enddo 
+    residule = fleetsize - ts
+    call this%assign_fleet(residule)
 
     ! call assign_remain(this%fleet)
 
@@ -260,44 +311,40 @@
     end subroutine
 
     subroutine get_neigh(this,replaced,basenwk,baseSol)
-    use mutelib
-    use GraphLib
-    implicit none 
-    logical, intent(out)::replaced
-    class(solclass)::this
-    type(solclass)::baseSol
-    type(graphclass)::basenwk
-    integer::l
+        use mutelib
+        use GraphLib
+        implicit none 
+        logical, intent(out)::replaced
+        class(solclass)::this
+        type(solclass)::baseSol
+        type(graphclass)::basenwk
+        integer::l
     ! integer,intent(in)::now
-    type(lineclass),dimension(nline)::templines
-    real*8::temp_fit
-    integer::neigh_fleet(nline),now_fleet(nline)
-
-    do l = 1, nline
-        call templines(l)%copy(this%dp%nwk%mylines(l))
-        now_fleet(l) = this%mylines(l)%fleet
-    end do 
-
-    temp_fit = this%fitness
-    ! genertate new fleet    
-    call mute_increa(now_fleet, neigh_fleet)
-    call this%set_fleet_and_fre(neigh_fleet)
-    call this%evaluate(basenwk,baseSol)
+        type(lineclass),dimension(nline)::templines
+        real*8::oldobj(2)
+        integer::neigh_fleet(nline),now_fleet(nline)
+        integer::stausval
+        do l = 1, nline
+            call templines(l)%copy(this%dp%nwk%mylines(l))
+            now_fleet(l) = this%mylines(l)%fleet
+        end do 
+        oldobj = this%obj
+        ! genertate new fleet    
+        call mute_increa(now_fleet, neigh_fleet)
+        call this%set_fleet_and_fre(neigh_fleet)
+        call this%evaluate(basenwk,baseSol)
 
     ! switch back the new fitness values is wrose
-    if (temp_fit.gt.this%fitness) then 
-        replaced = .false.
-        do l =1, nline
-        call this%mylines(l)%copy(templines(l))
-        end do
-        this%fitness = temp_fit
-    else
-        replaced = .true.
-    end if 
+        stausval = comparevec(oldobj,this%obj)
+        if (stausval.eq.1) then 
+            replaced = .true.
+        end if
+        if (stausval.eq.2) then 
+            do l =1, nline
+                call this%mylines(l)%copy(templines(l))
+            end do
+        end if
 
-    do l = 1, nline
-        call basenwk%mylines(l)%copy(templines(l))
-    enddo 
 
     end subroutine 
 

@@ -4,17 +4,46 @@
     use constpara
     contains 
    
-    subroutine mute_increa(now,nei)
+    !TODO : write other type of mutation operators
+
+    subroutine mutation_main(now,nei)
+        implicit none
+        integer,intent(in)::now(nline)
+        integer,intent(out)::nei(nline)
+        
+
+        call mute_increa_by1(now,nei)
+
+
+    end subroutine
+
+    subroutine mute_swap(now,nei)
+        implicit none
+        integer,intent(in)::now(nline)
+        integer,intent(out)::nei(nline)
+        !todo: swap the two lines 
+
+        
+    end subroutine
+
+    subroutine mute_incre_decre(now,nei,num)
+        implicit none 
+        integer,intent(in)::now(nline)
+        integer,intent(out)::nei(nline)
+        integer,intent(in)::num
+        ! incrase and decrease by a fixed number
+        !TODO: To write the mutation main 
+
+    end subroutine
+
+    subroutine mute_increa_by1(now,nei)
+        ! increase one line and reduce other line
     implicit none 
     integer,intent(in)::now(nline)
     integer,intent(out)::nei(nline)
     integer::count
     real*8::ran
     integer::rl,il    !reduce and increase line
-    
-    ! if ((now.eq.fleet_lb).OR.(now.eq.fleet_ub)) then 
-        ! write(*,*) "no space to remove or add"
-    ! end if 
 
     nei =  now
     count = 0 
@@ -74,13 +103,13 @@
                 id =  p
             exit
             endif 
-            if(id.lt.0) then
-                write(*,*)  "roulette err: cannot find valid id"
-                pause
-            else
-                list(j) = id
-            end if
         enddo
+        if(id.lt.0) then
+            write(*,*)  "roulette err: cannot find valid id"
+            pause
+        else
+            list(j) = id
+        end if
     enddo
     end subroutine
     
