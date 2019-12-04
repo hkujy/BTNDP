@@ -89,7 +89,7 @@
     open(1,file='c:\gitcodes\logitassign\results\fortran_checkmadf.txt')
     write(1,*) 'case,i,anode,dest,x,y,ndest,maxdif' 
     close(1)
-    open(1,file="/results/fortran_archive.txt")
+    open(1,file="c:/GitCodes//BTNDP/Results/Fortran_archive.txt")
     write(1,*) 'Iter,ttc,fare'
     close(1)
 

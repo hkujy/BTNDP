@@ -244,7 +244,7 @@
     function get_box_num(xval,yval,xgridnum,ygridnum) result(boxnum)
         ! 沿着x 轴， 1,2,3,4,...一层一层的叠加 box
         implicit none
-        real*8,intent(in)::xval,yval 
+        integer,intent(in)::xval,yval 
         integer,intent(in)::xgridnum,ygridnum
         integer::boxnum
 
@@ -263,9 +263,9 @@
         implicit none
         class(abcclass):: this
         integer::i, j
-        logical,dimension(this%lastarchiveindex+1)::iskeep
+        logical,dimension(this%lastarchiveindex)::iskeep
         integer::xpos(this%npop),ypos(this%npop)
-        type(archivedclass),dimension(this%LastArchiveIndex+1)::TempAc
+        type(archivedclass),dimension(this%LastArchiveIndex)::TempAc
         integer::AcNum
         real*8::eps(2)      ! esp value of the two objectives
         real*8::distI, distJ     ! distance when compare the two objective values
@@ -294,7 +294,7 @@
        do i = 1, this%LastArchiveIndex
             this%archivesols(i)%xpos = floor((this%archivesols(i)%obj(1)- this%minobj(1))/eps(1))
             this%archivesols(i)%ypos = floor((this%archivesols(i)%obj(2)- this%minobj(2))/eps(2))
-            this%archivesols(i)%BoxNum = get_box_num(this%archivesols(i)%obj(1),this%archivesols(i)%obj(2),&
+            this%archivesols(i)%BoxNum = get_box_num(this%archivesols(i)%xpos,this%archivesols(i)%ypos,&
                                         this%xnum,this%ynum)
        enddo 
        ! step 3: update the solutions in each box
@@ -302,7 +302,7 @@
        do i =1, this%LastArchiveIndex - 1
             do j = i + 1, this%LastArchiveIndex
                 if (iskeep(i).and.iskeep(j)) then   
-                    if (this%archivesols(i)%BoxNum.eq.this%archivesols(i)%BoxNum) then
+                    if (this%archivesols(i)%BoxNum.eq.this%archivesols(j)%BoxNum) then
                         distI = (this%archivesols(i)%obj(1) - this%minobj(1))**2 + &
                                 (this%archivesols(i)%obj(2) - this%maxobj(2))**2
                         distJ = (this%archivesols(j)%obj(1) - this%minobj(1))**2 + &
@@ -312,10 +312,11 @@
                         else if (distI.lt.distJ) then
                             iskeep(j) = .false.
                         else if (distI.eq.distJ) then
-                            write(*,*) " the two points in one box has equal distance"
-                            write(*,*) " have not prepared for this"
-                            write(*,*) " file = abc.f90"
-                            pause
+                            iskeep(i) = .false.
+                            !write(*,*) " the two points in one box has equal distance"
+                            !write(*,*) " have not prepared for this"
+                            !write(*,*) " file = abc.f90"
+                            !pause
                         endif
                     end if 
                 end if
@@ -369,10 +370,11 @@
         class(abcclass)::this
         integer,INTENT(IN)::iter
         integer::i
-        open(1,file="/results/fortran_archive.txt",position="append", action="write")
+        open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
 
         do i = 1, this%LastArchiveIndex
             write(1,"(I4,a1,f8.2,a1,f8.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
+            write(*,"(I4,a1,f8.2,a1,f8.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
         enddo
 
         close(1)

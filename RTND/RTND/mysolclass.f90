@@ -343,7 +343,8 @@
         call this%update_fleet_and_fre(neigh_fleet)
         call this%evaluate(basenwk,baseSol)
 
-        domStatus = comparevec(oldobj,this%obj)
+        !domStatus = comparevec(oldobj,this%obj)
+        domStatus = comparevec(this%obj,oldobj)
         select case (domStatus)
         case(1)
             addArchiveSatus = this%add_to_Archive(AcSols,AcDim,LastIndex)
@@ -390,7 +391,7 @@
         type(archivedclass),dimension(dim)::TempAcsols
         logical::isAdd
         integer::i,statuval,AcNum
-        logical,dimension(lastindex+1)::iskeep
+        logical,dimension(lastindex)::iskeep
 
         if (LastIndex.eq.0) then 
             call acsols(1)%set(this)
@@ -399,16 +400,11 @@
             return
         end if
 
-        do i = 1, LastIndex
-            call TempAcsols(i)%copyAcs(acsols(i))
-            call acsols(i)%ClearArchive
-        end do
         iskeep = .true.
-        
         isAdd = .true.
         do i = 1, LastIndex
             ! compare with the AcSol
-            statuval = comparevec(this%obj,TempAcsols(i)%obj)
+            statuval = comparevec(this%obj,acsols(i)%obj)
             ! 1 : win, 2:lose , 3: both nondominated 
             select case (statuval)
             case(1)
@@ -422,6 +418,10 @@
             end select
         end do 
         if (isAdd) then 
+            do i = 1, LastIndex
+                call TempAcsols(i)%copyAcs(acsols(i))
+                call acsols(i)%ClearArchive
+            end do
             AcNum = 1
             do i = 1, LastIndex
                if (iskeep(i)) then 

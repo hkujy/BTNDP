@@ -7,12 +7,25 @@
     implicit none
     integer:: i,l
     type(graphclass)::Basenwk
+    integer, allocatable :: seed(:)
+    integer :: ns
     integer::exp_id  ! id for the experiments
     
     open(unit=logfileno,file='c:\gitcodes\btndp\results\log.txt',status='replace',action="write")
     open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testindex.txt')
     read(1,*) exp_id
     close(1)
+    
+    call random_seed(size = ns)
+    allocate(seed(ns))
+    call random_seed(get=seed)
+    write (*, *) seed
+    
+    seed = 101 * (/ (i, i = 1, ns) /)
+    write (*, *) seed
+    CALL RANDOM_SEED(PUT = seed)
+  
+
     
     call read_test_para
     call cleanfiles
@@ -119,6 +132,10 @@
     open(1,file='c:\gitcodes\BTNDP\results\fortran_checkmadf.txt')
     write(1,"(a5,a2,a6,a5,a2,a2,a6,a6)") "case,","i,","anode,","dest,","x,","y,","ndest,","maxdif"
     close(1)
+    open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt")
+    write(1,*) "Iter,ttc,fare"
+    close(1)
+
     open(1,file='c:\gitcodes\BTNDP\results\fortran_output_od.txt')
     write(1,"(a4,a,a6,a,a4,a,a6,a,a,a,a4)") "case",",","origin",",","dest",",","demand",",","y",",","flow"
     close(1)
