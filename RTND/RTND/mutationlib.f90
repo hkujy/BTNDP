@@ -126,10 +126,6 @@
       do p = 2, popsize
           cum_sum(p)= cum_sum(p-1) + prob(p)
       end do 
-      write(*,*) "Wtf: Check cum prob"
-      do p = 1, popsize
-        write(*,*) p,cum_sum(p)
-      enddo
 
       ListSelect(:) = -1
       do j = 1, ListSelectSize

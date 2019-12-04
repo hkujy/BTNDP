@@ -15,18 +15,8 @@
     open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testindex.txt')
     read(1,*) exp_id
     close(1)
-    
-    call random_seed(size = ns)
-    allocate(seed(ns))
-    call random_seed(get=seed)
-    write (*, *) seed
-    
-    seed = 101 * (/ (i, i = 1, ns) /)
-    write (*, *) seed
-    CALL RANDOM_SEED(PUT = seed)
-  
-
-    
+        
+   
     call read_test_para
     call cleanfiles
     call readpara
@@ -120,6 +110,18 @@
     implicit none
     type(graphclass)::basenwk
     type(abcclass):: bilevel_abc
+    integer ns,i
+    integer,allocatable::seed(:)
+    ! todo:: read seed
+    call random_seed(size = ns)
+    allocate(seed(ns))
+    call random_seed(get=seed)
+    seed = 101 * (/ (i, i = 1, ns) /)
+    call random_seed(put = seed)
+    if (isWriteDug) then 
+        write (*, *) "seed = ",seed
+    endif
+ 
     call bilevel_abc%iniabc(basenwk)
     call bilevel_abc%abcmain(basenwk)
     call bilevel_abc%delabc 

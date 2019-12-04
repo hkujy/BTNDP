@@ -139,7 +139,6 @@
                     if (mb==3) then
                         this%betastep = 0.99d0
                     end if
- 
                     call this%dpmain(set_nwk)
                     if (this%isNCPconverge) then
                         write(3,'(i3,a,f8.4)') caseindex,',',this%ncperr

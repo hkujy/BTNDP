@@ -69,63 +69,19 @@
 
     if(.not.allocated(this%connect)) then 
         allocate(this%connect(nn,nn,ndest))
-    end if
-    this%connect = .false.
-    if (.not.allocated(this%numconnect)) then
         allocate(this%numconnect(nn,nn,ndest))
-    end if
-    this%numconnect = 0
-    if (.not.allocated(this%roots)) then
         allocate(this%roots(ndest))
-    end if
-    this%roots=-1
-    if (.not.allocated(this%torder)) then
         allocate(this%torder(nn,ndest)) ! topoloy oreder
-    end if
-    this%torder=-1
-    if (.not.allocated(this%sublink)) then
-        allocate(this%sublink(nl,ndest),this%subnode(nn,ndest),this%firstin(nn),this%lastin(nn))
-    end if
-    this%sublink=.false.
-    this%subnode=.false.
-    this%firstin= -1
-    this%lastin=-1
-    if (.not.allocated(this%firstout)) then 
+        allocate(this%sublink(nl,ndest),this%subnode(nn,ndest),&
+            this%firstin(nn),this%lastin(nn))
         allocate(this%firstout(nn),this%lastout(nn),this%anode(nl),this%bnode(nl))
-    end if
-    this%firstout = -1
-    this%lastout = -1 
-    this%anode = -1
-    this%bnode = -1
-    if (.not.allocated(this%backanode)) then
         allocate(this%backanode(nl),this%backbnode(nl),this%backtoforward(nl))
-    end if
-    this%backanode = -1
-    this%backbnode = -1
-    this%backtoforward = -1
-    if (.not.allocated(this%dest)) then
         allocate(this%dest(nod),this%origin(nod),this%locatecompete(nl+1))
-    end if
-    this%dest = -1
-    this%origin = -1
-    this%locatecompete = -1
-    if (.not.allocated(this%competesec)) then
-    allocate(this%competesec(max_total_compete_sec),this%competesec_line(max_total_compete_sec))
-    end if
-    this%competesec = -1
-    this%competesec_line = -1
-    if (.not.allocated(this%scost)) then
+        allocate(this%competesec(max_total_compete_sec),&
+            this%competesec_line(max_total_compete_sec))
         allocate(this%scost(nl),this%svar(nl))
-    end if
-    this%scost = 0
-    this%svar = 0
-    if (.not.allocated(this%bpr_t0)) then
         allocate(this%bpr_t0(nl))
         allocate(this%bpr_cap(nl))
-    end if
-    this%bpr_t0 =  0
-    this%bpr_cap = 0
-    if (.not.allocated(this%numcom)) then 
         allocate(this%numcom(nl))
         allocate(this%fare(nl),this%demand(nod))
         allocate(this%sf(nl))       ! section frequency sum
@@ -135,6 +91,30 @@
         allocate(this%toder_level(nn,ndest))
         allocate(this%mylines(nline))
     end if
+    this%connect = .false.
+    this%numconnect = 0
+    this%roots=-1
+    this%torder=-1
+    this%sublink=.false.
+    this%subnode=.false.
+    this%firstin= -1
+    this%lastin=-1
+    this%firstout = -1
+    this%lastout = -1 
+    this%anode = -1
+    this%bnode = -1
+    this%backanode = -1
+    this%backbnode = -1
+    this%backtoforward = -1
+    this%dest = -1
+    this%origin = -1
+    this%locatecompete = -1
+    this%competesec = -1
+    this%competesec_line = -1
+    this%scost = 0
+    this%svar = 0
+    this%bpr_t0 =  0
+    this%bpr_cap = 0
     this%numcom = 0
     this%fare = 0
     this%demand = 0
@@ -145,9 +125,7 @@
     this%slc = 0
     this%ndist = 0
     this%pa = 0
-    
     this%caseindex=1
-
     end subroutine
     
     subroutine delgraph(this)
@@ -332,7 +310,7 @@
     ! integer,intent(in)::numlink,maxcomsec,numnode,numline,maxseclineval,maxlinestopval
 
     if (present(rhsnwk)) then 
-        write(*,*) "copy nwk is called, which should not be presented"
+        !write(*,*) "copy nwk is called, which should not be presented"
         ! call this%inigraph
         call this%copynwk(rhsnwk)
         call gc_update_secfre(this%mylines%fre,this%slc,this%sl,this%sf,this%slf)

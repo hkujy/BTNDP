@@ -68,14 +68,16 @@
         end if
     enddo 
     close(1)
-    allocate(this%chrom(this%npop))
-    allocate(this%limitcount(this%npop))
+    if (.not.ALLOCATED(this%chrom)) then
+        allocate(this%chrom(this%npop))
+        allocate(this%limitcount(this%npop))
+        allocate(this%baselinkflow(nl,ndest))
+        allocate(this%BaseODcost(nod))
+        allocate(this%best_fleet(nline))
+    endif
     this%limitcount = 0
-    allocate(this%baselinkflow(nl,ndest))
     this%baselinkflow = -1
-    allocate(this%BaseODcost(nod))
     this%BaseODcost = -1
-    allocate(this%best_fleet(nline))
     this%best_fleet = -1
     write(*,*) "Num of Pop = ", this%npop
     write(*,*) "Num of Onlooker = ", this%onlooker
@@ -91,11 +93,13 @@
     end do 
     close(1)
     this%sizeofArchive = this%xnum*this%ynum
-    allocate(this%archivesols(this%sizeofArchive)) 
+    if (.not.ALLOCATED(this%archivesols)) then 
+        allocate(this%archivesols(this%sizeofArchive)) 
+    end if
     do i = 1, size(this%archivesols)
         call this%archivesols(i)%iniarchive
     end do 
-    this%minobj = 1000000
+    this%minobj = 100000000000
     this%maxobj = 0
     end subroutine
     
@@ -122,15 +126,16 @@
     call this%BaseCaseSol%dp%solver(this%basenwk)
     call get_od_cost(this%BaseCaseSol%dp,this%BaseCaseSol%odcost)
    
-    write(*,*) "Write initial fleet szie"
-    do l = 1, nline 
-      write(*,*) l, this%BaseCaseSol%mylines(l)%fleet 
-    enddo
-
-    write(*,*) "Write initial OD cost"
-    do l = 1, nod
-      write(*,*) l,this%BaseCaseSol%odcost(l)
-    enddo 
+    if (isWriteDug) then
+        write(*,*) "Write initial fleet szie"
+        do l = 1, nline 
+            write(*,*) l, this%BaseCaseSol%mylines(l)%fleet 
+        enddo
+        write(*,*) "Write initial OD cost"
+        do l = 1, nod
+            write(*,*) l,this%BaseCaseSol%odcost(l)
+        enddo 
+    end if
 
     end subroutine
 
@@ -144,7 +149,9 @@
         call this%gen_sol
         iter = 1
         do while(iter.lt.this%maxiter) 
-            write(*,*) "ABC iter = ",iter
+            if(isWriteDug) then
+                write(*,*) "ABC iter = ",iter
+            end if
             call this%employ_bee
             !Remark: fitness only call once, because it is only used in onlooker prob
             call this%getfitness      
@@ -210,7 +217,6 @@
         call roulette(fits,this%npop,selectedList,this%onlooker) 
         do p = 1, this%onlooker
             id = selectedList(p)
-            write(*,*) "**********id = ",id
             isIncreaLimit = this%chrom(id)%get_neigh(this%basenwk,this%BaseCaseSol,this%archivesols,this%sizeofArchive,this%LastArchiveIndex)
             if (isIncreaLimit) then 
                 this%limitcount(id) = this%limitcount(id) + 1
@@ -287,9 +293,7 @@
             xpos(i) = floor((this%chrom(i)%obj(1) - this%minobj(1))/eps(1))
             ypos(i) = ceiling((this%chrom(i)%obj(2) - this%minobj(2))/eps(2))
        enddo
-       do i = 1, this%npop
-            write(*,*) i,xpos(i),ypos(i)
-       enddo 
+
        ! step 1.4. update existing archive pos
        do i = 1, this%LastArchiveIndex
             this%archivesols(i)%xpos = floor((this%archivesols(i)%obj(1)- this%minobj(1))/eps(1))
@@ -313,6 +317,7 @@
                             iskeep(j) = .false.
                         else if (distI.eq.distJ) then
                             iskeep(i) = .false.
+                            !remark: only the two objective values are matter
                             !write(*,*) " the two points in one box has equal distance"
                             !write(*,*) " have not prepared for this"
                             !write(*,*) " file = abc.f90"
@@ -361,7 +366,9 @@
       end do
       do i = 1, this%npop
           this%chrom(i)%fitness = real(this%chrom(i)%NumBeat)/real(this%npop)
-          write(*,*) "Sol,",i,"fit=",this%chrom(i)%fitness
+          if (isWriteDug) then
+            write(*,*) "Sol,",i,"fit=",this%chrom(i)%fitness
+          end if
       enddo
     end subroutine
 

@@ -162,8 +162,9 @@
       if (present(basesol)) then 
           call this%get_obj_fare(BaseSol)
       end if
-    
-      call this%printsol
+      if (isWriteDug) then 
+          call this%printsol
+      end if
 
       do l = 1, nline
           call basenwk%mylines(l)%copylines(templines(l))
