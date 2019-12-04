@@ -1,7 +1,7 @@
 # Todo list
-1. add trial solution count for each colony 
-2. 
-
+1. 4-Dec-2019:
+- next step is to update update the output on screen and the
+  file
 
 
 
