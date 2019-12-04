@@ -1,3 +1,4 @@
+    
     program bilevel
     use constpara
     use GraphLib
@@ -106,7 +107,10 @@
     implicit none
     type(graphclass)::basenwk
     type(abcclass):: bilevel_abc
+    call bilevel_abc%iniabc(basenwk)
     call bilevel_abc%abcmain(basenwk)
+    call bilevel_abc%delabc 
+
     end subroutine
 
 

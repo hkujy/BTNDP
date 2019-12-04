@@ -18,7 +18,7 @@
     procedure, pass::get_line_fre =>get_line_fre
     procedure, pass::get_fleet => get_fleet
     procedure, pass::get_stop_costs=>get_stop_costs
-    procedure,pass::copy=>copy
+    procedure, pass::copylines=>copylines
    end type lineclass
 
    contains
@@ -203,7 +203,7 @@
     implicit none
     class(lineclass)::this
     call this%get_line_time
-   ! computet the frequency
+   ! compute the frequency
     this%fre = 60 * (this%fleet / this%exptime) *(1 + this%vartime/(this%exptime**2))
     end subroutine
 
@@ -216,9 +216,9 @@
     end subroutine
 
 
-    subroutine copy(this, rhs)
+    subroutine copylines(this, rhs)
         implicit none 
-        CLASS(lineclass):: this, rhs
+        class(lineclass):: this, rhs
 
         this%id = rhs%id
         this%fre = rhs%fre

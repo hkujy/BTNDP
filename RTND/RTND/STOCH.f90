@@ -29,25 +29,26 @@ end type DialLoad
 contains
 
 subroutine ini(this)
-use constpara
-implicit none
-
-CLASS(DialLoad)::this
-allocate(this%lt(nl),this%lf(nl))
-allocate(this%linklike(nl,ndest))
-allocate(this%rlabel(nn,ndest),this%slabel(nn,ndest))
-allocate(this%rorder(nn,ndest),this%sorder(nn,ndest))
-allocate(this%Wsd(nl,ndest),this%prob(nl,ndest))
-this%wsd = 0
-this%rorder = 0
-this%sorder = 0
-this%linklike = 0
-this%rlabel = -1
-this%slabel = -1
-this%lt = 0
-this%lf = 0
-this%prob = 0
-call this%nwk%inigraph
+  use constpara
+  implicit none 
+  class(dialload)::this
+  if (.not.allocated(this%lt) then
+    allocate(this%lt(nl),this%lf(nl))
+    allocate(this%linklike(nl,ndest))
+    allocate(this%rlabel(nn,ndest),this%slabel(nn,ndest))
+    allocate(this%rorder(nn,ndest),this%sorder(nn,ndest))
+    allocate(this%Wsd(nl,ndest),this%prob(nl,ndest))
+  endif
+  this%wsd = 0
+  this%rorder = 0
+  this%sorder = 0
+  this%linklike = 0
+  this%rlabel = -1
+  this%slabel = -1
+  this%lt = 0
+  this%lf = 0
+  this%prob = 0
+  call this%nwk%inigraph
 end subroutine
 
 subroutine del(this)

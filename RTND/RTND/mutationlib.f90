@@ -25,6 +25,7 @@
         case (4)
             call mute_incre_decre(now,nei,3)
         end select
+
     end subroutine
 
     subroutine select_two_dif_line(L1,L2)
@@ -110,54 +111,57 @@
     end subroutine
 
    
-    subroutine roulette(fits,fitsize,list,listsize) 
-    implicit none 
+    !call roulette(fits,this%npop,selectedList,this%onlooker) 
+    subroutine roulette(fits,popsize,ListSelect,ListSelectSize) 
+      implicit none 
+      integer,intent(in)::popsize,ListSelectSize
+      real*8,intent(in)::fits(popsize)
+      integer::id,p,j
+      real*8::ts,ran,cum_sum(popsize),prob(popsize)
+      integer::ListSelect(ListSelectSize)
     
-    integer,intent(in)::fitsize
-    real*8,intent(in)::fits(fitsize)
-    integer::id
-    real*8::ts
-    real*8::prob(fitsize)
-    real*8::ran
-    integer::p,j
-    integer::listsize
-    integer::list(listsize)
-    real*8::cum_sum
-    ts = sum(fits)
-    prob(:)=fits(:)/ts
-    cum_sum  = 0
-    do p=1, fitsize
-        prob(p) = cum_sum + prob(p)
-        cum_sum = prob(p)
-    end do 
+      ts = sum(fits)
+      prob(:) = fits(:)/ts
+      cum_sum(1) = prob(1)
+      do p = 2, popsize
+          cum_sum(p)= cum_sum(p-1) + prob(p)
+      end do 
+      write(*,*) "Wtf: Check cum prob"
+      do p = 1, popsize
+        write(*,*) p,cum_sum(p)
+      enddo
 
-    list(:) = -1
-    do j = 1, listsize
-        id = -1
-        call random_number(ran)
-        do p = 1, fitsize
-            if (ran.le.prob(p)) then 
-                id =  p
-            exit
-            endif 
-        enddo
-        if(id.lt.0) then
-            write(*,*)  "roulette err: cannot find valid id"
-            pause
-        else
-            list(j) = id
-        end if
-    enddo
+      ListSelect(:) = -1
+      do j = 1, ListSelectSize
+          id = -1
+          call random_number(ran)
+          if (ran.le.cum_sum(1)) then 
+            id = 1
+          else
+            do p = 2, popsize
+              if ((ran.gt.cum_sum(p-1)).and.(ran.le.cum_sum(p))) then 
+                  id =  p
+                  exit
+              endif 
+            enddo
+          endif
+          if (id.lt.0) then
+              write(*,*)  "roulette err: cannot find valid id"
+              write(*,*)  "file: mutationlib.f90"
+              pause
+          else
+              ListSelect(j) = id
+          end if
+      enddo
     end subroutine
     
     subroutine remedy(now)
     implicit none 
     integer,intent(inout)::now(nline)
-    integer::l
-    integer::add_sum, reduce_sum
+    integer::l,add_sum, reduce_sum,gap,count
     logical::isRemedy
+    real*8::ran
     isRemedy = .false.
-    
     do l=1, nline
         if ((now(l).lt.fleet_lb(l)).or.(now(l).gt.fleet_ub(l))) then 
             isRemedy = .true. 
@@ -179,6 +183,53 @@
             reduce_sum = reduce_sum + 1
         end do
     end do 
+    gap  = add_sum - reduce_sum
+    if (gap.gt.0) then 
+        ! more feet are added and need to reduce
+        do while (gap.gt.0)
+            count = 0
+        10  call random_number(ran)
+            l = int(nline*ran+1)
+            if(now(l)-1.lt.fleet_lb(l)) then 
+                count = count + 1
+                if (count.ge.100) then 
+                    write(*,*) " can not find a line to remove"
+                end if 
+                goto 10
+            else
+                now(l) = now(l) - 1
+                gap = gap - 1 
+            endif
+        end do
+    end if
+
+    if (gap.lt.0) then 
+        gap = abs(gap)
+        !more lines are reduces, so need to add it back
+        do while (gap.gt.0)
+            count = 0
+        15  call random_number(ran)
+            l = int(nline*ran + 1)
+            if ((now(l) + 1).gt.fleet_ub(l)) then 
+                count = count + 1
+                if (count.ge.100) then 
+                    write(*,*) "can not find a line to increase"
+                end if 
+                goto 15
+            else
+                now(l) = now(l) + 1
+                gap = gap - 1
+            endif
+        end do
+    end if 
+
+    do l = l, nline
+        if (now(l).gt.fleet_ub(l).or.now(l).lt.fleet_lb(l)) then 
+            write(*,*) "remedy procedure fails"
+            write(*,*) "check file mutationlib.f90"
+            pause
+        end if
+    enddo
     end subroutine   
     
 

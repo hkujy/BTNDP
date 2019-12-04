@@ -1,0 +1,615 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+10	.\ABC\ABC\ABC\module.f90	/^10		cycle_count=cycle_count+1$/;"	l	subroutine:get_neighbour	file:
+10	.\RTND\RTND\RSPATH.F90	/^	10    continue$/;"	l	subroutine:rsp	file:
+10	.\RTND\RTND\RSPATH.F90	/^	10    continue$/;"	l	subroutine:sp	file:
+10	.\RTND\RTND\dpsolver.f90	/^10  call projection(this%x_bar,this%x,this%fx,this%beta,this%nwk,nl,ndest)$/;"	l	subroutine:dpmain	file:
+10	.\RTND\RTND\mutationlib.f90	/^    10  call random_number(ran)$/;"	l	subroutine:select_two_dif_line	file:
+10	.\RTND\RTND\mutationlib.f90	/^10  call random_number(ran)$/;"	l	subroutine:mute_increa_by1	file:
+10	.\RTND\RTND\pathbcm.f90	/^10  call path_projection(this%path_x_bar,this%path_x,this%path_fx,this%beta,this%nwk)$/;"	l	subroutine:dpmain	file:
+10	.\RTND\RTND\solverlib.f90	/^10  if (islogit) then $/;"	l	subroutine:initial_x	file:
+100	.\RTND\RTND\RSPATH.F90	/^	100   continue$/;"	l	subroutine:rsp	file:
+100	.\RTND\RTND\RSPATH.F90	/^	100   continue$/;"	l	subroutine:sp	file:
+1000	.\RTND\RTND\dpsolver.f90	/^1000 call cpu_time(time_end)$/;"	l	subroutine:dpmain	file:
+1000	.\RTND\RTND\msasolver.f90	/^1000	call cpu_time(time_end)$/;"	l	subroutine:solver	file:
+1000	.\RTND\RTND\pathbcm.f90	/^1000 call cpu_time(time_end)$/;"	l	subroutine:dpmain	file:
+15	.\RTND\RTND\mutationlib.f90	/^    15  call random_number(ran)$/;"	l	subroutine:select_two_dif_line	file:
+15	.\RTND\RTND\mutationlib.f90	/^15  call random_number(ran)$/;"	l	subroutine:mute_increa_by1	file:
+20	.\RTND\RTND\RSPATH.F90	/^	20       q(endq) = nd$/;"	l	subroutine:rsp	file:
+20	.\RTND\RTND\RSPATH.F90	/^20     q(endq) = nd$/;"	l	subroutine:sp	file:
+20	.\RTND\RTND\dpsolver.f90	/^20  numerator=norm_value2(this%x,this%x_bar,nl,ndest)$/;"	l	subroutine:dpmain	file:
+20	.\RTND\RTND\pathbcm.f90	/^20  numerator = path_norm_value(this%path_x,this%path_x_bar,npath,ndest)$/;"	l	subroutine:dpmain	file:
+201	.\RTND\RTND\RSPATH.F90	/^	201   n1 = q(p)$/;"	l	subroutine:rsp	file:
+201	.\RTND\RTND\RSPATH.F90	/^	201   n1 = q(p)$/;"	l	subroutine:sp	file:
+30	.\RTND\RTND\RSPATH.F90	/^	30       q(nd) = q(p)$/;"	l	subroutine:rsp	file:
+30	.\RTND\RTND\RSPATH.F90	/^	30   q(nd) = q(p)$/;"	l	subroutine:sp	file:
+40	.\ABC\ABC\ABC\module.f90	/^40		cycle_count=cycle_count+1$/;"	l	subroutine:get_neighbour	file:
+5	.\ABC\ABC\ABC\Main.f90	/^5   seed_cycle=seed_cycle+1	$/;"	l	file:
+5	.\ABC\ABC\ABC\module.f90	/^5		index=int(ran*4+1)$/;"	l	subroutine:get_neighbour	file:
+5	.\RTND\RTND\csram.f90	/^5   if (iter.eq.1.0) then $/;"	l	subroutine:solver	file:
+5	.\RTND\RTND\graphlib.f90	/^5   this%isUEconverge = .true.$/;"	l	subroutine:updatesub	file:
+5	.\RTND\RTND\msasolver.f90	/^5   x0 = this%x$/;"	l	subroutine:solver	file:
+5	.\RTND\RTND\solclass.f90	/^5       call random_number(ran)$/;"	l	subroutine:assign_fleet	file:
+998	.\RTND\RTND\dpsolver.f90	/^998 this%x=this%x_bar$/;"	l	subroutine:dpmain	file:
+998	.\RTND\RTND\pathbcm.f90	/^998 this%path_x = this%path_x_bar$/;"	l	subroutine:dpmain	file:
+999	.\ABC\ABC\ABC\Main.f90	/^999	do r=1,max_routes$/;"	l	file:
+999	.\RTND\RTND\dpsolver.f90	/^999 write(*,*) "done"$/;"	l	subroutine:solver	file:
+999	.\RTND\RTND\dpsolver.f90	/^999 write(*,*) "done"$/;"	l	subroutine:tunesolver	file:
+999	.\RTND\RTND\main.f90	/^999    write(*,*) "bless no bug"$/;"	l	file:
+999	.\RTND\RTND\pathbcm.f90	/^999 write(*,*) "done"$/;"	l	subroutine:solver	file:
+ABC	.\RTND\RTND\ABC.f90	/^    module ABC$/;"	m
+ArchiveLib	.\RTND\RTND\ArchiveLib.f90	/^module ArchiveLib$/;"	m
+B1	.\ABC\ABC\ABC\para.f90	/^real*8,parameter:: B1=/;"	v
+B2	.\ABC\ABC\ABC\para.f90	/^real*8,parameter:: B2=/;"	v
+BFS_torder	.\RTND\RTND\graphlib.f90	/^    subroutine BFS_torder(/;"	s
+BaseCaseSol	.\RTND\RTND\ABC.f90	/^    type(solclass)::BaseCaseSol$/;"	k	type:abcclass
+BaseODcost	.\RTND\RTND\ABC.f90	/^    real*8,allocatable::BaseODcost(/;"	k	type:abcclass
+Basenwk	.\RTND\RTND\bilevel.f90	/^    type(graphclass)::Basenwk$/;"	v	program:bilevel
+BruteForce	.\RTND\RTND\BruteForce.f90	/^    module BruteForce$/;"	m
+CLEANFILES__genmod	.\RTND\RTND\Debug\cleanfiles__genmod.f90	/^        MODULE CLEANFILES__genmod$/;"	m
+CaseClass	.\RTND\py\myclass.py	/^class CaseClass(object):$/;"	c
+DialLoad	.\RTND\RTND\STOCH.f90	/^type,public::DialLoad$/;"	t	module:STOCHLoading
+FACT__genmod	.\RTND\RTND\Debug\fact__genmod.f90	/^        MODULE FACT__genmod$/;"	m
+GET_FLEET_RANGE__genmod	.\RTND\RTND\Debug\get_fleet_range__genmod.f90	/^        MODULE GET_FLEET_RANGE__genmod$/;"	m
+GET_SUM__genmod	.\RTND\RTND\Debug\get_sum__genmod.f90	/^        MODULE GET_SUM__genmod$/;"	m
+GraphLib	.\RTND\RTND\graphlib.f90	/^    module GraphLib$/;"	m
+LinkClass	.\RTND\py\myclass.py	/^class LinkClass:$/;"	c
+MAX_DIST_ERR_2__genmod	.\RTND\RTND\Debug\max_dist_err_2__genmod.f90	/^        MODULE MAX_DIST_ERR_2__genmod$/;"	m
+MSA__genmod	.\RTND\RTND\Debug\msa__genmod.f90	/^        MODULE MSA__genmod$/;"	m
+NORM_VALUE0__genmod	.\RTND\RTND\Debug\norm_value0__genmod.f90	/^        MODULE NORM_VALUE0__genmod$/;"	m
+NORM_VALUE2__genmod	.\RTND\RTND\Debug\norm_value2__genmod.f90	/^        MODULE NORM_VALUE2__genmod$/;"	m
+NORM_VALUE__genmod	.\RTND\RTND\Debug\norm_value__genmod.f90	/^        MODULE NORM_VALUE__genmod$/;"	m
+NR_ie	.\ABC\ABC\ABC\Def.f90	/^integer NR_ie(/;"	v
+NodeClass	.\RTND\py\myclass.py	/^class NodeClass:$/;"	c
+NumBeat	.\RTND\RTND\solclass.f90	/^        integer::NumBeat /;"	k	type:solclass
+NumLoss	.\RTND\RTND\solclass.f90	/^        integer::NumLoss /;"	k	type:solclass
+NwkClass	.\RTND\py\myclass.py	/^class NwkClass:$/;"	c
+ODClass	.\RTND\py\myclass.py	/^class ODClass:$/;"	c
+PROJECTION__genmod	.\RTND\RTND\Debug\projection__genmod.f90	/^        MODULE PROJECTION__genmod$/;"	m
+ParaClass	.\RTND\py\mypara.py	/^class ParaClass:$/;"	c
+PathClass	.\RTND\py\myclass.py	/^class PathClass:$/;"	c
+READPARA__genmod	.\RTND\RTND\Debug\readpara__genmod.f90	/^        MODULE READPARA__genmod$/;"	m
+READ_FLEET_PARA__genmod	.\RTND\RTND\Debug\read_fleet_para__genmod.f90	/^        MODULE READ_FLEET_PARA__genmod$/;"	m
+RSP__genmod	.\RTND\RTND\Debug\rsp__genmod.f90	/^        MODULE RSP__genmod$/;"	m
+RT_ien	.\ABC\ABC\ABC\Def.f90	/^integer NR_ie(num_tsw_nodes,num_destination_nodes),RT_ikn(num_tsw_nodes,max_routes),RT_ien(/;"	v
+RT_ikn	.\ABC\ABC\ABC\Def.f90	/^integer NR_ie(num_tsw_nodes,num_destination_nodes),RT_ikn(/;"	v
+RT_ke	.\ABC\ABC\ABC\Def.f90	/^integer RT_ke(/;"	v
+SIMPLEX_PROJECTION__genmod	.\RTND\RTND\Debug\simplex_projection__genmod.f90	/^        MODULE SIMPLEX_PROJECTION__genmod$/;"	m
+SORT__genmod	.\RTND\RTND\Debug\sort__genmod.f90	/^        MODULE SORT__genmod$/;"	m
+SP__genmod	.\RTND\RTND\Debug\sp__genmod.f90	/^        MODULE SP__genmod$/;"	m
+STOCHLoading	.\RTND\RTND\STOCH.f90	/^module STOCHLoading$/;"	m
+SolClass	.\RTND\py\myclass.py	/^class SolClass:$/;"	c
+SolverLib	.\RTND\RTND\solverlib.f90	/^    module SolverLib$/;"	m
+TEST_ABC__genmod	.\RTND\RTND\Debug\test_abc__genmod.f90	/^        MODULE TEST_ABC__genmod$/;"	m
+TEST_ENUMERATE_FLEET__genmod	.\RTND\RTND\Debug\test_enumerate_fleet__genmod.f90	/^        MODULE TEST_ENUMERATE_FLEET__genmod$/;"	m
+TEST_GIVEN_FRE__genmod	.\RTND\RTND\Debug\test_given_fre__genmod.f90	/^        MODULE TEST_GIVEN_FRE__genmod$/;"	m
+T_ie	.\ABC\ABC\ABC\Def.f90	/^real*8  T_ie(/;"	v
+T_ien	.\ABC\ABC\ABC\Def.f90	/^real*8  T_ien(/;"	v
+T_ikn	.\ABC\ABC\ABC\Def.f90	/^real*8  T_ien(num_tsw_nodes,num_destination_nodes,max_routes),T_ikn(/;"	v
+W1	.\ABC\ABC\ABC\para.f90	/^real*8,parameter :: W1=/;"	v
+W2	.\ABC\ABC\ABC\para.f90	/^real*8,parameter :: W2=/;"	v
+Wsd	.\RTND\RTND\STOCH.f90	/^    real*8,ALLOCATABLE::Wsd(/;"	k	type:DialLoad
+__init__	.\RTND\py\myclass.py	/^    def __init__(self):$/;"	m	class:LinkClass
+__init__	.\RTND\py\myclass.py	/^    def __init__(self):$/;"	m	class:NodeClass
+__init__	.\RTND\py\myclass.py	/^    def __init__(self):$/;"	m	class:ODClass
+__init__	.\RTND\py\myclass.py	/^    def __init__(self):$/;"	m	class:PathClass
+__init__	.\RTND\py\myclass.py	/^    def __init__(self):$/;"	m	class:SolClass
+__init__	.\RTND\py\myclass.py	/^    def __init__(self,mp:mypara.ParaClass()):$/;"	m	class:CaseClass
+__init__	.\RTND\py\myclass.py	/^    def __init__(self,mp:mypara.ParaClass()):$/;"	m	class:NwkClass
+__init__	.\RTND\py\mypara.py	/^    def __init__(self):$/;"	m	class:ParaClass
+abc_iter	.\RTND\py\bileve_tests.py	/^abc_iter = 5$/;"	v
+abc_limit	.\RTND\py\bileve_tests.py	/^abc_limit = 5$/;"	v
+abc_npop	.\RTND\py\bileve_tests.py	/^abc_npop = 5$/;"	v
+abc_onlooker	.\RTND\py\bileve_tests.py	/^abc_onlooker = 5$/;"	v
+abcclass	.\RTND\RTND\ABC.f90	/^    type,public::abcclass$/;"	t	module:ABC
+abcmain	.\RTND\RTND\ABC.f90	/^    subroutine abcmain(/;"	s	module:ABC
+alpha_initial	.\ABC\ABC\ABC\para.f90	/^real*8,parameter ::alpha_initial=/;"	v
+anode	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::anode(/;"	k	type:graphclass
+assign_fleet	.\RTND\RTND\solclass.f90	/^    subroutine assign_fleet(/;"	s	module:mysolclass
+assign_mode	.\RTND\py\global_para.py	/^assign_mode = 2  # transit network $/;"	v
+assignment_penalty	.\ABC\ABC\ABC\Def.f90	/^real*8  assignment_penalty(/;"	v
+assignmode	.\RTND\RTND\para.f90	/^    integer::networktype,assignmode /;"	v	module:constpara
+backanode	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::backanode(/;"	k	type:graphclass
+backbnode	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::backanode(:),backbnode(/;"	k	type:graphclass
+backtoforward	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::backtoforward(/;"	k	type:graphclass
+backward	.\RTND\RTND\STOCH.f90	/^subroutine backward(/;"	s	module:STOCHLoading
+backward_update_fx	.\RTND\RTND\solverlib.f90	/^    subroutine backward_update_fx(/;"	s	module:SolverLib
+base_case_id	.\RTND\py\myclass.py	/^    base_case_id = -1$/;"	v	class:CaseClass
+base_fre	.\RTND\py\bileve_tests.py	/^base_fre = [6,8,6,10]$/;"	v
+baselinkflow	.\RTND\RTND\ABC.f90	/^    real*8,allocatable::baselinkflow(/;"	k	type:abcclass
+basenwk	.\RTND\RTND\ABC.f90	/^    type(graphclass)::basenwk$/;"	k	type:abcclass
+bcmratio	.\RTND\RTND\para.f90	/^    real*8, PARAMETER::bcmratio /;"	v	module:constpara
+best_fit	.\RTND\RTND\ABC.f90	/^    real*8::best_fit$/;"	k	type:abcclass
+best_fleet	.\RTND\RTND\ABC.f90	/^    integer,allocatable::best_fleet(/;"	k	type:abcclass
+best_id	.\RTND\RTND\ABC.f90	/^    integer::best_id$/;"	k	type:abcclass
+beta	.\RTND\RTND\dpsolver.f90	/^        real*8::beta,/;"	v	module:dpsolverlib
+beta	.\RTND\RTND\pathbcm.f90	/^        real*8::beta,/;"	v	module:pathbcmlib
+betastep	.\RTND\RTND\dpsolver.f90	/^        real*8::beta,lama,v,miu,tau,betastep$/;"	v	module:dpsolverlib
+betastep	.\RTND\RTND\pathbcm.f90	/^        real*8::beta,lama,v,miu,tau,betastep$/;"	v	module:pathbcmlib
+bfmain	.\RTND\RTND\BruteForce.f90	/^    subroutine bfmain(/;"	s	module:BruteForce
+bilevel	.\RTND\RTND\bilevel.f90	/^    program bilevel$/;"	p
+bilevel	.\RTND\py\main.py	/^import bileve_tests as bilevel$/;"	i
+bnode	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::anode(:),bnode(/;"	k	type:graphclass
+bpr_alpha	.\RTND\RTND\para.f90	/^    real*8,parameter::bpr_alpha /;"	v	module:constpara
+bpr_beta	.\RTND\RTND\para.f90	/^    real*8,parameter::bpr_beta /;"	v	module:constpara
+bpr_cap	.\RTND\RTND\graphlib.f90	/^        real*8,allocatable::bpr_cap(/;"	k	type:graphclass
+bpr_t0	.\RTND\RTND\graphlib.f90	/^        real*8,allocatable::bpr_t0(/;"	k	type:graphclass
+bs	.\RTND\RTND\para.f90	/^    real*8,allocatable::bs(/;"	v	module:constpara
+bus_allocation	.\ABC\ABC\ABC\module.f90	/^	subroutine bus_allocation(/;"	s	module:subs
+bus_string	.\ABC\ABC\ABC\Def.f90	/^integer bus_string(/;"	v
+c0	.\RTND\RTND\csram.f90	/^    real*8,allocatable::c0(/;"	v	module:csramsolverlib
+c1	.\RTND\RTND\csram.f90	/^    real*8,allocatable::c1(/;"	v	module:csramsolverlib
+cal_fx	.\RTND\RTND\solverlib.f90	/^    subroutine cal_fx(/;"	s
+cal_path_bcm_fx	.\RTND\RTND\pathbcm.f90	/^    subroutine cal_path_bcm_fx(/;"	s	module:pathbcmlib
+capk	.\RTND\RTND\para.f90	/^    real*8::capk$/;"	v	module:constpara
+caseindex	.\RTND\RTND\graphlib.f90	/^        integer::caseindex$/;"	k	type:graphclass
+caseindex	.\RTND\RTND\para.f90	/^    integer::caseindex$/;"	v	module:constpara
+change_fre_line	.\RTND\py\bileve_tests.py	/^change_fre_line = 2$/;"	v
+check_chromsome	.\ABC\ABC\ABC\module.f90	/^	subroutine check_chromsome(/;"	s	module:subs
+check_node_count	.\ABC\ABC\ABC\module.f90	/^	subroutine check_node_count(/;"	s	module:subs
+chrom	.\RTND\RTND\ABC.f90	/^    type(solclass),allocatable::chrom(/;"	k	type:abcclass
+chromsome	.\ABC\ABC\ABC\Def.f90	/^integer chromsome(/;"	v
+chromsome_length	.\ABC\ABC\ABC\para.f90	/^integer,parameter::chromsome_length=/;"	v
+cleanfiles	.\RTND\RTND\bilevel.f90	/^    subroutine cleanfiles$/;"	s
+cleanfiles	.\RTND\RTND\main.f90	/^    subroutine cleanfiles$/;"	s
+colony_size	.\ABC\ABC\ABC\para.f90	/^real*8,parameter ::colony_size=/;"	v
+compare	.\RTND\RTND\solclass.f90	/^    function compare(/;"	f	module:mysolclass
+comparevec	.\RTND\RTND\solclass.f90	/^    function comparevec(/;"	f	module:mysolclass
+competesec	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::competesec(/;"	k	type:graphclass
+competesec_line	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::competesec_line(/;"	k	type:graphclass
+congestion_n	.\RTND\RTND\para.f90	/^    integer::congestion_n$/;"	v	module:constpara
+connect	.\RTND\RTND\graphlib.f90	/^        logical,allocatable::connect(/;"	k	type:graphclass
+const_bcm_value	.\RTND\RTND\para.f90	/^    real*8::const_bcm_value$/;"	v	module:constpara
+const_bcm_value	.\RTND\py\global_para.py	/^const_bcm_value = 20$/;"	v
+constpara	.\RTND\RTND\para.f90	/^    module constpara$/;"	m
+construct	.\RTND\RTND\graphlib.f90	/^    subroutine construct(/;"	s	module:GraphLib
+copy	.\RTND\RTND\lineclass.f90	/^    subroutine copy(/;"	s	module:mylineclass
+copyfile	.\RTND\py\bileve_tests.py	/^from shutil import copyfile$/;"	i
+copyfile	.\RTND\py\main.py	/^from shutil import copyfile$/;"	i
+copynwk	.\RTND\RTND\graphlib.f90	/^    subroutine copynwk(/;"	s
+count_changes	.\RTND\py\myplot.py	/^def count_changes(vals):$/;"	f
+countconect	.\RTND\RTND\graphlib.f90	/^    subroutine countconect(/;"	s	module:GraphLib
+cputime	.\RTND\RTND\solverlib.f90	/^        real*8::ncperr,cputime,/;"	k	type:methods
+create_case	.\RTND\py\bileve_tests.py	/^def create_case(mp:mypara.ParaClass()):$/;"	f
+createcompetenwk	.\RTND\RTND\graphlib.f90	/^    subroutine createcompetenwk(/;"	s
+csramsolverlib	.\RTND\RTND\csram.f90	/^    module csramsolverlib$/;"	m
+d_node	.\ABC\ABC\ABC\Def.f90	/^integer d_node(/;"	v
+del	.\RTND\RTND\STOCH.f90	/^subroutine del(/;"	s	module:STOCHLoading
+del	.\RTND\RTND\csram.f90	/^    subroutine del(/;"	s	module:csramsolverlib
+del	.\RTND\RTND\dpsolver.f90	/^    subroutine del(/;"	s	module:dpsolverlib
+del	.\RTND\RTND\msasolver.f90	/^    subroutine del(/;"	s	module:msasolverlib
+del	.\RTND\RTND\pathbcm.f90	/^    subroutine del(/;"	s	module:pathbcmlib
+delabc	.\RTND\RTND\ABC.f90	/^    subroutine delabc(/;"	s	module:ABC
+delfloweps	.\RTND\RTND\para.f90	/^    real*8,parameter::delfloweps /;"	v	module:constpara
+delgraph	.\RTND\RTND\graphlib.f90	/^    subroutine delgraph(/;"	s	module:GraphLib
+delmethod	.\RTND\RTND\solverlib.f90	/^    subroutine delmethod(/;"	s	module:SolverLib
+delsol	.\RTND\RTND\solclass.f90	/^    subroutine delsol(/;"	s	module:mysolclass
+delta	.\ABC\ABC\ABC\para.f90	/^real*8,parameter ::delta=/;"	v
+demand	.\ABC\ABC\ABC\Def.f90	/^real*8 demand(/;"	v
+demand	.\RTND\RTND\graphlib.f90	/^        real*8,allocatable::demand(/;"	k	type:graphclass
+dest	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::dest(/;"	k	type:graphclass
+dial_Wsd	.\RTND\RTND\solverlib.f90	/^        real*8,ALLOCATABLE::dial_Wsd(/;"	k	type:methods
+dial_backward	.\RTND\RTND\solverlib.f90	/^subroutine dial_backward(/;"	s
+dial_forward	.\RTND\RTND\solverlib.f90	/^subroutine dial_forward(/;"	s
+dial_get_link_like	.\RTND\RTND\solverlib.f90	/^subroutine dial_get_link_like(/;"	s
+dial_link_like	.\RTND\RTND\solverlib.f90	/^        real*8,ALLOCATABLE::dial_link_like(/;"	k	type:methods
+dial_load_main	.\RTND\RTND\solverlib.f90	/^subroutine dial_load_main(/;"	s
+dial_rlabel	.\RTND\RTND\solverlib.f90	/^        real*8,ALLOCATABLE::dial_rlabel(/;"	k	type:methods
+dial_slabel	.\RTND\RTND\solverlib.f90	/^        real*8,ALLOCATABLE::dial_rlabel(:,:),dial_slabel(/;"	k	type:methods
+dial_sub_graph	.\RTND\RTND\solverlib.f90	/^subroutine dial_sub_graph(/;"	s
+dist	.\RTND\RTND\para.f90	/^    real*8,allocatable::dist(/;"	v	module:constpara
+dp	.\RTND\RTND\solclass.f90	/^        type(dps/;"	k	type:solclass
+dp_converge_file	.\RTND\RTND\para.f90	/^    integer,parameter::dp_converge_file /;"	v	module:constpara
+dp_tune_para_file_part1	.\RTND\RTND\para.f90	/^    integer,parameter::dp_tune_para_file_part1 /;"	v	module:constpara
+dp_tune_para_file_part2	.\RTND\RTND\para.f90	/^    integer,PARAMETER::dp_tune_para_file_part2 /;"	v	module:constpara
+dpmain	.\RTND\RTND\dpsolver.f90	/^    subroutine dpmain(/;"	s	module:dpsolverlib
+dpmain	.\RTND\RTND\pathbcm.f90	/^    subroutine dpmain(/;"	s	module:pathbcmlib
+dpsolverlib	.\RTND\RTND\dpsolver.f90	/^    module dpsolverlib$/;"	m
+el_max	.\ABC\ABC\ABC\para.f90	/^integer,parameter::el_max=/;"	v
+el_min	.\ABC\ABC\ABC\para.f90	/^integer,parameter::el_min=/;"	v
+employ_bee	.\RTND\RTND\ABC.f90	/^    subroutine employ_bee(/;"	s	module:ABC
+eta	.\RTND\RTND\csram.f90	/^    real*8::eta /;"	v	module:csramsolverlib
+evaluate	.\RTND\RTND\solclass.f90	/^    subroutine evaluate(/;"	s	module:mysolclass
+exp_id	.\RTND\RTND\bilevel.f90	/^    integer::exp_id /;"	v	program:bilevel
+exp_id	.\RTND\py\global_para.py	/^exp_id = 2  # enumerate fleet size$/;"	v
+exptime	.\RTND\RTND\lineclass.f90	/^       real*8::exptime$/;"	k	type:lineclass
+fact	.\RTND\RTND\graphlib.f90	/^    real*8 function fact(/;"	f
+fare	.\RTND\RTND\graphlib.f90	/^        real*8,allocatable::scost(:),svar(:),fare(/;"	k	type:graphclass
+fare	.\RTND\RTND\lineclass.f90	/^       real*8::fare(/;"	k	type:lineclass
+final_flow_assignment	.\ABC\ABC\ABC\module.f90	/^		subroutine final_flow_assignment(/;"	s	module:subs
+final_get_object	.\ABC\ABC\ABC\module.f90	/^	subroutine final_get_object(/;"	s	module:subs
+firstin	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::firstin(/;"	k	type:graphclass
+firstout	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::firstout(/;"	k	type:graphclass
+fitness	.\ABC\ABC\ABC\Def.f90	/^real*8 fitness(/;"	v
+fitness	.\RTND\RTND\solclass.f90	/^        real*8::fitness$/;"	k	type:solclass
+fleet	.\RTND\RTND\lineclass.f90	/^       integer::fleet$/;"	k	type:lineclass
+fleet_lb	.\RTND\RTND\para.f90	/^    integer,allocatable::fleet_lb(/;"	v	module:constpara
+fleet_ub	.\RTND\RTND\para.f90	/^    integer,allocatable::fleet_lb(:), fleet_ub(/;"	v	module:constpara
+fleetsize	.\RTND\RTND\para.f90	/^    integer::fleetsize$/;"	v	module:constpara
+fleetsize	.\RTND\py\bileve_tests.py	/^fleetsize = 12$/;"	v
+flow_assignment	.\ABC\ABC\ABC\module.f90	/^		subroutine flow_assignment(/;"	s	module:subs
+flow_eps	.\RTND\RTND\para.f90	/^    real*8, parameter::flow_eps /;"	v	module:constpara
+forward	.\RTND\RTND\STOCH.f90	/^subroutine forward(/;"	s	module:STOCHLoading
+forward_update_flow	.\RTND\RTND\solverlib.f90	/^    subroutine forward_update_flow(/;"	s	module:SolverLib
+fre	.\RTND\RTND\lineclass.f90	/^       real*8::fre$/;"	k	type:lineclass
+fre_lb	.\RTND\RTND\para.f90	/^    real*8,allocatable::fre_lb(/;"	v	module:constpara
+fre_lb	.\RTND\py\bileve_tests.py	/^fre_lb = 4  # lower bound of the frequency $/;"	v
+fre_ub	.\RTND\RTND\para.f90	/^    real*8,allocatable::fre_lb(:), fre_ub(/;"	v	module:constpara
+fre_up	.\RTND\py\bileve_tests.py	/^fre_up = 15 # fre upper bound $/;"	v
+frequency	.\ABC\ABC\ABC\Def.f90	/^real*8  frequency(/;"	v
+fx	.\RTND\RTND\solverlib.f90	/^        real*8,allocatable::fx(/;"	k	type:methods
+fx_bar	.\RTND\RTND\dpsolver.f90	/^        real*8,allocatable::fx_bar(/;"	v	module:dpsolverlib
+gama	.\RTND\RTND\csram.f90	/^    real*8::gama /;"	v	module:csramsolverlib
+gama	.\RTND\RTND\para.f90	/^    real*8,parameter::gama /;"	v	module:constpara
+gapfileno	.\RTND\RTND\para.f90	/^    integer,parameter::gapfileno /;"	v	module:constpara
+gapfileno	.\RTND\RTND\solverlib.f90	/^        integer::gapfileno$/;"	k	type:methods
+gc_update_secfre	.\RTND\RTND\graphlib.f90	/^    subroutine gc_update_secfre(/;"	s	module:GraphLib
+gen_path_sol	.\RTND\RTND\pathbcm.f90	/^    subroutine gen_path_sol(/;"	s	module:pathbcmlib
+gen_sol	.\RTND\RTND\ABC.f90	/^    subroutine gen_sol(/;"	s	module:ABC
+generate	.\RTND\RTND\solclass.f90	/^    subroutine generate(/;"	s	module:mysolclass
+geninisol	.\RTND\RTND\solverlib.f90	/^    subroutine geninisol(/;"	s	module:SolverLib
+getBaseCaseOd	.\RTND\RTND\ABC.f90	/^    subroutine getBaseCaseOd(/;"	s	module:ABC
+get_T_ie	.\ABC\ABC\ABC\module.f90	/^	subroutine get_T_ie(/;"	s	module:subs
+get_T_ien	.\ABC\ABC\ABC\module.f90	/^	subroutine get_T_ien(/;"	s	module:subs
+get_bcmval	.\RTND\RTND\solverlib.f90	/^    function get_bcmval(/;"	f	module:SolverLib
+get_chromsome	.\ABC\ABC\ABC\module.f90	/^	subroutine get_chromsome(/;"	s	module:subs
+get_fitness	.\ABC\ABC\ABC\module.f90	/^	subroutine get_fitness(/;"	s	module:subs
+get_fleet	.\RTND\RTND\lineclass.f90	/^    subroutine get_fleet(/;"	s	module:mylineclass
+get_fleet_range	.\RTND\RTND\bilevel.f90	/^    subroutine get_fleet_range(/;"	s
+get_frequency	.\ABC\ABC\ABC\module.f90	/^	subroutine get_frequency(/;"	s	module:subs
+get_index	.\ABC\ABC\ABC\module.f90	/^	subroutine get_index(/;"	s	module:subs
+get_line_fre	.\RTND\RTND\lineclass.f90	/^    subroutine get_line_fre(/;"	s	module:mylineclass
+get_line_time	.\RTND\RTND\lineclass.f90	/^   subroutine get_line_time(/;"	s	module:mylineclass
+get_link_like	.\RTND\RTND\STOCH.f90	/^subroutine get_link_like(/;"	s	module:STOCHLoading
+get_load_prob	.\RTND\RTND\csram.f90	/^    subroutine get_load_prob(/;"	s	module:csramsolverlib
+get_neighbour	.\ABC\ABC\ABC\module.f90	/^		subroutine get_neighbour(/;"	s	module:subs
+get_obj_fare	.\RTND\RTND\solclass.f90	/^    subroutine get_obj_fare(/;"	s	module:mysolclass
+get_obj_ttc	.\RTND\RTND\solclass.f90	/^    subroutine get_obj_ttc(/;"	s	module:mysolclass
+get_object	.\ABC\ABC\ABC\module.f90	/^	subroutine get_object(/;"	s	module:subs
+get_od_cost	.\RTND\RTND\solclass.f90	/^    subroutine get_od_cost(/;"	s	module:mysolclass
+get_path_bcm_ncperr	.\RTND\RTND\pathbcm.f90	/^    function get_path_bcm_ncperr(/;"	f	module:pathbcmlib
+get_pool	.\RTND\RTND\BruteForce.f90	/^    subroutine get_pool$/;"	s	module:BruteForce
+get_route_cost	.\ABC\ABC\ABC\module.f90	/^	subroutine get_route_cost(/;"	s	module:subs
+get_stop_costs	.\RTND\RTND\lineclass.f90	/^    subroutine get_stop_costs(/;"	s	module:mylineclass
+get_sub_graph	.\RTND\RTND\STOCH.f90	/^subroutine get_sub_graph(/;"	s	module:STOCHLoading
+get_sum	.\RTND\RTND\genetic_simplexprojection.f90	/^		real*8 function get_sum(/;"	f
+get_ttc	.\RTND\py\myclass.py	/^    def get_ttc(self):$/;"	m	class:CaseClass
+get_ttc	.\RTND\py\myclass.py	/^    def get_ttc(self):$/;"	m	class:ODClass
+getncperr	.\RTND\RTND\solverlib.f90	/^    function getncperr(/;"	f
+getorder	.\RTND\RTND\graphlib.f90	/^    subroutine getorder(/;"	s	module:GraphLib
+getsuebush	.\RTND\RTND\graphlib.f90	/^    subroutine getsuebush(/;"	s
+gitfit	.\RTND\RTND\ABC.f90	/^       subroutine gitfit(/;"	s	module:ABC
+gl	.\RTND\py\main.py	/^import global_para as gl$/;"	i
+gl	.\RTND\py\mypara.py	/^import global_para as gl$/;"	i
+gl	.\RTND\py\run.py	/^import global_para as gl$/;"	i
+graphclass	.\RTND\RTND\graphlib.f90	/^    type, public::graphclass$/;"	t	module:GraphLib
+h0	.\RTND\RTND\csram.f90	/^    real*8,allocatable::h0(/;"	v	module:csramsolverlib
+h1	.\RTND\RTND\csram.f90	/^    real*8,allocatable::h1(/;"	v	module:csramsolverlib
+i	.\RTND\RTND\bilevel.f90	/^    in/;"	v	program:bilevel
+id	.\RTND\RTND\lineclass.f90	/^       integer::id$/;"	k	type:lineclass
+id	.\RTND\RTND\solclass.f90	/^        integer::id$/;"	k	type:solclass
+incre	.\RTND\py\bileve_tests.py	/^incre = 0.1$/;"	v
+inf1	.\RTND\RTND\para.f90	/^    real*8, parameter::inf1 /;"	v	module:constpara
+ini	.\RTND\RTND\STOCH.f90	/^subroutine ini(/;"	s	module:STOCHLoading
+ini	.\RTND\RTND\csram.f90	/^    subroutine ini(/;"	s	module:csramsolverlib
+ini	.\RTND\RTND\dpsolver.f90	/^    subroutine ini(/;"	s	module:dpsolverlib
+ini	.\RTND\RTND\msasolver.f90	/^    subroutine ini(/;"	s	module:msasolverlib
+ini	.\RTND\RTND\pathbcm.f90	/^    subroutine ini(/;"	s	module:pathbcmlib
+ini_lines	.\RTND\RTND\lineclass.f90	/^   subroutine ini_lines(/;"	s	module:mylineclass
+iniabc	.\RTND\RTND\ABC.f90	/^    subroutine iniabc(/;"	s	module:ABC
+iniassignflow	.\RTND\RTND\solverlib.f90	/^    subroutine iniassignflow(/;"	s	module:SolverLib
+inigraph	.\RTND\RTND\graphlib.f90	/^    subroutine inigraph(/;"	s	module:GraphLib
+inimethod	.\RTND\RTND\solverlib.f90	/^    subroutine inimethod(/;"	s	module:SolverLib
+inisol	.\RTND\RTND\solclass.f90	/^    subroutine inisol(/;"	s	module:mysolclass
+init_arc_flow	.\RTND\RTND\solverlib.f90	/^    subroutine init_arc_flow(/;"	s
+init_path_flow	.\RTND\RTND\pathbcm.f90	/^    subroutine init_path_flow(/;"	s	module:pathbcmlib
+initial_bees	.\ABC\ABC\ABC\para.f90	/^integer,parameter::initial_bees=/;"	v
+initial_x	.\RTND\RTND\solverlib.f90	/^    subroutine initial_x(/;"	s	module:SolverLib
+inputseed	.\RTND\RTND\para.f90	/^    integer,parameter::inputseed /;"	v	module:constpara
+insert_repair	.\ABC\ABC\ABC\module.f90	/^	recursive subroutine insert_repair(/;"	s	module:subs
+isConstBcm	.\RTND\RTND\para.f90	/^    logical,parameter::isConstBcm /;"	v	module:constpara
+isHardCodePathBcm	.\RTND\RTND\para.f90	/^    logical::islogit, isHardCodePathBcm /;"	v	module:constpara
+isNCPconverge	.\RTND\RTND\solverlib.f90	/^        logical::isNCPconverge$/;"	k	type:methods
+isUEconverge	.\RTND\RTND\graphlib.f90	/^        logical::isUEconverge$/;"	k	type:graphclass
+is_debug	.\RTND\py\global_para.py	/^is_debug = True$/;"	v
+is_run_exe	.\RTND\py\global_para.py	/^is_run_exe = False$/;"	v
+isdebug	.\RTND\RTND\para.f90	/^    logical::isdebug,/;"	v	module:constpara
+islogit	.\RTND\RTND\para.f90	/^    logical::islogit,/;"	v	module:constpara
+iswriteconverge	.\RTND\RTND\para.f90	/^    logical::isdebug,iswriteconverge /;"	v	module:constpara
+l	.\RTND\RTND\bilevel.f90	/^    integer:: i,l$/;"	v	program:bilevel
+lama	.\RTND\RTND\dpsolver.f90	/^        real*8::beta,lama,/;"	v	module:dpsolverlib
+lama	.\RTND\RTND\pathbcm.f90	/^        real*8::beta,lama,/;"	v	module:pathbcmlib
+large	.\RTND\RTND\para.f90	/^    real*8, parameter::large /;"	v	module:constpara
+lastin	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::firstin(:),lastin(/;"	k	type:graphclass
+lastout	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::firstout(:),lastout(/;"	k	type:graphclass
+lf	.\RTND\RTND\STOCH.f90	/^    real*8,ALLOCATABLE::lt(:),lf(/;"	k	type:DialLoad
+lf	.\RTND\RTND\solverlib.f90	/^        real*8,allocatable::lf(/;"	k	type:methods
+limitcount	.\RTND\RTND\ABC.f90	/^    integer,allocatable::limitcount(/;"	k	type:abcclass
+line_links	.\RTND\RTND\para.f90	/^    integer::line_links(/;"	v	module:constpara
+lineclass	.\RTND\RTND\lineclass.f90	/^    type,public::lineclass /;"	t	module:mylineclass
+link_cost	.\ABC\ABC\ABC\Def.f90	/^real*8 link_cost(/;"	v
+link_time	.\RTND\RTND\graphlib.f90	/^    subroutine link_time(/;"	s	module:GraphLib
+linklike	.\RTND\RTND\STOCH.f90	/^    real*8,ALLOCATABLE::linklike(/;"	k	type:DialLoad
+lndist	.\RTND\RTND\para.f90	/^    real*8,allocatable::lndist(/;"	v	module:constpara
+load_index	.\RTND\RTND\para.f90	/^    integer::load_index /;"	v	module:constpara
+loadmain	.\RTND\RTND\STOCH.f90	/^subroutine loadmain(/;"	s	module:STOCHLoading
+local_count	.\ABC\ABC\ABC\Def.f90	/^integer local_count(/;"	v
+local_min_control	.\ABC\ABC\ABC\para.f90	/^integer,parameter::local_min_control=/;"	v
+locatecompete	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::locatecompete(/;"	k	type:graphclass
+logfileno	.\RTND\RTND\para.f90	/^    integer,parameter::logfileno /;"	v	module:constpara
+logitprob	.\RTND\RTND\solverlib.f90	/^        real*8,allocatable::logitprob(/;"	k	type:methods
+lt	.\RTND\RTND\STOCH.f90	/^    real*8,ALLOCATABLE::lt(/;"	k	type:DialLoad
+lt	.\RTND\RTND\solverlib.f90	/^        real*8,allocatable::lf(:),lt(/;"	k	type:methods
+macsolc	.\RTND\RTND\para.f90	/^    integer,parameter::macsolc /;"	v	module:constpara
+main	.\RTND\py\myplot.py	/^def main(mp:mypara.ParaClass(), cases):$/;"	f
+main	.\RTND\py\read.py	/^def main(mypara:mypara.ParaClass,cases):$/;"	f
+matplotlib	.\RTND\py\bileve_tests.py	/^import matplotlib.pyplot as plt$/;"	i
+matplotlib	.\RTND\py\main.py	/^import matplotlib.pyplot as plt$/;"	i
+matplotlib	.\RTND\py\myplot.py	/^import matplotlib.pyplot as plt$/;"	i
+matplotlib	.\RTND\py\pareto.py	/^import matplotlib.pyplot as plt$/;"	i
+max_buses	.\ABC\ABC\ABC\para.f90	/^integer,parameter::max_buses=/;"	v
+max_cycle	.\ABC\ABC\ABC\para.f90	/^integer,parameter::max_cycle=/;"	v
+max_dist_err_2	.\RTND\RTND\genetic.f90	/^   function max_dist_err_2(/;"	f
+max_dist_gap	.\RTND\RTND\solverlib.f90	/^        real*8::ncperr,cputime,max_dist_gap$/;"	k	type:methods
+max_routes	.\ABC\ABC\ABC\para.f90	/^integer,parameter::max_routes=/;"	v
+max_stops	.\ABC\ABC\ABC\para.f90	/^integer,parameter::max_stops=/;"	v
+max_total_compete_sec	.\RTND\RTND\para.f90	/^    integer,parameter::max_total_compete_sec /;"	v	module:constpara
+max_tsw_cost	.\ABC\ABC\ABC\para.f90	/^real*8,parameter:: max_tsw_cost=/;"	v
+maxcom	.\RTND\RTND\para.f90	/^    integer,parameter::maxcom /;"	v	module:constpara
+maxcpu	.\RTND\RTND\para.f90	/^    real*8,parameter::maxcpu /;"	v	module:constpara
+maxct	.\RTND\RTND\para.f90	/^    real*8,parameter::maxct /;"	v	module:constpara
+maxfre	.\RTND\RTND\para.f90	/^    real*8,parameter::maxfre /;"	v	module:constpara
+maxiter	.\RTND\RTND\ABC.f90	/^    integer::maxiter$/;"	k	type:abcclass
+maxlimit	.\RTND\RTND\ABC.f90	/^    integer::maxlimit$/;"	k	type:abcclass
+maxlinestops	.\RTND\RTND\para.f90	/^    integer,parameter::maxlinestops /;"	v	module:constpara
+maxsecline	.\RTND\RTND\para.f90	/^    integer,parameter::maxsecline=/;"	v	module:constpara
+mc	.\RTND\py\bileve_tests.py	/^import myclass as mc$/;"	i
+mc	.\RTND\py\main.py	/^import myclass as mc$/;"	i
+mc	.\RTND\py\read.py	/^import myclass as mc$/;"	i
+methods	.\RTND\RTND\solverlib.f90	/^    type,public::methods$/;"	t	module:SolverLib
+min_D_buses	.\ABC\ABC\ABC\Def.f90	/^integer	min_D_buses(/;"	v
+min_buses	.\ABC\ABC\ABC\Def.f90	/^integer min_buses(/;"	v
+min_fre_buses	.\ABC\ABC\ABC\Def.f90	/^integer min_fre_buses(/;"	v
+min_frequency	.\ABC\ABC\ABC\para.f90	/^real*8,parameter:: min_frequency=/;"	v
+min_frequency_bus	.\ABC\ABC\ABC\module.f90	/^	subroutine min_frequency_bus(/;"	s	module:subs
+min_initial_stops	.\ABC\ABC\ABC\para.f90	/^integer,parameter::min_initial_stops=/;"	v
+minfre	.\RTND\RTND\para.f90	/^    real*8,parameter::minfre /;"	v	module:constpara
+minspantree	.\RTND\RTND\graphlib.f90	/^    subroutine minspantree(/;"	s	module:GraphLib
+miu	.\RTND\RTND\dpsolver.f90	/^        real*8::beta,lama,v,miu,/;"	v	module:dpsolverlib
+miu	.\RTND\RTND\pathbcm.f90	/^        real*8::beta,lama,v,miu,/;"	v	module:pathbcmlib
+mplt	.\RTND\py\bileve_tests.py	/^import myplot as mplt$/;"	i
+mplt	.\RTND\py\main.py	/^import myplot as mplt$/;"	i
+msa	.\RTND\RTND\genetic.f90	/^    subroutine msa(/;"	s
+msasolverlib	.\RTND\RTND\msasolver.f90	/^    module msasolverlib$/;"	m
+mutation_main	.\RTND\RTND\mutationlib.f90	/^    subroutine mutation_main(/;"	s	module:mutelib
+mute_incre_decre	.\RTND\RTND\mutationlib.f90	/^    subroutine mute_incre_decre(/;"	s	module:mutelib
+mute_increa_by1	.\RTND\RTND\mutationlib.f90	/^    subroutine mute_increa_by1(/;"	s	module:mutelib
+mute_swap	.\RTND\RTND\mutationlib.f90	/^    subroutine mute_swap(/;"	s	module:mutelib
+mutelib	.\RTND\RTND\mutationlib.f90	/^    module mutelib$/;"	m
+mylineclass	.\RTND\RTND\lineclass.f90	/^    module mylineclass /;"	m
+mylines	.\RTND\RTND\graphlib.f90	/^        type(lineclass),dimension(:),ALLOCATABLE::mylines$/;"	k	type:graphclass
+mylines	.\RTND\RTND\solclass.f90	/^        type(lineclass),allocatable::mylines(/;"	k	type:solclass
+mypara	.\RTND\py\bileve_tests.py	/^import mypara$/;"	i
+mypara	.\RTND\py\main.py	/^import mypara$/;"	i
+mypara	.\RTND\py\myclass.py	/^import mypara$/;"	i
+mypara	.\RTND\py\myplot.py	/^import mypara$/;"	i
+mypara	.\RTND\py\read.py	/^import mypara$/;"	i
+mypara	.\RTND\py\run.py	/^import mypara$/;"	i
+mysolclass	.\RTND\RTND\solclass.f90	/^    module mysolclass$/;"	m
+name	.\RTND\RTND\solverlib.f90	/^        character(len = 10)::name$/;"	k	type:methods
+ncp_eps	.\RTND\RTND\para.f90	/^    real*8, parameter::ncp_eps /;"	v	module:constpara
+ncp_flow_eps	.\RTND\RTND\para.f90	/^    real*8, parameter::ncp_flow_eps /;"	v	module:constpara
+ncperr	.\RTND\RTND\solverlib.f90	/^        real*8::ncperr,/;"	k	type:methods
+ndest	.\RTND\RTND\para.f90	/^    integer::ndest,/;"	v	module:constpara
+ndist	.\RTND\RTND\graphlib.f90	/^        real*8,allocatable::ndist(/;"	k	type:graphclass
+networktype	.\RTND\RTND\para.f90	/^    integer::networktype,/;"	v	module:constpara
+nf	.\RTND\RTND\solverlib.f90	/^        real*8,allocatable::nf(/;"	k	type:methods
+nl	.\RTND\RTND\para.f90	/^    integer::ndest,nod,nn,nl,/;"	v	module:constpara
+nline	.\RTND\RTND\para.f90	/^    integer::ndest,nod,nn,nl,nline$/;"	v	module:constpara
+nn	.\RTND\RTND\para.f90	/^    integer::ndest,nod,nn,/;"	v	module:constpara
+nod	.\RTND\RTND\para.f90	/^    integer::ndest,nod,/;"	v	module:constpara
+node_count	.\ABC\ABC\ABC\Def.f90	/^integer node_count(/;"	v
+node_exp_sum	.\RTND\RTND\solverlib.f90	/^        real*8,ALLOCATABLE::node_exp_sum(/;"	k	type:methods
+node_flow	.\RTND\RTND\solverlib.f90	/^    subroutine node_flow(/;"	s	module:SolverLib
+node_probability	.\ABC\ABC\ABC\module.f90	/^		subroutine node_probability(/;"	s	module:subs
+node_type	.\ABC\ABC\ABC\Def.f90	/^integer node_type(/;"	v
+norm_value	.\RTND\RTND\genetic_normval.F90	/^	real*8 function norm_value(/;"	f
+norm_value0	.\RTND\RTND\genetic_normval.F90	/^	real*8 function norm_value0(/;"	f
+norm_value2	.\RTND\RTND\genetic_normval.F90	/^	real*8 function norm_value2(/;"	f
+npath	.\RTND\RTND\para.f90	/^    integer, PARAMETER::npath /;"	v	module:constpara
+npop	.\RTND\RTND\ABC.f90	/^    integer::npop /;"	k	type:abcclass
+num_destination_nodes	.\ABC\ABC\ABC\para.f90	/^integer,parameter::num_destination_nodes=/;"	v
+num_line_seg_file_rows	.\RTND\RTND\para.f90	/^    integer::num_line_seg_file_rows$/;"	v	module:constpara
+num_nodes	.\ABC\ABC\ABC\para.f90	/^integer,parameter::num_nodes=/;"	v
+num_seats	.\ABC\ABC\ABC\para.f90	/^integer,parameter::num_seats=/;"	v
+num_terminal_nodes	.\ABC\ABC\ABC\para.f90	/^integer,parameter::num_terminal_nodes=/;"	v
+num_tsw_nodes	.\ABC\ABC\ABC\para.f90	/^integer,parameter::num_tsw_nodes=/;"	v
+numcom	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::numcom(/;"	k	type:graphclass
+numconnect	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::numconnect(/;"	k	type:graphclass
+numstops	.\RTND\RTND\lineclass.f90	/^       integer::numstops$/;"	k	type:lineclass
+nwk	.\RTND\RTND\STOCH.f90	/^    type(graphclass)::nwk$/;"	k	type:DialLoad
+nwk	.\RTND\RTND\solverlib.f90	/^        type(graphclass)::nwk$/;"	k	type:methods
+o_node	.\ABC\ABC\ABC\Def.f90	/^integer o_node(/;"	v
+obj	.\RTND\RTND\solclass.f90	/^        real*8::obj(/;"	k	type:solclass
+objective	.\ABC\ABC\ABC\Def.f90	/^real*8 objective(/;"	v
+odcost	.\RTND\RTND\solclass.f90	/^        real*8,allocatable::odcost(/;"	k	type:solclass
+onlooker	.\RTND\RTND\ABC.f90	/^    integer::onlooker$/;"	k	type:abcclass
+onlooker_bee	.\RTND\RTND\ABC.f90	/^    subroutine onlooker_bee(/;"	s	module:ABC
+onlookers	.\ABC\ABC\ABC\para.f90	/^integer,parameter::onlookers=/;"	v
+optimal_frequency	.\ABC\ABC\ABC\module.f90	/^		subroutine optimal_frequency(/;"	s	module:subs
+optimal_sequence	.\ABC\ABC\ABC\module.f90	/^	subroutine optimal_sequence(/;"	s	module:subs
+order	.\RTND\RTND\graphlib.f90	/^    subroutine order(/;"	s	module:GraphLib
+origin	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::dest(:),origin(/;"	k	type:graphclass
+os	.\RTND\py\bileve_tests.py	/^import os$/;"	i
+os	.\RTND\py\main.py	/^import os$/;"	i
+os	.\RTND\py\run.py	/^import os$/;"	i
+outputod	.\RTND\RTND\solverlib.f90	/^    subroutine outputod(/;"	s
+outputsub	.\RTND\RTND\graphlib.f90	/^    subroutine outputsub(/;"	s
+outputx	.\RTND\RTND\solverlib.f90	/^    subroutine outputx(/;"	s
+pa	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::pa(/;"	k	type:graphclass
+para_dict	.\RTND\py\global_para.py	/^para_dict = {$/;"	v
+para_dict	.\RTND\py\main.py	/^para_dict = {$/;"	v
+pareto	.\RTND\py\bileve_tests.py	/^import pareto$/;"	i
+pareto	.\RTND\py\main.py	/^import pareto$/;"	i
+pareto_frontier	.\RTND\py\pareto.py	/^def pareto_frontier(Xs, Ys, maxX = False, maxY = False):$/;"	f
+path_bcm_logit	.\RTND\RTND\pathbcm.f90	/^        real*8,ALLOCATABLE::path_bcm_logit(/;"	v	module:pathbcmlib
+path_bcm_outputx	.\RTND\RTND\pathbcm.f90	/^    subroutine path_bcm_outputx(/;"	s	module:pathbcmlib
+path_cost	.\RTND\RTND\pathbcm.f90	/^        real*8,ALLOCATABLE::path_cost(/;"	v	module:pathbcmlib
+path_cost_wav	.\RTND\RTND\pathbcm.f90	/^        real*8,ALLOCATABLE::path_cost_wav(/;"	v	module:pathbcmlib
+path_flow	.\RTND\RTND\pathbcm.f90	/^        real*8,ALLOCATABLE::path_flow(/;"	v	module:pathbcmlib
+path_fx	.\RTND\RTND\pathbcm.f90	/^        real*8,ALLOCATABLE::path_fx(/;"	v	module:pathbcmlib
+path_fx_bar	.\RTND\RTND\pathbcm.f90	/^        real*8,ALLOCATABLE::path_fx_bar(/;"	v	module:pathbcmlib
+path_link	.\RTND\RTND\para.f90	/^    real*8:: path_link(/;"	v	module:constpara
+path_norm_value	.\RTND\RTND\pathbcm.f90	/^    real*8 function path_norm_value(/;"	f
+path_projection	.\RTND\RTND\pathbcm.f90	/^    subroutine path_projection(/;"	s	module:pathbcmlib
+path_update_alph	.\RTND\RTND\pathbcm.f90	/^    real*8 function path_update_alph(/;"	f
+path_x	.\RTND\RTND\pathbcm.f90	/^        real*8,ALLOCATABLE::path_x(/;"	v	module:pathbcmlib
+path_x_bar	.\RTND\RTND\pathbcm.f90	/^        real*8,ALLOCATABLE::path_x_bar(/;"	v	module:pathbcmlib
+pathbcmlib	.\RTND\RTND\pathbcm.f90	/^    module pathbcmlib$/;"	m
+pd	.\RTND\py\bileve_tests.py	/^import pandas as pd$/;"	i
+pd	.\RTND\py\main.py	/^import pandas as pd$/;"	i
+pd	.\RTND\py\mypara.py	/^import pandas as pd$/;"	i
+pd	.\RTND\py\pareto.py	/^import pandas as pd$/;"	i
+pd	.\RTND\py\read.py	/^import pandas as pd$/;"	i
+piter	.\RTND\RTND\para.f90	/^    integer::piter$/;"	v	module:constpara
+plt	.\RTND\py\bileve_tests.py	/^import matplotlib.pyplot as plt$/;"	i
+plt	.\RTND\py\main.py	/^import matplotlib.pyplot as plt$/;"	i
+plt	.\RTND\py\myplot.py	/^import matplotlib.pyplot as plt$/;"	i
+plt	.\RTND\py\pareto.py	/^import matplotlib.pyplot as plt$/;"	i
+plt_od_cost	.\RTND\py\myplot.py	/^def plt_od_cost(mp:mypara.ParaClass(),cases):$/;"	f
+pool	.\RTND\RTND\BruteForce.f90	/^    integer, allocatable, dimension(:,:)::pool$/;"	v	module:BruteForce
+pr_nwk	.\RTND\py\read.py	/^def pr_nwk(pa:mypara.ParaClass,nwk:mc.NwkClass,sols):$/;"	f
+printnwk	.\RTND\RTND\graphlib.f90	/^    subroutine printnwk(/;"	s
+printsol	.\RTND\RTND\solclass.f90	/^    subroutine printsol(/;"	s
+prob	.\ABC\ABC\ABC\Def.f90	/^real*8 fitness(initial_bees),prob(/;"	v
+prob	.\RTND\RTND\STOCH.f90	/^    real*8,ALLOCATABLE::prob(/;"	k	type:DialLoad
+process	.\RTND\py\myclass.py	/^    def process(self):$/;"	m	class:CaseClass
+process	.\RTND\py\myclass.py	/^    def process(self):$/;"	m	class:LinkClass
+process	.\RTND\py\myclass.py	/^    def process(self):$/;"	m	class:NodeClass
+process	.\RTND\py\myclass.py	/^    def process(self):$/;"	m	class:NwkClass
+process	.\RTND\py\myclass.py	/^    def process(self):$/;"	m	class:ODClass
+process	.\RTND\py\myclass.py	/^    def process(self):$/;"	m	class:PathClass
+process	.\RTND\py\myclass.py	/^    def process(self):$/;"	m	class:SolClass
+projection	.\RTND\RTND\genetic.f90	/^    subroutine projection(/;"	s
+ran	.\ABC\ABC\ABC\Def.f90	/^real*8 ran /;"	v
+ran_select_node	.\ABC\ABC\ABC\module.f90	/^		subroutine ran_select_node(/;"	s	module:subs
+rd	.\RTND\py\bileve_tests.py	/^import read as rd$/;"	i
+rd	.\RTND\py\main.py	/^import read as rd$/;"	i
+rd_get_fair_obj	.\RTND\py\read.py	/^def rd_get_fair_obj(cs):$/;"	f
+rd_link_sol	.\RTND\py\read.py	/^def rd_link_sol(pa,cases):$/;"	f
+rd_node	.\RTND\py\read.py	/^def rd_node(pa,cases):$/;"	f
+rd_od	.\RTND\py\read.py	/^def rd_od(pa,cases):$/;"	f
+read_fleet_para	.\RTND\RTND\bilevel.f90	/^    subroutine read_fleet_para$/;"	s
+read_lines	.\RTND\RTND\lineclass.f90	/^    subroutine read_lines(/;"	s	module:mylineclass
+read_test_para	.\RTND\RTND\para.f90	/^    subroutine read_test_para$/;"	s	module:constpara
+readnwt	.\RTND\RTND\graphlib.f90	/^    subroutine readnwt(/;"	s	module:GraphLib
+readpara	.\RTND\RTND\READPARA.f90	/^    subroutine readpara$/;"	s
+readpare	.\RTND\RTND\dpsolver.f90	/^    subroutine readpare(/;"	s	module:dpsolverlib
+readpare	.\RTND\RTND\pathbcm.f90	/^    subroutine readpare(/;"	s	module:pathbcmlib
+readsmall	.\RTND\RTND\graphlib.f90	/^    subroutine readsmall(/;"	s
+readtransportnwk	.\RTND\RTND\graphlib.f90	/^    subroutine readtransportnwk(/;"	s	module:GraphLib
+remedy	.\RTND\RTND\mutationlib.f90	/^    subroutine remedy(/;"	s	module:mutelib
+repair_operator	.\ABC\ABC\ABC\module.f90	/^	recursive subroutine  repair_operator(/;"	s	module:subs
+rio	.\RTND\RTND\para.f90	/^    real*8::rio /;"	v	module:constpara
+rio	.\RTND\py\bileve_tests.py	/^rio = 0.15$/;"	v
+rlabel	.\RTND\RTND\STOCH.f90	/^    real*8,ALLOCATABLE::rlabel(/;"	k	type:DialLoad
+roots	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::roots(/;"	k	type:graphclass
+rorder	.\RTND\RTND\STOCH.f90	/^    integer,ALLOCATABLE::rorder(/;"	k	type:DialLoad
+rorder	.\RTND\RTND\solverlib.f90	/^        integer,ALLOCATABLE::rorder(/;"	k	type:methods
+roulette	.\ABC\ABC\ABC\module.f90	/^	subroutine roulette(/;"	s	module:subs
+roulette	.\RTND\RTND\mutationlib.f90	/^    subroutine roulette(/;"	s	module:mutelib
+route_D	.\ABC\ABC\ABC\Def.f90	/^integer route_D(/;"	v
+route_D_cost	.\ABC\ABC\ABC\Def.f90	/^real*8  route_D_cost(/;"	v
+route_cost	.\ABC\ABC\ABC\Def.f90	/^real*8 route_cost(/;"	v
+route_gen	.\ABC\ABC\ABC\Def.f90	/^integer route_gen(/;"	v
+route_group	.\ABC\ABC\ABC\Def.f90	/^integer route_group(/;"	v
+route_length	.\ABC\ABC\ABC\para.f90	/^integer,parameter::route_length=/;"	v
+rsp	.\RTND\RTND\RSPATH.F90	/^		subroutine rsp(/;"	s
+run	.\RTND\py\bileve_tests.py	/^import run$/;"	i
+run	.\RTND\py\main.py	/^import run$/;"	i
+run_exe	.\RTND\py\run.py	/^def run_exe(mp:mypara.ParaClass()):$/;"	f
+scost	.\RTND\RTND\graphlib.f90	/^        real*8,allocatable::scost(/;"	k	type:graphclass
+scouts	.\RTND\RTND\ABC.f90	/^    subroutine scouts(/;"	s	module:ABC
+select_two_dif_line	.\RTND\RTND\mutationlib.f90	/^    subroutine select_two_dif_line(/;"	s	module:mutelib
+set_fleet_and_fre	.\RTND\RTND\solclass.f90	/^    subroutine set_fleet_and_fre(/;"	s	module:mysolclass
+set_para	.\RTND\py\mypara.py	/^    def set_para(self,folder):$/;"	m	class:ParaClass
+set_test_case_para	.\RTND\py\main.py	/^def set_test_case_para():$/;"	f
+sf	.\RTND\RTND\graphlib.f90	/^        real*8,allocatable::sf(/;"	k	type:graphclass
+shutil	.\RTND\py\bileve_tests.py	/^import shutil$/;"	i
+shutil	.\RTND\py\main.py	/^import shutil$/;"	i
+simplex_projection	.\RTND\RTND\genetic_simplexprojection.f90	/^    subroutine simplex_projection(/;"	s
+sindex	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::sindex(/;"	k	type:graphclass
+sl	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::sl(/;"	k	type:graphclass
+sl_max	.\ABC\ABC\ABC\para.f90	/^integer,parameter::sl_max=/;"	v
+sl_min	.\ABC\ABC\ABC\para.f90	/^integer,parameter::sl_min=/;"	v
+slabel	.\RTND\RTND\STOCH.f90	/^    real*8,ALLOCATABLE::rlabel(:,:),slabel(/;"	k	type:DialLoad
+slc	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::slc(/;"	k	type:graphclass
+slf	.\RTND\RTND\graphlib.f90	/^        real*8,allocatable::slf(/;"	k	type:graphclass
+solc	.\RTND\RTND\solverlib.f90	/^        integer::solc$/;"	k	type:methods
+solclass	.\RTND\RTND\solclass.f90	/^    type,public::solclass$/;"	t	module:mysolclass
+solve_method	.\RTND\py\global_para.py	/^solve_method = 1 # 1: dp , 2: msa$/;"	v
+solver	.\RTND\RTND\csram.f90	/^    subroutine solver(/;"	s	module:csramsolverlib
+solver	.\RTND\RTND\dpsolver.f90	/^    subroutine solver(/;"	s	module:dpsolverlib
+solver	.\RTND\RTND\msasolver.f90	/^    subroutine solver(/;"	s	module:msasolverlib
+solver	.\RTND\RTND\pathbcm.f90	/^    subroutine solver(/;"	s	module:pathbcmlib
+solver_index	.\RTND\RTND\para.f90	/^    integer::solver_index /;"	v	module:constpara
+sorder	.\RTND\RTND\STOCH.f90	/^    integer,ALLOCATABLE::rorder(:,:),sorder(/;"	k	type:DialLoad
+sorder	.\RTND\RTND\solverlib.f90	/^        integer,ALLOCATABLE::rorder(:,:),sorder(/;"	k	type:methods
+sort	.\RTND\RTND\genetic.f90	/^    subroutine sort(/;"	s
+sp	.\RTND\RTND\RSPATH.F90	/^	subroutine sp(/;"	s
+stepsize	.\RTND\RTND\csram.f90	/^    real*8::stepsize$/;"	v	module:csramsolverlib
+stepsize	.\RTND\RTND\msasolver.f90	/^    real*8::stepsize$/;"	v	module:msasolverlib
+stop_number	.\ABC\ABC\ABC\Def.f90	/^integer stop_number(/;"	v
+stop_time	.\ABC\ABC\ABC\para.f90	/^real*8,parameter:: stop_time=/;"	v
+stops	.\RTND\RTND\lineclass.f90	/^       integer::stops(/;"	k	type:lineclass
+sublink	.\RTND\RTND\graphlib.f90	/^        logical,allocatable::sublink(/;"	k	type:graphclass
+submax	.\RTND\RTND\para.f90	/^    integer,parameter::submax /;"	v	module:constpara
+subnode	.\RTND\RTND\graphlib.f90	/^        logical,allocatable::sublink(:,:),subnode(/;"	k	type:graphclass
+subs	.\ABC\ABC\ABC\module.f90	/^	module subs /;"	m
+svar	.\RTND\RTND\graphlib.f90	/^        real*8,allocatable::scost(:),svar(/;"	k	type:graphclass
+swap	.\ABC\ABC\ABC\module.f90	/^	subroutine swap(/;"	s	module:subs
+swap_repair	.\ABC\ABC\ABC\module.f90	/^		recursive subroutine swap_repair(/;"	s	module:subs
+swap_start	.\ABC\ABC\ABC\module.f90	/^		recursive subroutine swap_start(/;"	s	module:subs
+tau	.\RTND\RTND\dpsolver.f90	/^        real*8::beta,lama,v,miu,tau,/;"	v	module:dpsolverlib
+tau	.\RTND\RTND\pathbcm.f90	/^        real*8::beta,lama,v,miu,tau,/;"	v	module:pathbcmlib
+test_abc	.\RTND\RTND\bilevel.f90	/^    subroutine test_abc(/;"	s
+test_abc_case	.\RTND\py\bileve_tests.py	/^def test_abc_case(mp:mypara.ParaClass()):$/;"	f
+test_enumerate_case	.\RTND\py\bileve_tests.py	/^def test_enumerate_case(mp:mypara.ParaClass()):$/;"	f
+test_enumerate_fleet	.\RTND\RTND\bilevel.f90	/^    subroutine test_enumerate_fleet(/;"	s
+test_given_fre	.\RTND\RTND\bilevel.f90	/^    subroutine test_given_fre(/;"	s
+test_incre_fre_case	.\RTND\py\bileve_tests.py	/^def test_incre_fre_case(mp:mypara.ParaClass()):$/;"	f
+test_index	.\RTND\py\global_para.py	/^test_index = 0$/;"	v
+theta	.\RTND\RTND\STOCH.f90	/^    real*8::theta$/;"	k	type:DialLoad
+theta	.\RTND\RTND\para.f90	/^    real*8,PARAMETER::theta /;"	v	module:constpara
+tlt_e_cost	.\ABC\ABC\ABC\Def.f90	/^real*8  tlt_e_cost(/;"	v
+toder_level	.\RTND\RTND\graphlib.f90	/^        integer,ALLOCATABLE::toder_level(/;"	k	type:graphclass
+torder	.\RTND\RTND\graphlib.f90	/^        integer,allocatable::torder(/;"	k	type:graphclass
+totalfea	.\RTND\RTND\BruteForce.f90	/^    integer::totalfea$/;"	v	module:BruteForce
+tt	.\RTND\RTND\lineclass.f90	/^       real*8::tt(/;"	k	type:lineclass
+tune_solver	.\RTND\RTND\para.f90	/^    integer::tune_solver$/;"	v	module:constpara
+tunesolver	.\RTND\RTND\dpsolver.f90	/^    subroutine tunesolver(/;"	s	module:dpsolverlib
+update	.\ABC\ABC\ABC\Def.f90	/^integer update$/;"	v
+update_alph	.\RTND\RTND\dpsolver.f90	/^    real*8 function update_alph(/;"	f	module:dpsolverlib
+update_bush	.\RTND\RTND\solverlib.f90	/^    subroutine update_bush(/;"	s	module:SolverLib
+update_global_best	.\RTND\RTND\ABC.f90	/^    subroutine update_global_best(/;"	s	module:ABC
+update_linkflow_from_path	.\RTND\RTND\pathbcm.f90	/^    subroutine update_linkflow_from_path(/;"	s	module:pathbcmlib
+update_sec_fre	.\RTND\RTND\graphlib.f90	/^    subroutine update_sec_fre(/;"	s
+update_section_cost	.\RTND\RTND\graphlib.f90	/^    subroutine update_section_cost(/;"	s
+update_stepsize	.\RTND\RTND\csram.f90	/^    subroutine update_stepsize(/;"	s	module:csramsolverlib
+updatesub	.\RTND\RTND\graphlib.f90	/^    subroutine updatesub(/;"	s	module:GraphLib
+v	.\RTND\RTND\dpsolver.f90	/^        real*8::beta,lama,v,/;"	v	module:dpsolverlib
+v	.\RTND\RTND\pathbcm.f90	/^        real*8::beta,lama,v,/;"	v	module:pathbcmlib
+var	.\RTND\RTND\lineclass.f90	/^       real*8::var(/;"	k	type:lineclass
+vartime	.\RTND\RTND\lineclass.f90	/^       real*8::vartime$/;"	k	type:lineclass
+walkcost	.\RTND\RTND\para.f90	/^    real*8,parameter::walkcost /;"	v	module:constpara
+write_case_files	.\RTND\py\bileve_tests.py	/^def write_case_files(mp:mypara.ParaClass(),fre_list):$/;"	f
+writepara	.\RTND\RTND\para.f90	/^    subroutine writepara$/;"	s	module:constpara
+x	.\RTND\RTND\solverlib.f90	/^        real*8,allocatable::x(/;"	k	type:methods
+x_bar	.\RTND\RTND\dpsolver.f90	/^        real*8,allocatable::x_bar(/;"	v	module:dpsolverlib
+xfa	.\RTND\RTND\solverlib.f90	/^        real*8,allocatable::xfa(/;"	k	type:methods
+zero	.\ABC\ABC\ABC\para.f90	/^real*8,parameter:: zero=/;"	v
+zero	.\RTND\RTND\para.f90	/^    real*8,parameter::zero /;"	v	module:constpara

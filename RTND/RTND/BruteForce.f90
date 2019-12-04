@@ -20,7 +20,7 @@
     call get_pool
     caseindex = 1
     do p = 1, totalfea
-        call sol%set_fleet_and_fre(pool(1,:))
+        call sol%update_fleet_and_fre(pool(1,:))
         write(*,*) "CreateBaseSol in Brute Force"
         !call sol%evaluate(basenwk)
         call sol%dp%outputod(sol%dp%x,sol%dp%fx,nl,ndest)

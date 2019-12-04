@@ -1,6 +1,4 @@
-    ! the following code is referred to
-    ! http://www.lahey.com/docs/lfenthelp/nlmovelconstructors.htm
-    !todo
+    
     module mysolclass
     use constpara
     use mylineclass
@@ -17,20 +15,34 @@
                         ! 1: Total cost, 2: fairness values
         real*8,allocatable::odcost(:)
     contains 
-    procedure, pass::set_fleet_and_fre=>set_fleet_and_fre
+    procedure, pass::update_fleet_and_fre=>update_fleet_and_fre
     procedure, pass::generate=>generate
     procedure, pass::evaluate=>evaluate
     procedure, pass::get_obj_ttc=>get_obj_ttc
     procedure, pass::get_obj_fare=>get_obj_fare
-    procedure, pass::assign_fleet=>assign_fleet
-    !procedure, pass::remedy=>remedy
+    procedure, pass::assign_remain_fleet=>assign_remain_fleet
+    procedure, pass::remedy=>remedy
     procedure, pass::get_neigh=>get_neigh
     procedure, pass::inisol=>inisol 
     procedure, pass::delsol=>delsol
     procedure, pass::printsol=>printsol
     procedure, pass::compare=>compare
+    procedure, pass::add_to_Archive=>add_to_Archive
     !procedure, pass::isDominated =>isDominated  ! function is dominated or not
     end type
+    
+    type, public::ArchivedClass
+        integer::id
+        integer::xPos, yPos  ! Postion of the boxes
+        integer::BoxNum
+        real*8::obj(2)   ! objectvive values
+        integer,allocatable::fleet(:)
+    contains
+        procedure,pass::iniarchive=>iniarchive
+        procedure,pass::ClearArchive=>clearArchive
+        procedure,pass::copyAcs => copyAcs
+        procedure,pass::set => set
+    end type 
     
     contains 
    
@@ -66,7 +78,6 @@
             status =  3
             return 
         end if
-        ! if ((vec1(1).eq.vec2(1)).and.(vec1(2).eq.vec2(2))) then 
         if ((abs(vec1(1)-vec2(1)).lt.1E-6).and.(abs(vec1(2)-vec2(2)).lt.1E-6)) then 
             status = 3 
             return 
@@ -90,20 +101,21 @@
     end function
 
     subroutine inisol(this,basenwk)
-    implicit none 
-    class(solclass)::this
-    type(graphclass)::basenwk
-    integer::l
-    this%fitness = -99
-    if(.not.ALLOCATED(this%odcost)) then 
+      implicit none 
+      class(solclass)::this
+      type(graphclass),intent(in)::basenwk
+      integer::l
+      this%fitness = -99
+      if(.not.allocated(this%odcost)) then 
         allocate(this%odcost(nod))
-    end if
-    if(.not.ALLOCATED(this%mylines)) then
+      end if
+      if(.not.allocated(this%mylines)) then
         allocate(this%mylines(nline))
-    end if
-    do l = 1, nline
-        call this%mylines(l)%copy(basenwk%mylines(l))
-    enddo
+      endif
+    
+      do l = 1, nline
+          call this%mylines(l)%copylines(basenwk%mylines(l))
+      enddo
 
     end subroutine
 
@@ -113,53 +125,54 @@
     this%fitness = -99
     deallocate(this%odcost)
     deallocate(this%mylines)
+    call this%dp%del
     end subroutine
 
-    subroutine set_fleet_and_fre(this, newfleet)
+    subroutine update_fleet_and_fre(this, newfleet)
     use GraphLib
     implicit none
     class(solclass)::this
     integer,intent(in)::newfleet(nline)
     integer l
     do l=1, nline
-        ! this%fleet(l) = newfleet(l)
         this%mylines(l)%fleet = newfleet(l)
         call this%mylines(l)%get_line_fre
     enddo
     end subroutine 
 
     subroutine evaluate(this,basenwk, baseSol)
-    use graphlib
-    use dpsolverlib
-    implicit none
-    class(solclass),intent(inout)::this
-    type(solclass),optional::basesol
-    type(graphclass)::basenwk
-    type(lineclass),DIMENSION(nline)::templines
-    integer::l
+      use dpsolverlib
+      implicit none
+      class(solclass),intent(inout)::this
+      type(graphclass)::basenwk
+      type(solclass),optional::basesol
+      type(lineclass),dimension(nline)::templines
+      integer::l
  
-    call this%dp%ini
     ! step 1: set lines 
-    do l = 1, nline
-        call templines(l)%copy(basenwk%mylines(l))
-        call basenwk%mylines(l)%copy(this%mylines(l))
-    end do 
+      do l = 1, nline
+          call templines(l)%copylines(basenwk%mylines(l))
+          call basenwk%mylines(l)%copylines(this%mylines(l))
+      end do 
 
-    call this%dp%solver(basenwk)
-    call get_od_cost(this%dp, this%odcost)
-    call this%get_obj_ttc
-    if (present(basesol)) then 
-        call this%get_obj_fare(BaseSol)
-    end if
+      call this%dp%ini
+      call this%dp%solver(basenwk)
+      call get_od_cost(this%dp, this%odcost)
+      call this%get_obj_ttc
+      if (present(basesol)) then 
+          call this%get_obj_fare(BaseSol)
+      end if
+    
+      call this%printsol
 
-    call this%printsol
-
-    do l = 1, nline
-        call basenwk%mylines(l)%copy(templines(l))
-    enddo 
+      do l = 1, nline
+          call basenwk%mylines(l)%copylines(templines(l))
+      enddo 
 
     end subroutine
 
+
+    ! get OD cost from Dissolution
     subroutine get_od_cost(mydp, odpie)
     use dpsolverlib
     use GraphLib
@@ -215,12 +228,10 @@
 
     subroutine generate(this,basenwk)
     implicit none 
-    ! type(solclass), intent(inout)::sol
     class(solclass)::this
-    type(graphclass)::basenwk
+    type(graphclass),intent(in)::basenwk
     integer::remain,l,i
-    integer::temp_sum,ts,residule
-    ! this%fleet = fleet_lb
+    integer::temp_sum
     call this%inisol(basenwk)
     do l =1, nline
         this%mylines(l)%fleet = fleet_lb(l)
@@ -234,123 +245,124 @@
 
     if (remain.le.0) then 
         write(*,*) "The lower bound is greater than the total fleet"
+        write(*,*) "check file, mysolclass.f90"
         pause
     endif 
 
     if (remain.ge.(sum(fleet_ub)-temp_sum))then 
         write(*,*) "Total fleet size is too large to be all allocated"
-        write(*,*) "check file, abc.f90"
+        write(*,*) "check file, mysolclass.f90"
         pause
     end if
 
-    ts = 0
-    do l = 1, nline
-        ts =  ts + this%mylines(l)%fleet
-    enddo 
-    residule = fleetsize - ts
-    call this%assign_fleet(residule)
-
-    ! call assign_remain(this%fleet)
+    call this%assign_remain_fleet(remain)
 
     end subroutine
 
-    subroutine assign_fleet(this,assignfleet)
+    subroutine assign_remain_fleet(this,remain)
+    ! random select one line to add the additional fleet
     implicit none
     class(solclass)::this
-    integer,intent(in)::assignfleet
+    integer,intent(in)::remain
     integer::l, i
-    integer::remain
     real*8::ran
-    remain = assignfleet
     
-    ! remain = fleetsize - sum(now)
     if (remain.eq.0) then 
         return 
     end if
+
     do i = 1, remain
 5       call random_number(ran)
         l = int(ran*nline + 1)
-        ! if (this%fleet(l) + 1.gt.fleet_ub(l)) then 
         if (this%mylines(l)%fleet + 1.gt.fleet_ub(l)) then 
             goto 5
         else 
-            ! this%fleet(l) =this%fleet(l) + 1
             this%mylines(l)%fleet = this%mylines(l)%fleet + 1
         end if
     end do 
     end subroutine
 
-    !
-    !subroutine remedy(this)
-    !implicit none 
-    !class(solclass)::this
-    !integer::l
-    !integer::add_sum, reduce_sum
-    !logical::isRemedy
-    !isRemedy = .false.
-    !
-    !do l=1, nline
-    !    if ((this%mylines(l)%fleet.lt.fleet_lb(l)).or. &
-    !        (this%mylines(l)%fleet.gt.fleet_ub(l))) then 
-    !        isRemedy = .true. 
-    !        exit
-    !    endif
-    !enddo 
-    !
-    !if (.not.isRemedy) then
-    !    return 
-    !endif
-    !add_sum = 0
-    !reduce_sum = 0
-    !do l = 1,nline
-    !    do while(this%mylines(l)%fleet.lt.fleet_lb(l))
-    !        this%mylines(l)%fleet = this%mylines(l)%fleet + 1
-    !        add_sum = add_sum + 1 
-    !    end do
-    !    do while(this%mylines(l)%fleet.gt.fleet_ub(l))
-    !        this%mylines(l)%fleet = this%mylines(l)%fleet - 1
-    !        reduce_sum = reduce_sum + 1
-    !    end do
-    !end do 
-    !end subroutine
 
-    subroutine get_neigh(this,replaced,basenwk,baseSol)
+    subroutine remedy(this)
+    implicit none 
+    class(solclass)::this
+    integer::l
+    integer::add_sum, reduce_sum
+    logical::isRemedy
+    isRemedy = .false.
+    
+    do l=1, nline
+        if ((this%mylines(l)%fleet.lt.fleet_lb(l)).or. &
+            (this%mylines(l)%fleet.gt.fleet_ub(l))) then 
+            isRemedy = .true. 
+            exit
+        endif
+    enddo 
+
+    if (.not.isRemedy) then
+        return 
+    endif
+    add_sum = 0
+    reduce_sum = 0
+    do l = 1,nline
+        do while(this%mylines(l)%fleet.lt.fleet_lb(l))
+            this%mylines(l)%fleet = this%mylines(l)%fleet + 1
+            add_sum = add_sum + 1 
+        end do
+        do while(this%mylines(l)%fleet.gt.fleet_ub(l))
+            this%mylines(l)%fleet = this%mylines(l)%fleet - 1
+            reduce_sum = reduce_sum + 1
+        end do
+    end do 
+    end subroutine
+
+    function get_neigh(this,basenwk,baseSol,AcSols,AcDim,LastIndex) result(isIncreaLimit)
         use mutelib
         use GraphLib
         implicit none 
-        logical, intent(out)::replaced
+        integer::domStatus   !1, win, 2 loss, 3 non-dom
+        logical::isIncreaLimit
         class(solclass)::this
         type(solclass)::baseSol
-        type(graphclass)::basenwk
-        integer::l
-    ! integer,intent(in)::now
+        integer,intent(in)::acdim
+        type(ArchivedClass),DIMENSION(AcDim)::AcSols
         type(lineclass),dimension(nline)::templines
+        type(graphclass)::basenwk
+        integer::LastIndex,l
         real*8::oldobj(2)
         integer::neigh_fleet(nline),now_fleet(nline)
         integer::stausval
+        logical::addArchiveSatus
         do l = 1, nline
-            call templines(l)%copy(this%dp%nwk%mylines(l))
+            call templines(l)%copylines(this%dp%nwk%mylines(l))
             now_fleet(l) = this%mylines(l)%fleet
         end do 
         oldobj = this%obj
-        ! genertate new fleet    
-        call mutation_main(now_fleet, neigh_fleet)
-        call this%set_fleet_and_fre(neigh_fleet)
+        ! generate new fleet    
+        call mutation_main(now_fleet,neigh_fleet)
+        call this%update_fleet_and_fre(neigh_fleet)
         call this%evaluate(basenwk,baseSol)
 
-    ! switch back the new fitness values is wrose
-        stausval = comparevec(oldobj,this%obj)
-        if (stausval.eq.1) then 
-            replaced = .true.
-        end if
-        if (stausval.eq.2) then 
+        domStatus = comparevec(oldobj,this%obj)
+        select case (domStatus)
+        case(1)
+            addArchiveSatus = this%add_to_Archive(AcSols,AcDim,LastIndex)
+            isIncreaLimit =.false.
+        case(2)
             do l =1, nline
-                call this%mylines(l)%copy(templines(l))
+                call this%mylines(l)%copylines(templines(l))
             end do
-        end if
+            isIncreaLimit = .true.
+        case(3)
+            addArchiveSatus = this%add_to_Archive(AcSols,AcDim,LastIndex)
+            if (addArchiveSatus) then 
+                isIncreaLimit = .false.
+            else
+                isIncreaLimit = .true.
+            end if
+        end select
+    end function
 
-
-    end subroutine 
 
     subroutine printsol(this)
         implicit none
@@ -366,9 +378,117 @@
         enddo
         write(*,*) "obj(1)=",this%obj(1)
         write(*,*) "obj(2)=",this%obj(2)
-
     end subroutine
 
+
+    function add_to_Archive(this,AcSols,dim,LastIndex) result(isAdd)
+        implicit none 
+        class(solclass)::this
+        integer,intent(in)::dim
+        integer,intent(inout)::LastIndex
+        type(archivedclass),dimension(dim)::AcSols
+        type(archivedclass),dimension(dim)::TempAcsols
+        logical::isAdd
+        integer::i,statuval,AcNum
+        logical,dimension(lastindex+1)::iskeep
+
+        if (LastIndex.eq.0) then 
+            call acsols(1)%set(this)
+            LastIndex = 1
+            isAdd = .true.
+            return
+        end if
+
+        do i = 1, LastIndex
+            call TempAcsols(i)%copyAcs(acsols(i))
+            call acsols(i)%ClearArchive
+        end do
+        iskeep = .true.
+        
+        isAdd = .true.
+        do i = 1, LastIndex
+            ! compare with the AcSol
+            statuval = comparevec(this%obj,TempAcsols(i)%obj)
+            ! 1 : win, 2:lose , 3: both nondominated 
+            select case (statuval)
+            case(1)
+                iskeep(i) =.false.  ! delete the dominated solutio 
+            case(2)
+                ! the solution is domianted by some exsiting solutions 
+                isAdd = .false.
+            case(3)
+                continue
+                ! case 3: this solution is non dominated with any of other solutions
+            end select
+        end do 
+        if (isAdd) then 
+            AcNum = 1
+            do i = 1, LastIndex
+               if (iskeep(i)) then 
+                   call acsols(AcNum)%copyAcs(TempAcsols(i))
+                   AcNum =  AcNum + 1
+               end if
+            end do 
+            call acsols(AcNum)%set(this)
+            LastIndex = AcNum
+
+            if (AcNum.gt.dim) then 
+                write(*,*) "after adding new to archive. the total number of archived solution is more than the dimension"
+                write(*,*) "file: solclass.f90"
+                write(*,*) "if this happens, to remove from archive"
+                pause
+            end if
+        endif
+    end function 
+
+
+    subroutine iniarchive(this)
+        use constpara
+        implicit none
+        class(archivedclass):: this
+        this%id = -1
+        this%BoxNum = -1
+        this%xPos = -1
+        this%yPos = -1
+        this%obj = -1
+        if (.not.ALLOCATED(this%fleet)) then
+            allocate(this%fleet(nline))
+        end if
+    end subroutine
+    subroutine clearArchive(this)
+        implicit none 
+        class(archivedclass):: this
+        this%id = -1
+        this%BoxNum = -1
+        this%xPos = -1
+        this%yPos = -1
+        this%obj = -1
+        this%fleet = -1
+    end subroutine
+
+    subroutine set(this,sol)
+        use constpara
+        implicit none 
+        CLASS(ArchivedClass)::this
+        type(solclass)::sol
+        integer::l
+        this%obj = sol%obj
+        do l = 1, nline
+            this%fleet(l) = sol%mylines(l)%fleet
+        end do 
+
+    end subroutine 
+    
+    subroutine copyAcs(this, rhs)
+        implicit none 
+        class(archivedclass)::this
+        type(ArchivedClass)::rhs
+        this%xPos = rhs%xPos
+        this%yPos = rhs%yPos
+        this%BoxNum = rhs%BoxNum
+        this%obj = rhs%obj
+        this%fleet= rhs%fleet
+    end subroutine
 
 
     end module 

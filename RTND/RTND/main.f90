@@ -77,7 +77,7 @@
     !call dp%cal_fx(dp%x,dp%fx)
 
 
-999    write(*,*) "bless no bug"
+999  write(*,*) "bless no bug"
 
     end program
      
@@ -88,6 +88,9 @@
     
     open(1,file='c:\gitcodes\logitassign\results\fortran_checkmadf.txt')
     write(1,*) 'case,i,anode,dest,x,y,ndest,maxdif' 
+    close(1)
+    open(1,file="/results/fortran_archive.txt")
+    write(1,*) 'Iter,ttc,fare'
     close(1)
 
     open(1,file='c:\gitcodes\LogitAssign\results\fortran_checkmadf.txt')

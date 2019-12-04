@@ -7,7 +7,8 @@
 10	.\RSPATH.F90	/^	10    continue$/;"	l	subroutine:rsp	file:
 10	.\RSPATH.F90	/^	10    continue$/;"	l	subroutine:sp	file:
 10	.\dpsolver.f90	/^10  call projection(this%x_bar,this%x,this%fx,this%beta,this%nwk,nl,ndest)$/;"	l	subroutine:dpmain	file:
-10	.\mutationlib.f90	/^10  call random_number(ran)$/;"	l	subroutine:mute_increa	file:
+10	.\mutationlib.f90	/^    10  call random_number(ran)$/;"	l	subroutine:select_two_dif_line	file:
+10	.\mutationlib.f90	/^10  call random_number(ran)$/;"	l	subroutine:mute_increa_by1	file:
 10	.\pathbcm.f90	/^10  call path_projection(this%path_x_bar,this%path_x,this%path_fx,this%beta,this%nwk)$/;"	l	subroutine:dpmain	file:
 10	.\solverlib.f90	/^10  if (islogit) then $/;"	l	subroutine:initial_x	file:
 100	.\RSPATH.F90	/^	100   continue$/;"	l	subroutine:rsp	file:
@@ -15,7 +16,8 @@
 1000	.\dpsolver.f90	/^1000 call cpu_time(time_end)$/;"	l	subroutine:dpmain	file:
 1000	.\msasolver.f90	/^1000	call cpu_time(time_end)$/;"	l	subroutine:solver	file:
 1000	.\pathbcm.f90	/^1000 call cpu_time(time_end)$/;"	l	subroutine:dpmain	file:
-15	.\mutationlib.f90	/^15  call random_number(ran)$/;"	l	subroutine:mute_increa	file:
+15	.\mutationlib.f90	/^    15  call random_number(ran)$/;"	l	subroutine:select_two_dif_line	file:
+15	.\mutationlib.f90	/^15  call random_number(ran)$/;"	l	subroutine:mute_increa_by1	file:
 20	.\RSPATH.F90	/^	20       q(endq) = nd$/;"	l	subroutine:rsp	file:
 20	.\RSPATH.F90	/^20     q(endq) = nd$/;"	l	subroutine:sp	file:
 20	.\dpsolver.f90	/^20  numerator=norm_value2(this%x,this%x_bar,nl,ndest)$/;"	l	subroutine:dpmain	file:
@@ -27,7 +29,7 @@
 5	.\csram.f90	/^5   if (iter.eq.1.0) then $/;"	l	subroutine:solver	file:
 5	.\graphlib.f90	/^5   this%isUEconverge = .true.$/;"	l	subroutine:updatesub	file:
 5	.\msasolver.f90	/^5   x0 = this%x$/;"	l	subroutine:solver	file:
-5	.\solclass.f90	/^5       call random_number(ran)$/;"	l	subroutine:assign_fleet	file:
+5	.\mysolclass.f90	/^5       call random_number(ran)$/;"	l	subroutine:assign_remain_fleet	file:
 998	.\dpsolver.f90	/^998 this%x=this%x_bar$/;"	l	subroutine:dpmain	file:
 998	.\pathbcm.f90	/^998 this%path_x = this%path_x_bar$/;"	l	subroutine:dpmain	file:
 999	.\dpsolver.f90	/^999 write(*,*) "done"$/;"	l	subroutine:solver	file:
@@ -35,10 +37,15 @@
 999	.\main.f90	/^999    write(*,*) "bless no bug"$/;"	l	file:
 999	.\pathbcm.f90	/^999 write(*,*) "done"$/;"	l	subroutine:solver	file:
 ABC	.\abc.f90	/^    module ABC$/;"	m
+ACL	.\Del\ac.f90	/^module ACL$/;"	m
+ArchivedClass	.\Del\ac.f90	/^    type, public::ArchivedClass$/;"	t	module:ACL
+ArchivedClass	.\mysolclass.f90	/^    type, public::ArchivedClass$/;"	t	module:mysolclass
 BFS_torder	.\graphlib.f90	/^    subroutine BFS_torder(/;"	s
 BaseCaseSol	.\abc.f90	/^    type(solclass)::BaseCaseSol$/;"	k	type:abcclass
 BaseODcost	.\abc.f90	/^    real*8,allocatable::BaseODcost(/;"	k	type:abcclass
 Basenwk	.\bilevel.f90	/^    type(graphclass)::Basenwk$/;"	v	program:bilevel
+BoxNum	.\Del\ac.f90	/^        integer::BoxNum$/;"	k	type:ArchivedClass
+BoxNum	.\mysolclass.f90	/^        integer::BoxNum$/;"	k	type:ArchivedClass
 BruteForce	.\BruteForce.f90	/^    module BruteForce$/;"	m
 CLEANFILES__genmod	.\Debug\cleanfiles__genmod.f90	/^        MODULE CLEANFILES__genmod$/;"	m
 DialLoad	.\STOCH.f90	/^type,public::DialLoad$/;"	t	module:STOCHLoading
@@ -46,11 +53,14 @@ FACT__genmod	.\Debug\fact__genmod.f90	/^        MODULE FACT__genmod$/;"	m
 GET_FLEET_RANGE__genmod	.\Debug\get_fleet_range__genmod.f90	/^        MODULE GET_FLEET_RANGE__genmod$/;"	m
 GET_SUM__genmod	.\Debug\get_sum__genmod.f90	/^        MODULE GET_SUM__genmod$/;"	m
 GraphLib	.\graphlib.f90	/^    module GraphLib$/;"	m
+LastArchiveIndex	.\abc.f90	/^    integer::LastArchiveIndex$/;"	k	type:abcclass
 MAX_DIST_ERR_2__genmod	.\Debug\max_dist_err_2__genmod.f90	/^        MODULE MAX_DIST_ERR_2__genmod$/;"	m
 MSA__genmod	.\Debug\msa__genmod.f90	/^        MODULE MSA__genmod$/;"	m
 NORM_VALUE0__genmod	.\Debug\norm_value0__genmod.f90	/^        MODULE NORM_VALUE0__genmod$/;"	m
 NORM_VALUE2__genmod	.\Debug\norm_value2__genmod.f90	/^        MODULE NORM_VALUE2__genmod$/;"	m
 NORM_VALUE__genmod	.\Debug\norm_value__genmod.f90	/^        MODULE NORM_VALUE__genmod$/;"	m
+NumBeat	.\mysolclass.f90	/^        integer::NumBeat /;"	k	type:solclass
+NumLoss	.\mysolclass.f90	/^        integer::NumLoss /;"	k	type:solclass
 PROJECTION__genmod	.\Debug\projection__genmod.f90	/^        MODULE PROJECTION__genmod$/;"	m
 READPARA__genmod	.\Debug\readpara__genmod.f90	/^        MODULE READPARA__genmod$/;"	m
 READ_FLEET_PARA__genmod	.\Debug\read_fleet_para__genmod.f90	/^        MODULE READ_FLEET_PARA__genmod$/;"	m
@@ -66,8 +76,10 @@ TEST_GIVEN_FRE__genmod	.\Debug\test_given_fre__genmod.f90	/^        MODULE TEST_
 Wsd	.\STOCH.f90	/^    real*8,ALLOCATABLE::Wsd(/;"	k	type:DialLoad
 abcclass	.\abc.f90	/^    type,public::abcclass$/;"	t	module:ABC
 abcmain	.\abc.f90	/^    subroutine abcmain(/;"	s	module:ABC
+add_to_Archive	.\mysolclass.f90	/^    function add_to_Archive(/;"	f	module:mysolclass
 anode	.\graphlib.f90	/^        integer,allocatable::anode(/;"	k	type:graphclass
-assign_fleet	.\solclass.f90	/^    subroutine assign_fleet(/;"	s	module:mysolclass
+archivesols	.\abc.f90	/^    type(archivedclass), allocatable::archivesols(/;"	k	type:abcclass
+assign_remain_fleet	.\mysolclass.f90	/^    subroutine assign_remain_fleet(/;"	s	module:mysolclass
 assignmode	.\para.f90	/^    integer::networktype,assignmode /;"	v	module:constpara
 backanode	.\graphlib.f90	/^        integer,allocatable::backanode(/;"	k	type:graphclass
 backbnode	.\graphlib.f90	/^        integer,allocatable::backanode(:),backbnode(/;"	k	type:graphclass
@@ -102,6 +114,8 @@ caseindex	.\para.f90	/^    integer::caseindex$/;"	v	module:constpara
 chrom	.\abc.f90	/^    type(solclass),allocatable::chrom(/;"	k	type:abcclass
 cleanfiles	.\bilevel.f90	/^    subroutine cleanfiles$/;"	s
 cleanfiles	.\main.f90	/^    subroutine cleanfiles$/;"	s
+compare	.\mysolclass.f90	/^    function compare(/;"	f	module:mysolclass
+comparevec	.\mysolclass.f90	/^    function comparevec(/;"	f	module:mysolclass
 competesec	.\graphlib.f90	/^        integer,allocatable::competesec(/;"	k	type:graphclass
 competesec_line	.\graphlib.f90	/^        integer,allocatable::competesec_line(/;"	k	type:graphclass
 congestion_n	.\para.f90	/^    integer::congestion_n$/;"	v	module:constpara
@@ -109,9 +123,11 @@ connect	.\graphlib.f90	/^        logical,allocatable::connect(/;"	k	type:graphcl
 const_bcm_value	.\para.f90	/^    real*8::const_bcm_value$/;"	v	module:constpara
 constpara	.\para.f90	/^    module constpara$/;"	m
 construct	.\graphlib.f90	/^    subroutine construct(/;"	s	module:GraphLib
+copy	.\Del\ac.f90	/^    subroutine copy(/;"	s	module:ACL
 copy	.\lineclass.f90	/^    subroutine copy(/;"	s	module:mylineclass
+copyAcs	.\mysolclass.f90	/^    subroutine copyAcs(/;"	s	module:mysolclass
 copynwk	.\graphlib.f90	/^    subroutine copynwk(/;"	s
-countconect	.\graphlib.f90	/^    subroutine countconect(/;"	s
+countconect	.\graphlib.f90	/^    subroutine countconect(/;"	s	module:GraphLib
 cputime	.\solverlib.f90	/^        real*8::ncperr,cputime,/;"	k	type:methods
 createcompetenwk	.\graphlib.f90	/^    subroutine createcompetenwk(/;"	s
 csramsolverlib	.\csram.f90	/^    module csramsolverlib$/;"	m
@@ -121,10 +137,12 @@ del	.\dpsolver.f90	/^    subroutine del(/;"	s	module:dpsolverlib
 del	.\msasolver.f90	/^    subroutine del(/;"	s	module:msasolverlib
 del	.\pathbcm.f90	/^    subroutine del(/;"	s	module:pathbcmlib
 delabc	.\abc.f90	/^    subroutine delabc(/;"	s	module:ABC
+delarchive	.\Del\ac.f90	/^    subroutine delarchive(/;"	s	module:ACL
+delarchive	.\mysolclass.f90	/^    subroutine delarchive(/;"	s	module:mysolclass
 delfloweps	.\para.f90	/^    real*8,parameter::delfloweps /;"	v	module:constpara
 delgraph	.\graphlib.f90	/^    subroutine delgraph(/;"	s	module:GraphLib
 delmethod	.\solverlib.f90	/^    subroutine delmethod(/;"	s	module:SolverLib
-delsol	.\solclass.f90	/^    subroutine delsol(/;"	s	module:mysolclass
+delsol	.\mysolclass.f90	/^    subroutine delsol(/;"	s	module:mysolclass
 demand	.\graphlib.f90	/^        real*8,allocatable::demand(/;"	k	type:graphclass
 dest	.\graphlib.f90	/^        integer,allocatable::dest(/;"	k	type:graphclass
 dial_Wsd	.\solverlib.f90	/^        real*8,ALLOCATABLE::dial_Wsd(/;"	k	type:methods
@@ -137,7 +155,7 @@ dial_rlabel	.\solverlib.f90	/^        real*8,ALLOCATABLE::dial_rlabel(/;"	k	type
 dial_slabel	.\solverlib.f90	/^        real*8,ALLOCATABLE::dial_rlabel(:,:),dial_slabel(/;"	k	type:methods
 dial_sub_graph	.\solverlib.f90	/^subroutine dial_sub_graph(/;"	s
 dist	.\para.f90	/^    real*8,allocatable::dist(/;"	v	module:constpara
-dp	.\solclass.f90	/^        type(dps/;"	k	type:solclass
+dp	.\mysolclass.f90	/^        type(dps/;"	k	type:solclass
 dp_converge_file	.\para.f90	/^    integer,parameter::dp_converge_file /;"	v	module:constpara
 dp_tune_para_file_part1	.\para.f90	/^    integer,parameter::dp_tune_para_file_part1 /;"	v	module:constpara
 dp_tune_para_file_part2	.\para.f90	/^    integer,PARAMETER::dp_tune_para_file_part2 /;"	v	module:constpara
@@ -146,17 +164,18 @@ dpmain	.\pathbcm.f90	/^    subroutine dpmain(/;"	s	module:pathbcmlib
 dpsolverlib	.\dpsolver.f90	/^    module dpsolverlib$/;"	m
 employ_bee	.\abc.f90	/^    subroutine employ_bee(/;"	s	module:ABC
 eta	.\csram.f90	/^    real*8::eta /;"	v	module:csramsolverlib
-evaluate	.\solclass.f90	/^    subroutine evaluate(/;"	s	module:mysolclass
+evaluate	.\mysolclass.f90	/^    subroutine evaluate(/;"	s	module:mysolclass
 exp_id	.\bilevel.f90	/^    integer::exp_id /;"	v	program:bilevel
 exptime	.\lineclass.f90	/^       real*8::exptime$/;"	k	type:lineclass
 fact	.\graphlib.f90	/^    real*8 function fact(/;"	f
-fair	.\solclass.f90	/^        real*8::fair$/;"	k	type:solclass
 fare	.\graphlib.f90	/^        real*8,allocatable::scost(:),svar(:),fare(/;"	k	type:graphclass
 fare	.\lineclass.f90	/^       real*8::fare(/;"	k	type:lineclass
 firstin	.\graphlib.f90	/^        integer,allocatable::firstin(/;"	k	type:graphclass
 firstout	.\graphlib.f90	/^        integer,allocatable::firstout(/;"	k	type:graphclass
-fitness	.\solclass.f90	/^        real*8::fitness$/;"	k	type:solclass
+fitness	.\mysolclass.f90	/^        real*8::fitness$/;"	k	type:solclass
+fleet	.\Del\ac.f90	/^        integer,allocatable::fleet(/;"	k	type:ArchivedClass
 fleet	.\lineclass.f90	/^       integer::fleet$/;"	k	type:lineclass
+fleet	.\mysolclass.f90	/^        integer,allocatable::fleet(/;"	k	type:ArchivedClass
 fleet_lb	.\para.f90	/^    integer,allocatable::fleet_lb(/;"	v	module:constpara
 fleet_ub	.\para.f90	/^    integer,allocatable::fleet_lb(:), fleet_ub(/;"	v	module:constpara
 fleetsize	.\para.f90	/^    integer::fleetsize$/;"	v	module:constpara
@@ -172,36 +191,41 @@ gama	.\csram.f90	/^    real*8::gama /;"	v	module:csramsolverlib
 gama	.\para.f90	/^    real*8,parameter::gama /;"	v	module:constpara
 gapfileno	.\para.f90	/^    integer,parameter::gapfileno /;"	v	module:constpara
 gapfileno	.\solverlib.f90	/^        integer::gapfileno$/;"	k	type:methods
+gc_update_secfre	.\graphlib.f90	/^    subroutine gc_update_secfre(/;"	s	module:GraphLib
 gen_path_sol	.\pathbcm.f90	/^    subroutine gen_path_sol(/;"	s	module:pathbcmlib
 gen_sol	.\abc.f90	/^    subroutine gen_sol(/;"	s	module:ABC
-generate	.\solclass.f90	/^    subroutine generate(/;"	s	module:mysolclass
+generate	.\mysolclass.f90	/^    subroutine generate(/;"	s	module:mysolclass
 geninisol	.\solverlib.f90	/^    subroutine geninisol(/;"	s	module:SolverLib
 getBaseCaseOd	.\abc.f90	/^    subroutine getBaseCaseOd(/;"	s	module:ABC
 get_bcmval	.\solverlib.f90	/^    function get_bcmval(/;"	f	module:SolverLib
+get_box_num	.\abc.f90	/^    function get_box_num(/;"	f	module:ABC
 get_fleet	.\lineclass.f90	/^    subroutine get_fleet(/;"	s	module:mylineclass
 get_fleet_range	.\bilevel.f90	/^    subroutine get_fleet_range(/;"	s
 get_line_fre	.\lineclass.f90	/^    subroutine get_line_fre(/;"	s	module:mylineclass
 get_line_time	.\lineclass.f90	/^   subroutine get_line_time(/;"	s	module:mylineclass
 get_link_like	.\STOCH.f90	/^subroutine get_link_like(/;"	s	module:STOCHLoading
 get_load_prob	.\csram.f90	/^    subroutine get_load_prob(/;"	s	module:csramsolverlib
-get_neigh	.\solclass.f90	/^    subroutine get_neigh(/;"	s	module:mysolclass
-get_obj_fare	.\solclass.f90	/^    subroutine get_obj_fare(/;"	s	module:mysolclass
-get_obj_ttc	.\solclass.f90	/^    subroutine get_obj_ttc(/;"	s	module:mysolclass
-get_od_cost	.\solclass.f90	/^    subroutine get_od_cost(/;"	s	module:mysolclass
+get_neigh	.\mysolclass.f90	/^    function get_neigh(/;"	f	module:mysolclass
+get_obj_fare	.\mysolclass.f90	/^    subroutine get_obj_fare(/;"	s	module:mysolclass
+get_obj_ttc	.\mysolclass.f90	/^    subroutine get_obj_ttc(/;"	s	module:mysolclass
+get_od_cost	.\mysolclass.f90	/^    subroutine get_od_cost(/;"	s	module:mysolclass
 get_path_bcm_ncperr	.\pathbcm.f90	/^    function get_path_bcm_ncperr(/;"	f	module:pathbcmlib
 get_pool	.\BruteForce.f90	/^    subroutine get_pool$/;"	s	module:BruteForce
 get_stop_costs	.\lineclass.f90	/^    subroutine get_stop_costs(/;"	s	module:mylineclass
 get_sub_graph	.\STOCH.f90	/^subroutine get_sub_graph(/;"	s	module:STOCHLoading
 get_sum	.\genetic_simplexprojection.f90	/^		real*8 function get_sum(/;"	f
 getncperr	.\solverlib.f90	/^    function getncperr(/;"	f
-getorder	.\graphlib.f90	/^    subroutine getorder(/;"	s
+getorder	.\graphlib.f90	/^    subroutine getorder(/;"	s	module:GraphLib
 getsuebush	.\graphlib.f90	/^    subroutine getsuebush(/;"	s
+gitfit	.\abc.f90	/^    subroutine gitfit(/;"	s	module:ABC
 graphclass	.\graphlib.f90	/^    type, public::graphclass$/;"	t	module:GraphLib
 h0	.\csram.f90	/^    real*8,allocatable::h0(/;"	v	module:csramsolverlib
 h1	.\csram.f90	/^    real*8,allocatable::h1(/;"	v	module:csramsolverlib
 i	.\bilevel.f90	/^    in/;"	v	program:bilevel
+id	.\Del\ac.f90	/^        integer::id$/;"	k	type:ArchivedClass
 id	.\lineclass.f90	/^       integer::id$/;"	k	type:lineclass
-id	.\solclass.f90	/^        integer::id$/;"	k	type:solclass
+id	.\mysolclass.f90	/^        integer::id$/;"	k	type:ArchivedClass
+id	.\mysolclass.f90	/^        integer::id$/;"	k	type:solclass
 inf1	.\para.f90	/^    real*8, parameter::inf1 /;"	v	module:constpara
 ini	.\STOCH.f90	/^subroutine ini(/;"	s	module:STOCHLoading
 ini	.\csram.f90	/^    subroutine ini(/;"	s	module:csramsolverlib
@@ -210,10 +234,12 @@ ini	.\msasolver.f90	/^    subroutine ini(/;"	s	module:msasolverlib
 ini	.\pathbcm.f90	/^    subroutine ini(/;"	s	module:pathbcmlib
 ini_lines	.\lineclass.f90	/^   subroutine ini_lines(/;"	s	module:mylineclass
 iniabc	.\abc.f90	/^    subroutine iniabc(/;"	s	module:ABC
+iniarchive	.\Del\ac.f90	/^    subroutine iniarchive(/;"	s	module:ACL
+iniarchive	.\mysolclass.f90	/^    subroutine iniarchive(/;"	s	module:mysolclass
 iniassignflow	.\solverlib.f90	/^    subroutine iniassignflow(/;"	s	module:SolverLib
 inigraph	.\graphlib.f90	/^    subroutine inigraph(/;"	s	module:GraphLib
 inimethod	.\solverlib.f90	/^    subroutine inimethod(/;"	s	module:SolverLib
-inisol	.\solclass.f90	/^    subroutine inisol(/;"	s	module:mysolclass
+inisol	.\mysolclass.f90	/^    subroutine inisol(/;"	s	module:mysolclass
 init_arc_flow	.\solverlib.f90	/^    subroutine init_arc_flow(/;"	s
 init_path_flow	.\pathbcm.f90	/^    subroutine init_path_flow(/;"	s	module:pathbcmlib
 initial_x	.\solverlib.f90	/^    subroutine initial_x(/;"	s	module:SolverLib
@@ -236,7 +262,7 @@ lf	.\solverlib.f90	/^        real*8,allocatable::lf(/;"	k	type:methods
 limitcount	.\abc.f90	/^    integer,allocatable::limitcount(/;"	k	type:abcclass
 line_links	.\para.f90	/^    integer::line_links(/;"	v	module:constpara
 lineclass	.\lineclass.f90	/^    type,public::lineclass /;"	t	module:mylineclass
-link_time	.\graphlib.f90	/^    subroutine link_time(/;"	s
+link_time	.\graphlib.f90	/^    subroutine link_time(/;"	s	module:GraphLib
 linklike	.\STOCH.f90	/^    real*8,ALLOCATABLE::linklike(/;"	k	type:DialLoad
 lndist	.\para.f90	/^    real*8,allocatable::lndist(/;"	v	module:constpara
 load_index	.\para.f90	/^    integer::load_index /;"	v	module:constpara
@@ -257,20 +283,25 @@ maxfre	.\para.f90	/^    real*8,parameter::maxfre /;"	v	module:constpara
 maxiter	.\abc.f90	/^    integer::maxiter$/;"	k	type:abcclass
 maxlimit	.\abc.f90	/^    integer::maxlimit$/;"	k	type:abcclass
 maxlinestops	.\para.f90	/^    integer,parameter::maxlinestops /;"	v	module:constpara
+maxobj	.\abc.f90	/^    real*8::minobj(2),maxobj(/;"	k	type:abcclass
 maxsecline	.\para.f90	/^    integer,parameter::maxsecline=/;"	v	module:constpara
 methods	.\solverlib.f90	/^    type,public::methods$/;"	t	module:SolverLib
 minfre	.\para.f90	/^    real*8,parameter::minfre /;"	v	module:constpara
-minspantree	.\graphlib.f90	/^    subroutine minspantree(/;"	s
+minobj	.\abc.f90	/^    real*8::minobj(/;"	k	type:abcclass
+minspantree	.\graphlib.f90	/^    subroutine minspantree(/;"	s	module:GraphLib
 miu	.\dpsolver.f90	/^        real*8::beta,lama,v,miu,/;"	v	module:dpsolverlib
 miu	.\pathbcm.f90	/^        real*8::beta,lama,v,miu,/;"	v	module:pathbcmlib
 msa	.\genetic.f90	/^    subroutine msa(/;"	s
 msasolverlib	.\msasolver.f90	/^    module msasolverlib$/;"	m
-mute_increa	.\mutationlib.f90	/^    subroutine mute_increa(/;"	s	module:mutelib
+mutation_main	.\mutationlib.f90	/^    subroutine mutation_main(/;"	s	module:mutelib
+mute_incre_decre	.\mutationlib.f90	/^    subroutine mute_incre_decre(/;"	s	module:mutelib
+mute_increa_by1	.\mutationlib.f90	/^    subroutine mute_increa_by1(/;"	s	module:mutelib
+mute_swap	.\mutationlib.f90	/^    subroutine mute_swap(/;"	s	module:mutelib
 mutelib	.\mutationlib.f90	/^    module mutelib$/;"	m
 mylineclass	.\lineclass.f90	/^    module mylineclass /;"	m
 mylines	.\graphlib.f90	/^        type(lineclass),dimension(:),ALLOCATABLE::mylines$/;"	k	type:graphclass
-mylines	.\solclass.f90	/^        type(lineclass),allocatable::mylines(/;"	k	type:solclass
-mysolclass	.\solclass.f90	/^    module mysolclass$/;"	m
+mylines	.\mysolclass.f90	/^        type(lineclass),allocatable::mylines(/;"	k	type:solclass
+mysolclass	.\mysolclass.f90	/^    module mysolclass$/;"	m
 name	.\solverlib.f90	/^        character(len = 10)::name$/;"	k	type:methods
 ncp_eps	.\para.f90	/^    real*8, parameter::ncp_eps /;"	v	module:constpara
 ncp_flow_eps	.\para.f90	/^    real*8, parameter::ncp_flow_eps /;"	v	module:constpara
@@ -296,11 +327,13 @@ numconnect	.\graphlib.f90	/^        integer,allocatable::numconnect(/;"	k	type:g
 numstops	.\lineclass.f90	/^       integer::numstops$/;"	k	type:lineclass
 nwk	.\STOCH.f90	/^    type(graphclass)::nwk$/;"	k	type:DialLoad
 nwk	.\solverlib.f90	/^        type(graphclass)::nwk$/;"	k	type:methods
-obj	.\solclass.f90	/^        real*8::obj(/;"	k	type:solclass
-odcost	.\solclass.f90	/^        real*8,allocatable::odcost(/;"	k	type:solclass
+obj	.\Del\ac.f90	/^        real*8::obj(/;"	k	type:ArchivedClass
+obj	.\mysolclass.f90	/^        real*8::obj(/;"	k	type:ArchivedClass
+obj	.\mysolclass.f90	/^        real*8::obj(/;"	k	type:solclass
+odcost	.\mysolclass.f90	/^        real*8,allocatable::odcost(/;"	k	type:solclass
 onlooker	.\abc.f90	/^    integer::onlooker$/;"	k	type:abcclass
 onlooker_bee	.\abc.f90	/^    subroutine onlooker_bee(/;"	s	module:ABC
-order	.\graphlib.f90	/^    subroutine order(/;"	s
+order	.\graphlib.f90	/^    subroutine order(/;"	s	module:GraphLib
 origin	.\graphlib.f90	/^        integer,allocatable::dest(:),origin(/;"	k	type:graphclass
 outputod	.\solverlib.f90	/^    subroutine outputod(/;"	s
 outputsub	.\graphlib.f90	/^    subroutine outputsub(/;"	s
@@ -323,6 +356,7 @@ pathbcmlib	.\pathbcm.f90	/^    module pathbcmlib$/;"	m
 piter	.\para.f90	/^    integer::piter$/;"	v	module:constpara
 pool	.\BruteForce.f90	/^    integer, allocatable, dimension(:,:)::pool$/;"	v	module:BruteForce
 printnwk	.\graphlib.f90	/^    subroutine printnwk(/;"	s
+printsol	.\mysolclass.f90	/^    subroutine printsol(/;"	s	module:mysolclass
 prob	.\STOCH.f90	/^    real*8,ALLOCATABLE::prob(/;"	k	type:DialLoad
 projection	.\genetic.f90	/^    subroutine projection(/;"	s
 read_fleet_para	.\bilevel.f90	/^    subroutine read_fleet_para$/;"	s
@@ -334,7 +368,8 @@ readpare	.\dpsolver.f90	/^    subroutine readpare(/;"	s	module:dpsolverlib
 readpare	.\pathbcm.f90	/^    subroutine readpare(/;"	s	module:pathbcmlib
 readsmall	.\graphlib.f90	/^    subroutine readsmall(/;"	s
 readtransportnwk	.\graphlib.f90	/^    subroutine readtransportnwk(/;"	s	module:GraphLib
-remedy	.\solclass.f90	/^    subroutine remedy(/;"	s	module:mysolclass
+remedy	.\mutationlib.f90	/^    subroutine remedy(/;"	s	module:mutelib
+remedy	.\mysolclass.f90	/^    subroutine remedy(/;"	s	module:mysolclass
 rio	.\para.f90	/^    real*8::rio /;"	v	module:constpara
 rlabel	.\STOCH.f90	/^    real*8,ALLOCATABLE::rlabel(/;"	k	type:DialLoad
 roots	.\graphlib.f90	/^        integer,allocatable::roots(/;"	k	type:graphclass
@@ -344,16 +379,20 @@ roulette	.\mutationlib.f90	/^    subroutine roulette(/;"	s	module:mutelib
 rsp	.\RSPATH.F90	/^		subroutine rsp(/;"	s
 scost	.\graphlib.f90	/^        real*8,allocatable::scost(/;"	k	type:graphclass
 scouts	.\abc.f90	/^    subroutine scouts(/;"	s	module:ABC
-set_fleet_and_fre	.\solclass.f90	/^    subroutine set_fleet_and_fre(/;"	s	module:mysolclass
+select_two_dif_line	.\mutationlib.f90	/^    subroutine select_two_dif_line(/;"	s	module:mutelib
+set	.\Del\ac.f90	/^    subroutine set(/;"	s	module:ACL
+set	.\mysolclass.f90	/^    subroutine set(/;"	s	module:mysolclass
+set_fleet_and_fre	.\mysolclass.f90	/^    subroutine set_fleet_and_fre(/;"	s	module:mysolclass
 sf	.\graphlib.f90	/^        real*8,allocatable::sf(/;"	k	type:graphclass
 simplex_projection	.\genetic_simplexprojection.f90	/^    subroutine simplex_projection(/;"	s
 sindex	.\graphlib.f90	/^        integer,allocatable::sindex(/;"	k	type:graphclass
+sizeofArchive	.\abc.f90	/^    integer::sizeofArchive$/;"	k	type:abcclass
 sl	.\graphlib.f90	/^        integer,allocatable::sl(/;"	k	type:graphclass
 slabel	.\STOCH.f90	/^    real*8,ALLOCATABLE::rlabel(:,:),slabel(/;"	k	type:DialLoad
 slc	.\graphlib.f90	/^        integer,allocatable::slc(/;"	k	type:graphclass
 slf	.\graphlib.f90	/^        real*8,allocatable::slf(/;"	k	type:graphclass
 solc	.\solverlib.f90	/^        integer::solc$/;"	k	type:methods
-solclass	.\solclass.f90	/^    type,public::solclass$/;"	t	module:mysolclass
+solclass	.\mysolclass.f90	/^    type,public::solclass$/;"	t	module:mysolclass
 solver	.\csram.f90	/^    subroutine solver(/;"	s	module:csramsolverlib
 solver	.\dpsolver.f90	/^    subroutine solver(/;"	s	module:dpsolverlib
 solver	.\msasolver.f90	/^    subroutine solver(/;"	s	module:msasolverlib
@@ -381,17 +420,17 @@ toder_level	.\graphlib.f90	/^        integer,ALLOCATABLE::toder_level(/;"	k	type
 torder	.\graphlib.f90	/^        integer,allocatable::torder(/;"	k	type:graphclass
 totalfea	.\BruteForce.f90	/^    integer::totalfea$/;"	v	module:BruteForce
 tt	.\lineclass.f90	/^       real*8::tt(/;"	k	type:lineclass
-ttc	.\solclass.f90	/^        real*8::ttc /;"	k	type:solclass
 tune_solver	.\para.f90	/^    integer::tune_solver$/;"	v	module:constpara
 tunesolver	.\dpsolver.f90	/^    subroutine tunesolver(/;"	s	module:dpsolverlib
 update_alph	.\dpsolver.f90	/^    real*8 function update_alph(/;"	f	module:dpsolverlib
+update_archive	.\abc.f90	/^    subroutine update_archive(/;"	s	module:ABC
 update_bush	.\solverlib.f90	/^    subroutine update_bush(/;"	s	module:SolverLib
 update_global_best	.\abc.f90	/^    subroutine update_global_best(/;"	s	module:ABC
 update_linkflow_from_path	.\pathbcm.f90	/^    subroutine update_linkflow_from_path(/;"	s	module:pathbcmlib
 update_sec_fre	.\graphlib.f90	/^    subroutine update_sec_fre(/;"	s
 update_section_cost	.\graphlib.f90	/^    subroutine update_section_cost(/;"	s
 update_stepsize	.\csram.f90	/^    subroutine update_stepsize(/;"	s	module:csramsolverlib
-updatesub	.\graphlib.f90	/^    subroutine updatesub(/;"	s
+updatesub	.\graphlib.f90	/^    subroutine updatesub(/;"	s	module:GraphLib
 v	.\dpsolver.f90	/^        real*8::beta,lama,v,/;"	v	module:dpsolverlib
 v	.\pathbcm.f90	/^        real*8::beta,lama,v,/;"	v	module:pathbcmlib
 var	.\lineclass.f90	/^       real*8::var(/;"	k	type:lineclass
@@ -399,6 +438,10 @@ vartime	.\lineclass.f90	/^       real*8::vartime$/;"	k	type:lineclass
 walkcost	.\para.f90	/^    real*8,parameter::walkcost /;"	v	module:constpara
 writepara	.\para.f90	/^    subroutine writepara$/;"	s	module:constpara
 x	.\solverlib.f90	/^        real*8,allocatable::x(/;"	k	type:methods
+xPos	.\Del\ac.f90	/^        integer::xPos,/;"	k	type:ArchivedClass
+xPos	.\mysolclass.f90	/^        integer::xPos,/;"	k	type:ArchivedClass
 x_bar	.\dpsolver.f90	/^        real*8,allocatable::x_bar(/;"	v	module:dpsolverlib
 xfa	.\solverlib.f90	/^        real*8,allocatable::xfa(/;"	k	type:methods
+yPos	.\Del\ac.f90	/^        integer::xPos, yPos /;"	k	type:ArchivedClass
+yPos	.\mysolclass.f90	/^        integer::xPos, yPos /;"	k	type:ArchivedClass
 zero	.\para.f90	/^    real*8,parameter::zero /;"	v	module:constpara

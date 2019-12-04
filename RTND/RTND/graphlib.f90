@@ -979,7 +979,7 @@
         this%caseindex = rhs%caseindex 
 
          do l =1, nline
-          call this%mylines(l)%copy(rhs%mylines(l))
+          call this%mylines(l)%copylines(rhs%mylines(l))
          enddo 
 
 
