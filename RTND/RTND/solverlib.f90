@@ -576,7 +576,8 @@
     real*8:: printfx
     largecost = 1000.0
 
-    open(1,file='c:\gitcodes\LogitAssign\results\fortran_output_link.txt',status='old',position='append')
+    ! open(1,file='c:\gitcodes\LogitAssign\results\fortran_output_link.txt',status='old',position='append')
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_output_link.txt',status='old',position='append')
     ! write(1,*) "method,case,dest,link,flow,fx,lt,xprob,logitprob,tail,head"
     do i=1,ndest
         do j=1,nl
@@ -589,7 +590,8 @@
     end do
     close(1)
 
-    open(1,file='c:\GitCodes\LogitAssign\results\fortran_output_node.txt',position='append')
+    ! open(1,file='c:\GitCodes\LogitAssign\results\fortran_output_node.txt',position='append')
+    open(1,file='c:\GitCodes\BTNDP\results\fortran_output_node.txt',position='append')
     ! write(1,*) "method,case,dest,node,fout,lout,label"
     do nr = 1, ndest
         do n = 1, nn
@@ -619,7 +621,8 @@
     integer::d1,d2
     real*8,DIMENSION(d1,d2)::flow,y
     integer q,w
-    open(1,file='c:\gitcodes\logitassign\results\fortran_output_od.txt',position='append')
+    ! open(1,file='c:\gitcodes\logitassign\results\fortran_output_od.txt',position='append')
+    open(1,file='c:\gitcodes\BTNDP\results\fortran_output_od.txt',position='append')
     do q = 1, nod
         do w=1,ndest
             if (this%nwk%roots(w).eq.this%nwk%dest(q)) then

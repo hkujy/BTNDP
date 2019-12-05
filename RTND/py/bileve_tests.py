@@ -7,6 +7,7 @@ import mypara
 import pandas as pd
 import read as rd
 import myclass as mc
+import global_para as gl
 import myplot as mplt
 from shutil import copyfile
 import shutil
@@ -15,6 +16,7 @@ import matplotlib.pyplot as plt
 import run
 
 # para for enumerate fre
+
 change_fre_line = 2
 # base_fre = 4   # basic frequency for computing fair
 # para for enumerate
@@ -35,6 +37,7 @@ rio = 0.15
 
 def create_case(mp:mypara.ParaClass()):
     """
+        create all frequency cases at a predefined fixed frequency interval
         write the case file for the frequency 
     """ 
     l =  change_fre_line - 1
@@ -45,7 +48,7 @@ def create_case(mp:mypara.ParaClass()):
         tf = fre_lb + i*incre
         ff = []
         for j in range(0,4):
-            if j==l:
+            if j == l:
                 ff.append(tf)
             else:
                 ff.append(base_fre[j])
@@ -56,7 +59,7 @@ def create_case(mp:mypara.ParaClass()):
 
     mypara.ParaClass.num_cases = len(fre_list)    
     write_case_files(mp,fre_list)
-    base_case_id = -1
+    # base_case_id = -1
     cases = []
     for i in range(0,mypara.ParaClass.num_cases):
         cases.append(mc.CaseClass(mp))
@@ -66,7 +69,6 @@ def create_case(mp:mypara.ParaClass()):
         if (cases[-1].fre[0]==base_fre[0] and cases[-1].fre[1]==base_fre[1] 
         and cases[-1].fre[2]==base_fre[2] and cases[-1].fre[3]==base_fre[3]):
             mc.CaseClass.base_case_id = i
-    
     return cases 
 
 def write_case_files(mp:mypara.ParaClass(),fre_list):
@@ -80,10 +82,10 @@ def write_case_files(mp:mypara.ParaClass(),fre_list):
         print("{0}".format(len(fre_list)), file=f)
 
 def test_incre_fre_case(mp:mypara.ParaClass()):
-
+    
     cases = create_case(mp)
     print("Base case id is {0}".format(mc.CaseClass.base_case_id))
-    print("Test Case: Enumerate Freqeuncy")
+    print("Test Case: Enumerate Frequency at a predefined")
 
     run.run_exe(mp)
     rd.main(mp, cases)
@@ -96,12 +98,10 @@ def test_incre_fre_case(mp:mypara.ParaClass()):
         print("Fre lower bound = {0}".format(fre_lb),file=f)
         print("Fre upper bound = {0}".format(fre_up),file=f)
 
-
-    copyinputdir = mp.output_folder+"\\exp_"+str(exp_id)
+    copyinputdir = mp.output_folder+"\\exp_"+str(gl.exp_id)
     if os.path.isdir(copyinputdir):
         shutil.rmtree(copyinputdir)
     shutil.copytree(mp.input_folder,copyinputdir)
-
 
 def test_enumerate_case(mp:mypara.ParaClass()):
 
@@ -109,6 +109,7 @@ def test_enumerate_case(mp:mypara.ParaClass()):
         print("{0}".format(fre_lb),file = f)
         print("{0}".format(fre_up),file = f) 
         print("{0}".format(fleetsize),file = f)
+
     print("Test Case: Enumerate all based on fleet")
 
     with open(mp.input_folder+"\\inifre.txt","w") as f:
@@ -142,7 +143,7 @@ def test_enumerate_case(mp:mypara.ParaClass()):
         print("Fre lower bound = {0}".format(fre_lb),file=f)
         print("Fre upper bound = {0}".format(fre_up),file=f)
 
-    copyinputdir = mp.output_folder+"\\exp_"+str(exp_id)
+    copyinputdir = mp.output_folder+"\\exp_"+str(gl.exp_id)
     if os.path.isdir(copyinputdir):
         shutil.rmtree(copyinputdir)
     shutil.copytree(mp.input_folder,copyinputdir)

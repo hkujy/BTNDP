@@ -136,4 +136,4 @@ def main(mypara:mypara.ParaClass,cases):
         print("node,link,head,cost,headlabel,pie,fx,x,logitprob,dest",file=f)
     for c in cases:
         pr_nwk(mypara,c.nwk,c.sols)
-        print("caseid = {0}, fair = {1}".format(c.id,c.fair))
+        print("Caseid = {0}, fair = {1}".format(c.id,c.fair))

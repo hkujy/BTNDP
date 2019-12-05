@@ -1,7 +1,7 @@
     
     program bilevel
-    use constpara
-    use GraphLib
+    ! use constpara
+    ! use GraphLib
     use dpsolverlib
     use BruteForce
     implicit none
@@ -27,11 +27,9 @@
     write (*,*) "lower bound = ", fleet_lb
     write (*,*) "upper bound = ", fleet_ub
     call Basenwk%printnwk
-    call test_abc(Basenwk)
 
-    write(*,*) "complete test abc"
-    pause
-
+    !write(*,*) "complete test abc"
+    !pause
 
     if (exp_id==1) then 
         write(*,*) "Experiment: Given frequency"
@@ -79,7 +77,7 @@
     
     subroutine test_enumerate_fleet(Basenwk)
     use BruteForce
-    use GraphLib
+    ! use GraphLib
     implicit none 
     type(graphclass)::basenwk
     integer::val
@@ -102,7 +100,7 @@
     call get_fleet_range(Basenwk)
     write (*,*) "lower bound = ", fleet_lb
     write (*,*) "upper bound = ", fleet_ub
-    ! call bf_enumerate_fleet(Basenwk)
+    call bf_enumerate_fleet(Basenwk)
     end subroutine
     
     subroutine test_abc(basenwk)
@@ -189,7 +187,7 @@
     use GraphLib
     implicit none
     type(graphclass)::basenwk 
-    ! call bf_given_fre(Basenwk)
+    call bf_given_fre(Basenwk)
     
     end subroutine
 

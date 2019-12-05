@@ -4,16 +4,16 @@
 
 # remark: the index from fortrain starts from 1
 # exp_id = 1  # given set with given frequency
-exp_id = 2  # enumerate fleet size
+exp_id = 1  # enumerate fleet size
 # exp_id = 3  # bilevel abc
 test_index = 0
 
 para_dict = {
 "NetworkType":0,    # simple network
 # "NetworkType":1,     # sioux fall transit toy
-"AssignMode":2,
+"AssignMode":2,    # 1: tranport nwk, 2:compete nwk
 "RunExe":1,
-"WriteConvege":1,
+"WriteConverge":1,
 "SolveMode":0,
 "SolverIndex":1,
 "TuneSolver":0,
@@ -23,7 +23,7 @@ para_dict = {
 # is_run_exe = True
 is_run_exe = False
 is_debug = True
-const_bcm_value = 20
+# const_bcm_value = 20
 
 #### Test on transit network 
 """

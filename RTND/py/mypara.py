@@ -1,17 +1,10 @@
 """
     logical,parameter::isdebug = .true.
-    paramter class
+    parameter class
 """
 
 import pandas as pd
 import global_para as gl
-
-
-# num_links = 6 +  1 
-# num_od = 2
-# num_nodes = 4 + 1
-# num_dest = 1 + 1
-# num_cases = 10
 
 class ParaClass:
    

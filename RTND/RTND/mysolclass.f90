@@ -207,7 +207,9 @@
     integer::w
     this%obj(1) = 0
     do w = 1, nod
-        write(*,*) "OD = ", w, " Pie = ", this%odcost(w)
+        if (isWriteDug) then 
+            write(*,*) "OD = ", w, " Pie = ", this%odcost(w)
+        endif 
         this%obj(1)= this%obj(1) + this%odcost(w)*this%dp%nwk%demand(w)
     enddo 
 

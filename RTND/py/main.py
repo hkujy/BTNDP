@@ -19,7 +19,7 @@ para_dict = {
 "NetworkType":0,
 "AssignMode":2,
 "RunExe":1,
-"WriteConvege":1,
+"WriteConverge":1,
 "SolveMode":0,
 "SolverIndex":1,
 "TuneSolver":0,
@@ -28,7 +28,7 @@ para_dict = {
 
 def set_test_case_para():
     """
-        set the gloabl case para
+        set the global case para
     """
     if gl.test_index == 0:
         gl.para_dict['NetworkType'] = 0
@@ -59,13 +59,15 @@ if __name__ == "__main__":
     mp.output_folder = r'C:\GitCodes\BTNDP\Results'
     
     mp.set_para(mp.input_folder)
+
     with open(mp.input_folder+"\\testindex.txt","w") as f:
         print(gl.exp_id,file = f)
 
     with open(mp.output_folder+"\\notes.txt","w") as f:
         print("Experiments Log",file=f)
+
     if gl.exp_id == 1:
-       bilevel.test_incre_fre_case(mp)
+        bilevel.test_incre_fre_case(mp)
     elif gl.exp_id == 2:
         bilevel.test_enumerate_case(mp)
     elif gl.exp_id == 3:

@@ -22,9 +22,9 @@ def count_changes(vals):
 
 def plt_od_cost(mp:mypara.ParaClass(),cases):
 
-    all_od = []
+    # all_od = []
     
-    for w in range(0, mypara.ParaClass.num_od):
+    for w in range(0, mp.num_od):
         od = []
         x = []
         for s in cases:

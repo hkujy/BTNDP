@@ -1,1 +1,5 @@
 Experiments Log
+**********Test Increase Irequency**********
+Base Frequency:  [6, 8, 6, 10]
+Fre lower bound = 4
+Fre upper bound = 15
