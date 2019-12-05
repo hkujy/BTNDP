@@ -24,6 +24,8 @@
     call get_pool
     allocate(tmp_fre(totalnumfeasible+1,4))
     caseindex = 0
+    call sol%inisol(basenwk)
+
     do l = 1, nline 
         call sol%mylines(l)%copylines(basenwk%mylines(l))
     enddo

@@ -513,9 +513,6 @@
                         if (this%nf(this%nwk%anode(i),nr)*this%x(i,nr).gt.ncp_flow_eps) then 
                             !if (abs(this%x(i,nr)-this%logitprob(i,nr)).gt.0.001) then 
                                 madf = max(madf,fx(i,nr)-nodefx(this%nwk%anode(i),nr))
-                                if (this%solc.gt.100.and.(fx(i,nr)-nodefx(this%nwk%anode(i),nr)).gt.490)  then 
-                                    write(*,*) "wtf"
-                                end if
                             !endif
                         endif
                         !endif
@@ -523,7 +520,7 @@
                     else
                         if (xfa(i,nr).gt.0.1.and.(fx(i,nr)-this%nwk%ndist(this%nwk%anode(i),nr))>madf) then 
                             madf = fx(i,nr) - this%nwk%ndist(this%nwk%anode(i),nr) 
-                            write(1,'(i3,a,i5,a,i5,a,i5,a,f6.2,a,f6.2,a,f6.2,a,f6.2)') & 
+                            write(1,'(i5,a,i5,a,i5,a,i5,a,f6.2,a,f6.2,a,f6.2,a,f6.2)') & 
                                 caseindex,',',i,',',this%nwk%anode(i),',',nr,',',xfa(i,nr),',',fx(i,nr),',', &
                                 this%nwk%ndist(this%nwk%anode(i),nr),',',madf 
                         end if 
@@ -582,7 +579,7 @@
     do i=1,ndest
         do j=1,nl
             ! if (this%xfa(j,i)/=0.0) then
-                write(1,"(a5,a,i3,a,i2,a,i3,a,f10.2,a,f7.2,a,f6.2,a,f6.4,a,f6.4,a,i3,a,i3)") &
+                write(1,"(a5,a,i5,a,i2,a,i3,a,f10.2,a,f7.2,a,f6.2,a,f6.4,a,f6.4,a,i3,a,i3)") &
                     this%name,',',caseindex,',', i,',',j,',',this%xfa(j,i),',',dmin1(largecost,this%fx(j,i)), ',', &
                     this%lt(j),',',this%x(j,i),',', this%logitprob(j,i),',',this%nwk%anode(j),',',this%nwk%bnode(j)
             ! endif
@@ -602,7 +599,7 @@
             end if 
           end do 
           if (isused) then 
-            write(1,"(a5,a,i3,a,i2,a,i3,a,i3,a,i3,a,f6.2)") &
+            write(1,"(a5,a,i5,a,i2,a,i3,a,i3,a,i3,a,f6.2)") &
              this%name,',',caseindex,',',nr,',',n,',',this%nwk%firstout(n),',',this%nwk%lastout(n),',',this%nwk%ndist(n,nr)
           end if
         enddo 
@@ -632,7 +629,7 @@
                         if (flow(j,w)>0.0001) then
                             !write(39,"(i2,1x,i3,1x,f6.2,1x,f7.2)") origin(q),dest(q),demand(q),y(j,w)
                             !write(39,"(i2,a,i3,a,f6.2,a,f7.2)") origin(q),',',dest(q),',', demand(q),',',y(j,w)
-                            write(1,"(i3,a,i2,a,i3,a,f8.4,a,f8.4,a,f8.4)") &
+                            write(1,"(i5,a,i2,a,i3,a,f8.4,a,f8.4,a,f8.4)") &
                                 caseindex,',',this%nwk%origin(q),',',this%nwk%dest(q),',',this%nwk%demand(q),',',y(j,w),',',flow(j,w)
                             exit
                         endif
@@ -693,9 +690,6 @@
     call cpu_time(st)
 
     this%solc =  this%solc + 1 
-    if (this%solc.eq.33) then 
-        write(*,*) "wtf"
-    endif 
     call this%forward_update_flow(x,d1=nl,d2=ndest)
     ! call this%nwk%link_time(this%lf,this%stt)
     call this%nwk%link_time(this%lf,this%lt)

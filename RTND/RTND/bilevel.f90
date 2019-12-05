@@ -174,8 +174,7 @@
         call nwk%mylines(l)%get_fleet(fre_ub(l))
         fleet_ub(l) = nwk%mylines(l)%fleet
     end do 
-
-
+    
     end subroutine
 
 

@@ -21,7 +21,7 @@ change_fre_line = 2
 # para for enumerate
 fre_lb = 2  # lower bound of the frequency 
 fre_up = 15 # fre upper bound 
-fleetsize = 12
+fleetsize = 20
 incre = 0.01
 base_fre = [6,4,2,12]
 # para for abc
@@ -159,9 +159,12 @@ def test_enumerate_case(mp:mypara.ParaClass()):
     plt.figure("pareto")     
     plt.scatter(px,py)
     plt.show()
+    pp = mp.output_folder+"\\pareto.txt"
 
-
-    pass
+    with open(pp, "w") as f:
+        for i in range(0,len(px)):
+            print("{0},{1}".format(px[i],py[i]), file = f)
+        
 
 
 def test_abc_case(mp:mypara.ParaClass()):
