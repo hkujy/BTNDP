@@ -5,10 +5,18 @@
     use dpsolverlib
     use BruteForce
     implicit none
+    interface
+      subroutine get_fleet_range(nwk,fre)
+      use GraphLib
+       type(graphclass)::nwk
+       real*8,optional::fre(4)
+      end subroutine get_fleet_range   
+    end interface
     integer:: i,l
     type(graphclass)::Basenwk
     integer, allocatable :: seed(:)
-    integer :: ns
+    integer::ns
+    real*8::checkfre(4)
     integer::exp_id  ! id for the experiments
     
     open(unit=logfileno,file='c:\gitcodes\btndp\results\log.txt',status='replace',action="write")
@@ -23,6 +31,11 @@
     call Basenwk%inigraph
     call Basenwk%readnwt
     call read_fleet_para
+    checkfre(1) = 6
+    checkfre(2) = 4
+    checkfre(3) = 2
+    checkfre(4) = 12
+    call get_fleet_range(Basenwk,checkfre)
     call get_fleet_range(Basenwk)
     write (*,*) "lower bound = ", fleet_lb
     write (*,*) "upper bound = ", fleet_ub
@@ -79,6 +92,13 @@
     use BruteForce
     ! use GraphLib
     implicit none 
+     interface
+      subroutine get_fleet_range(nwk,fre)
+      use GraphLib
+       type(graphclass)::nwk
+       real*8,optional::fre(4)
+      end subroutine get_fleet_range   
+    end interface
     type(graphclass)::basenwk
     integer::val
     integer::row
@@ -161,11 +181,15 @@
     end subroutine
 
     ! compute upper and lower bound of the fleetsize
-    subroutine get_fleet_range(nwk)
+    
+
+    
+    subroutine get_fleet_range(nwk,fre)
     use constpara
     use GraphLib
     implicit none 
     type(graphclass)::nwk
+    real*8,optional::fre(4)
     integer l
     
     do l = 1, nline
@@ -174,6 +198,16 @@
         call nwk%mylines(l)%get_fleet(fre_ub(l))
         fleet_ub(l) = nwk%mylines(l)%fleet
     end do 
+
+    if(PRESENT(fre)) then 
+        write(*,*) "check input fre"
+        do l = 1, nline
+            call nwk%mylines(l)%get_fleet(fre(l))
+            write(*,*) "l=",l,",fre=",nwk%mylines(l)%fleet
+        enddo
+        pause
+    end if
+
     
     end subroutine
 
