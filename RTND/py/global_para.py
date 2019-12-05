@@ -21,8 +21,8 @@ para_dict = {
 "LoadIndex":0
 }
 
-# is_run_exe = True
-is_run_exe = False
+is_run_exe = True
+# is_run_exe = False
 is_debug = True
 # is_debug = False
 
