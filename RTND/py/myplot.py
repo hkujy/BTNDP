@@ -1,7 +1,7 @@
 """
     plot graphs
 """
-
+import pandas as pd
 import mypara
 import matplotlib.pyplot as plt
 
@@ -40,17 +40,25 @@ def plt_od_cost(mp:mypara.ParaClass(),cases):
         # tpt.plot(od)
 
 
-
 def main(mp:mypara.ParaClass(), cases):
 
     plt_od_cost(mp, cases)
-
+    ttc = []
+    fare = []
     with open(mp.output_folder+"\\objects.txt", "w") as f:
         print("id,tc,fair",file=f)
         for c in cases:
             print("{0},{1},{2}".format(c.id,c.ttc,c.fair),file=f)
-            
+            ttc.append(c.ttc)
+            fare.append(c.fair)
 
 
+    plt.figure("ttc")
+    plt.plot(ttc)
+    plt.show()
+    plt.figure("fare")
+    plt.plot(fare)
+    plt.show()
+        
 
     pass

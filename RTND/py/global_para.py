@@ -1,5 +1,5 @@
 """
-    contain the gloable variables
+    contain the global variables
 """
 
 # remark: the index from fortrain starts from 1
@@ -20,9 +20,11 @@ para_dict = {
 "LoadIndex":0
 }
 
-# is_run_exe = True
-is_run_exe = False
-is_debug = True
+is_run_exe = True
+# is_run_exe = False
+# is_debug = True
+is_debug = False
+
 # const_bcm_value = 20
 
 #### Test on transit network 
@@ -43,7 +45,7 @@ Case 2:
 """
 Case 3
 1. transit network 
-2. sioux fall transit netowrk all od
+2. sioux fall transit network all od
 3. ue mode
 4. solve by dp
 """

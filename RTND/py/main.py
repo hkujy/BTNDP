@@ -44,10 +44,6 @@ if __name__ == "__main__":
     set_test_case_para()
     mp = mypara.ParaClass()
 
-# network_type_index = 0  #classic 4 nodes
-# network_type_index = 1  # Sioux Fall transit toy
-# network_type_index = 2  # Sioux Fall Transit all od
-
     if gl.para_dict['NetworkType'] == 0:
         mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
     elif gl.para_dict['NetworkType'] == 1:

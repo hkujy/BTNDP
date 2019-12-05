@@ -11,7 +11,7 @@
             // "program": "${file}",
             "program": "${workspaceFolder}/main.py",
             "stopOnEntry": true,
-            "console": "none"
+            "console": "internalConsole"
         }
     ]
 }

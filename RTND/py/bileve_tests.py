@@ -16,15 +16,14 @@ import matplotlib.pyplot as plt
 import run
 
 # para for enumerate fre
-
 change_fre_line = 2
 # base_fre = 4   # basic frequency for computing fair
 # para for enumerate
-fre_lb = 4  # lower bound of the frequency 
+fre_lb = 2  # lower bound of the frequency 
 fre_up = 15 # fre upper bound 
 fleetsize = 12
-incre = 0.1
-base_fre = [6,8,6,10]
+incre = 0.01
+base_fre = [6,4,2,12]
 # para for abc
 abc_npop = 5
 abc_onlooker = 5
@@ -32,7 +31,7 @@ abc_limit = 5
 abc_iter = 5
 
 # para for rio
-rio = 0.15
+rio = 0.05
 
 
 def create_case(mp:mypara.ParaClass()):
@@ -60,6 +59,7 @@ def create_case(mp:mypara.ParaClass()):
     mypara.ParaClass.num_cases = len(fre_list)    
     write_case_files(mp,fre_list)
     # base_case_id = -1
+    mc.CaseClass.base_case_id = 0
     cases = []
     for i in range(0,mypara.ParaClass.num_cases):
         cases.append(mc.CaseClass(mp))
@@ -69,6 +69,7 @@ def create_case(mp:mypara.ParaClass()):
         if (cases[-1].fre[0]==base_fre[0] and cases[-1].fre[1]==base_fre[1] 
         and cases[-1].fre[2]==base_fre[2] and cases[-1].fre[3]==base_fre[3]):
             mc.CaseClass.base_case_id = i
+            print("BaseCaseId = {0}".format(mc.CaseClass.base_case_id))
     return cases 
 
 def write_case_files(mp:mypara.ParaClass(),fre_list):
