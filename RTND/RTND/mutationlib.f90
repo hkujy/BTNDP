@@ -6,6 +6,22 @@
    
     !TODO : write other type of mutation operators
 
+    function checkfeet(fe) result(isOk)
+        implicit none 
+        integer,intent(in)::fe(nline)
+        integer::i
+        integer::subfe
+        LOGICAL::isOk
+        
+        subfe = sum(fe)
+        if(subfe.gt.fleetsize) then 
+            isOk = .false.
+        else
+            isOk = .true.
+        end if
+
+    end function
+
     subroutine mutation_main(now,nei)
         implicit none
         integer,intent(in)::now(nline)
@@ -25,6 +41,12 @@
         case (4)
             call mute_incre_decre(now,nei,3)
         end select
+
+        if (.not.checkfeet(nei)) then 
+            write(*,*) "mutation err, fleetsize constraint is violated"
+            write(*,*) "check file: mutationlib.f90"
+            pause
+        end if
 
     end subroutine
 

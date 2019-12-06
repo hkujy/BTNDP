@@ -5,7 +5,7 @@
     implicit none
     ! un affected constant para
     !logical,parameter::isWriteDug =.true.
-    logical,parameter::isWriteDug =.false.
+    logical,parameter::isWriteDug =.true.
     integer,parameter::maxlinestops = 4
     integer,parameter::maxsecline=4
     integer::num_line_seg_file_rows

@@ -125,12 +125,21 @@
     call this%BaseCaseSol%dp%ini
     call this%BaseCaseSol%dp%solver(this%basenwk)
     call get_od_cost(this%BaseCaseSol%dp,this%BaseCaseSol%odcost)
-   
+    
     if (isWriteDug) then
+        write(*,*) "base case OD cost = "
+        do l = 1, nod
+            write(*,*) this%BaseCaseSol%odcost(l)
+        end do
         write(*,*) "Write initial fleet szie"
         do l = 1, nline 
             write(*,*) l, this%BaseCaseSol%mylines(l)%fleet 
         enddo
+        write(*,*) "Write initial frequency"
+        do l = 1, nline
+            write(*,*) l, this%BaseCaseSol%mylines(l)%fre
+        end do 
+
         write(*,*) "Write initial OD cost"
         do l = 1, nod
             write(*,*) l,this%BaseCaseSol%odcost(l)
@@ -376,12 +385,22 @@
         implicit none 
         class(abcclass)::this
         integer,INTENT(IN)::iter
-        integer::i
+        integer::i,l
+        real*8::tf(4)
         open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
+        if (isWriteDug) then 
+            write(*,*) "**********print archcive********"
+            do i = 1, this%LastArchiveIndex
+                write(*,"(I4,a1,f8.2,a1,f8.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
+            enddo
+        endif
 
         do i = 1, this%LastArchiveIndex
-            write(1,"(I4,a1,f8.2,a1,f8.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
-            write(*,"(I4,a1,f8.2,a1,f8.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
+            do l=1, nline
+                tf(l) = this%archivesols(i)%fleet(l)
+            end do
+            write(1,"(I4,a1,f8.2,a1,f8.2,a,f6.2,a,f6.2,a,f6.2,a,f6.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2),",",&
+                        tf(1),",",tf(2),",",tf(3),",",tf(4)
         enddo
 
         close(1)

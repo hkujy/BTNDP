@@ -205,7 +205,7 @@
             call nwk%mylines(l)%get_fleet(fre(l))
             write(*,*) "l=",l,",fre=",nwk%mylines(l)%fleet
         enddo
-        pause
+        !pause
     end if
 
     
