@@ -21,14 +21,14 @@ change_fre_line = 2
 # para for enumerate
 fre_lb = 2  # lower bound of the frequency 
 fre_up = 15 # fre upper bound 
-fleetsize = 10
+fleetsize = 7
 incre = 0.01
 base_fre = [6,4,2,12]
 # para for abc
-abc_npop = 5
-abc_onlooker = 5
-abc_limit = 5
-abc_iter = 5
+abc_npop = 10
+abc_onlooker = 10
+abc_limit = 20
+abc_iter = 50
 
 # para for rio
 rio = 0.05
@@ -169,9 +169,21 @@ def test_enumerate_case(mp:mypara.ParaClass()):
 
 def test_abc_case(mp:mypara.ParaClass()):
 
-    with open(mp.input_folder +"\\abc.txt","w") as f:
+    with open(mp.input_folder+"\\testfleetpara.txt","w") as f:
+        print("{0}".format(fre_lb),file = f)
+        print("{0}".format(fre_up),file = f) 
+        print("{0}".format(fleetsize),file = f)
+    with open(mp.input_folder+"\\inifre.txt","w") as f:
+        for fre in base_fre:
+            print(fre,file=f)
+
+
+    with open(mp.input_folder +"\\abcpara.txt","w") as f:
         print("{0}".format(abc_npop),file = f)
         print("{0}".format(abc_onlooker),file = f)
         print("{0}".format(abc_limit),file = f)
         print("{0}".format(abc_iter),file = f)
     pass
+
+    run.run_exe(mp)
+    # TODO: write read arahive solutions and plot
