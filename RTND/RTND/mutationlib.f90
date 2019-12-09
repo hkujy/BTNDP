@@ -41,6 +41,8 @@
         case (4)
             call mute_incre_decre(now,nei,3)
         end select
+        
+        call remedy(nei)
 
         if (.not.checkfeet(nei)) then 
             write(*,*) "mutation err, fleetsize constraint is violated"
@@ -173,81 +175,93 @@
       enddo
     end subroutine
     
-    subroutine remedy(now)
+    subroutine remedy(newlines)
     implicit none 
-    integer,intent(inout)::now(nline)
+    integer,intent(inout)::newlines(nline)
     integer::l,add_sum, reduce_sum,gap,count
-    logical::isRemedy
+    logical::isRemedyBound
     real*8::ran
-    isRemedy = .false.
+    isRemedyBound = .false.
+    isLTfleetSize = .false.
+    isGTfleetSzie = .false.
     do l=1, nline
-        if ((now(l).lt.fleet_lb(l)).or.(now(l).gt.fleet_ub(l))) then 
-            isRemedy = .true. 
-            exit
+        if ((newlines(l).lt.fleet_lb(l)).or.(newlines(l).gt.fleet_ub(l))) then 
+            isRemedyBound = .true. 
         endif
     enddo 
-    if (.not.isRemedy) then
-        return 
+  
+    if (isRemedyBound) then
+        add_sum = 0
+        reduce_sum = 0
+        do l = 1, nline
+            do while(newlines(l).lt.fleet_lb(l))
+                newlines(l)= newlines(l) + 1
+                add_sum = add_sum + 1 
+            end do
+            do while(newlines(l).gt.fleet_ub(l))
+                newlines(l) = newlines(l) - 1
+                reduce_sum = reduce_sum + 1
+            end do
+        end do 
+        gap  = add_sum - reduce_sum
+        if (gap.gt.0) then 
+            ! more feet are added and need to reduce
+            do while (gap.gt.0)
+                count = 0
+            10  call random_number(ran)
+                l = int(nline*ran+1)
+                if(newlines(l)-1.lt.fleet_lb(l)) then 
+                    count = count + 1
+                    if (count.ge.100) then 
+                        write(*,*) " can not find a line to remove"
+                    end if 
+                    goto 10
+                else
+                    newlines(l) = newlines(l) - 1
+                    gap = gap - 1 
+                endif
+            end do
+        end if
+        if (gap.lt.0) then 
+            gap = abs(gap)
+            !more lines are reduces, so need to add it back
+            do while (gap.gt.0)
+                count = 0
+            15  call random_number(ran)
+                l = int(nline*ran + 1)
+                if ((newlines(l) + 1).gt.fleet_ub(l)) then 
+                    count = count + 1
+                    if (count.ge.100) then 
+                        write(*,*) "can not find a line to increase"
+                    end if 
+                    goto 15
+                else
+                    newlines(l) = newlines(l) + 1
+                    gap = gap - 1
+                endif
+            end do
+        end if 
     endif
-    add_sum = 0
-    reduce_sum = 0
-    do l = 1, nline
-        do while(now(l).lt.fleet_lb(l))
-            now(l)= now(l) + 1
-            add_sum = add_sum + 1 
-        end do
-        do while(now(l).gt.fleet_ub(l))
-            now(l) = now(l) - 1
-            reduce_sum = reduce_sum + 1
-        end do
-    end do 
-    gap  = add_sum - reduce_sum
-    if (gap.gt.0) then 
-        ! more feet are added and need to reduce
-        do while (gap.gt.0)
-            count = 0
-        10  call random_number(ran)
-            l = int(nline*ran+1)
-            if(now(l)-1.lt.fleet_lb(l)) then 
-                count = count + 1
-                if (count.ge.100) then 
-                    write(*,*) " can not find a line to remove"
-                end if 
-                goto 10
-            else
-                now(l) = now(l) - 1
-                gap = gap - 1 
-            endif
-        end do
-    end if
 
-    if (gap.lt.0) then 
-        gap = abs(gap)
-        !more lines are reduces, so need to add it back
-        do while (gap.gt.0)
-            count = 0
-        15  call random_number(ran)
-            l = int(nline*ran + 1)
-            if ((now(l) + 1).gt.fleet_ub(l)) then 
-                count = count + 1
-                if (count.ge.100) then 
-                    write(*,*) "can not find a line to increase"
-                end if 
-                goto 15
-            else
-                now(l) = now(l) + 1
-                gap = gap - 1
-            endif
-        end do
-    end if 
+  
+    if (sum(newlines).gt.fleetsize) then 
+
+    endif
+    if (sum(newlines).lt.fleetsize) then
+    endif   
+
 
     do l = l, nline
-        if (now(l).gt.fleet_ub(l).or.now(l).lt.fleet_lb(l)) then 
+        if (newlines(l).gt.fleet_ub(l).or.newlines(l).lt.fleet_lb(l)) then 
             write(*,*) "remedy procedure fails"
             write(*,*) "check file mutationlib.f90"
             pause
         end if
     enddo
+
+
+
+
     end subroutine   
     
 
