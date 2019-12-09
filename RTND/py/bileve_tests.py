@@ -20,8 +20,8 @@ change_fre_line = 2
 # base_fre = 4   # basic frequency for computing fair
 # para for enumerate
 fre_lb = 2  # lower bound of the frequency 
-fre_up = 15 # fre upper bound 
-fleetsize = 7
+fre_up = 7 # fre upper bound 
+fleetsize = 10
 incre = 0.01
 base_fre = [6,4,2,12]
 # para for abc
