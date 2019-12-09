@@ -5,8 +5,8 @@
 # remark: the index from fortrain starts from 1
 # exp_id = 1  # given set with given frequency
 # exp_id = 1  # enumerate fleet size
-# exp_id = 2  # enumerate fleet size
-exp_id = 3  # bilevel abc
+exp_id = 2  # enumerate fleet size
+# exp_id = 3  # bilevel abc
 test_index = 0
 
 para_dict = {

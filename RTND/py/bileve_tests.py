@@ -150,20 +150,45 @@ def test_enumerate_case(mp:mypara.ParaClass()):
     shutil.copytree(mp.input_folder,copyinputdir)
     xval = []
     yval = []
+    id_index = []
     for c in cases:
         if c.id!=mc.CaseClass.base_case_id:
             xval.append(c.ttc)
             yval.append(c.fair)
     
     (px,py) = pareto.pareto_frontier(xval,yval,maxX=False,maxY=True)
+    for c in range(0, len(px)):
+        for cc in cases:
+            if cc.ttc == px[c] and cc.fair == py[c]:
+                id_index.append(cc.id)
+
     plt.figure("pareto")     
     plt.scatter(px,py)
     plt.show()
     pp = mp.output_folder+"\\pareto.txt"
 
+    if cases[1].id != 1:
+        print("need to check the case id, which are is not equal")
+        input()
+
+
+
+    fleet_df= pd.read_csv(mp.output_folder+"\\enumeratefleet.txt",header=None)
+
+
     with open(pp, "w") as f:
         for i in range(0,len(px)):
-            print("{0},{1}".format(px[i],py[i]), file = f)
+            print("{0},{1}".format(px[i],py[i]), end ="\t",file=f)
+            for j in range(0, 3):
+                col = j
+                row = id_index[i]-1
+                fl = fleet_df[col][row]
+                print("{0},".format(fl),file=f,end="\t")
+            col = 3
+            row = id_index[i]-1
+            fl = fleet_df[col][row]
+            print("{0}".format(fl),file=f)
+
         
 
 
