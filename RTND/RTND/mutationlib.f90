@@ -99,7 +99,7 @@
     end subroutine
 
     subroutine mute_increa_by1(now,nei)
-        ! increase one line and reduce other line
+    ! increase one line and reduce other line
     implicit none 
     integer,intent(in)::now(nline)
     integer,intent(out)::nei(nline)
@@ -175,15 +175,72 @@
       enddo
     end subroutine
     
+
+    function selectAline(ChangeWay,now) result(lindex)
+        implicit none 
+    !changeway: 1 reduce, 2 increase 
+    integer::ChangeWay
+    integer::lindex,l
+    integer::now(4)
+    real*8::ran
+    integer::cc
+    if(size(now).ne.4) then 
+        write(*,*) "function: Select_aline dimension,file = mutationlib.f90"
+    end if
+10  call random_number(ran)
+    lindex = int(nline*ran+1)
+    select case (changeway)
+    case (1)
+      cc = 0
+      do while ((cc.le.100).or.(now(lindex)-1.ge.fleet_lb(lindex)))
+          call random_number(ran)
+          lindex = int(nline*ran+1)
+          cc = cc + 1
+      end do
+      if (cc.ge.100) then 
+        lindex = -1
+        do l = 1, nline
+            if (now(l)-1.ge.fleet_lb(l)) then 
+                lindex = l
+                exit
+            endif
+        enddo
+        if (lindex.eq.-1) then
+            write(*,*) " can not find a line to reduce"
+        endif
+      end if
+    case (2)
+      cc = 0
+      do while ((cc.le.100).or.(now(lindex)+1.lt.fleet_ub(lindex)))
+          call random_number(ran)
+          lindex = int(nline*ran+1)
+          cc = cc + 1
+      enddo
+      if (cc.ge.100) then 
+        lindex = -1
+        do l = 1, nline
+            if (now(l)+1.le.fleet_ub(l)) then 
+                lindex = l
+                exit
+            end if
+        enddo
+        if (lindex.eq.-1) then 
+            write(*,*) " can not find a line to increase"
+            pause
+        endif
+      endif
+    end select
+
+    end function
+
     subroutine remedy(newlines)
     implicit none 
     integer,intent(inout)::newlines(nline)
     integer::l,add_sum, reduce_sum,gap,count
     logical::isRemedyBound
     real*8::ran
+    integer::lindex
     isRemedyBound = .false.
-    isLTfleetSize = .false.
-    isGTfleetSzie = .false.
     do l=1, nline
         if ((newlines(l).lt.fleet_lb(l)).or.(newlines(l).gt.fleet_ub(l))) then 
             isRemedyBound = .true. 
@@ -244,10 +301,15 @@
     endif
 
   
-    if (sum(newlines).gt.fleetsize) then 
-
+4    if (sum(newlines).gt.fleetsize) then 
+        lindex = selectAline(1,newlines)
+        newlines(lindex) = newlines(lindex) - 1
+        goto 4
     endif
-    if (sum(newlines).lt.fleetsize) then
+6  if (sum(newlines).lt.fleetsize) then
+        lindex = selectAline(2,newlines)
+        newlines(lindex)  = newlines(lindex) + 1
+        goto 6
     endif   
 
 

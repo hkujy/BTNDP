@@ -1,7 +1,13 @@
 # Todo list
-1. 4-Dec-2019:
-- next step is to update update the output on screen and the
-  file
+1. Compare the benchmark solution with enumeration method 
+2. print the solution output from the python
+
+
+
+
+
+
+
 
 
 
