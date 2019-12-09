@@ -122,9 +122,10 @@
     integer l
 
     call this%BaseCaseSol%inisol(this%basenwk)
-    call this%BaseCaseSol%dp%ini
-    call this%BaseCaseSol%dp%solver(this%basenwk)
-    call get_od_cost(this%BaseCaseSol%dp,this%BaseCaseSol%odcost)
+    call this%BaseCaseSol%evaluate(this%basenwk)
+    ! call this%BaseCaseSol%dp%ini
+    ! call this%BaseCaseSol%dp%solver(this%basenwk)
+    ! call get_od_cost(this%BaseCaseSol%dp,this%BaseCaseSol%odcost)
     
     if (isWriteDug) then
         write(*,*) "base case OD cost = "
@@ -294,6 +295,12 @@
             this%maxobj(1) = max(this%maxobj(1), this%chrom(i)%obj(1))
             this%maxobj(2) = max(this%maxobj(2), this%chrom(i)%obj(2))
        end do
+       do i = 1, this%LastArchiveIndex
+            do j = 1, 2
+                this%minobj(j) = min(this%minobj(j),this%archivesols(i)%obj(j))
+                this%maxobj(j) = max(this%maxobj(j),this%archivesols(i)%obj(j))
+            enddo
+       enddo
        ! step 1.2. compute the eps values
        eps(1) = (this%maxobj(1) - this%minobj(1))/this%xnum
        eps(2) = (this%maxobj(2) - this%minobj(2))/this%ynum

@@ -147,11 +147,12 @@
       type(graphclass)::basenwk
       type(solclass),optional::basesol
       type(lineclass),dimension(nline)::templines
-      integer::l
+      integer::l,j
  
     ! step 1: set lines 
       do l = 1, nline
           call templines(l)%copylines(basenwk%mylines(l))
+          this%mylines(l)%fre =  this%mylines(l)%fre/60
           call basenwk%mylines(l)%copylines(this%mylines(l))
       end do 
 

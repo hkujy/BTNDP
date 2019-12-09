@@ -107,7 +107,7 @@
     ! end if 
     do l = 1, nline
         read(3,*) f
-        mylines(l)%fre = f/60.0
+        mylines(l)%fre = f
     end do
     close(3)
 

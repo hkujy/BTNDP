@@ -43,7 +43,7 @@
     write(1,*) totalnumfeasible+1
     ! evaluate base case 
     do l =1, nline
-        sol%mylines(l)%fre = inifre(l)/60.0
+        ! sol%mylines(l)%fre = inifre(l)/60.0
         tmp_fre(1,l) =  inifre(l)
     end do  
 
@@ -58,9 +58,8 @@
         call sol%update_fleet_and_fre(pool(p,:))
         do l =1, nline
             tmp_fre(p+1,l) =  sol%mylines(l)%fre
-            sol%mylines(l)%fre = sol%mylines(l)%fre/60.0
         end do  
-        write(*,*) 60*sol%mylines(1)%fre,60*sol%mylines(2)%fre,60*sol%mylines(3)%fre,60*sol%mylines(4)%fre
+        write(*,*) sol%mylines(1)%fre,sol%mylines(2)%fre,sol%mylines(3)%fre,sol%mylines(4)%fre
         call sol%evaluate(basenwk)
         call sol%dp%outputod(sol%dp%xfa,sol%dp%fx,nl,ndest)
         call sol%dp%outputx

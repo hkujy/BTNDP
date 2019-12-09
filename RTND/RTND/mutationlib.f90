@@ -42,10 +42,10 @@
             call mute_incre_decre(now,nei,3)
         end select
         
-        nei(1) = 1 
-        nei(2) = 2 
-        nei(3) = 2 
-        nei(4) = 2 
+        !nei(1) = 1 
+        !nei(2) = 2 
+        !nei(3) = 2 
+        !nei(4) = 2 
 
         call remedy(nei)
         if (.not.checkfeet(nei)) then 
