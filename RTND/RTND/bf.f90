@@ -101,8 +101,7 @@
         write(*,"(4(f6.2,2X))") fre_pool(p,:)
         !call sol%set_fleet_and_fre(pool(p,:))
         do l =1, nline
-            ! sol%mylines(l)%fre = real(pool(p,l)/60.0)
-            sol%mylines(l)%fre = fre_pool(p,l)/60.0
+            sol%mylines(l)%fre = fre_pool(p,l)
         end do  
         call sol%evaluate(basenwk)
         call sol%dp%outputod(sol%dp%xfa,sol%dp%fx,nl,ndest)

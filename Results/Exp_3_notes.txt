@@ -1,0 +1,9 @@
+Experiments Log
+**********Test ABC**********
+Base Frequency:  [6, 4, 2, 12]
+Fre lower bound = 2
+Fre upper bound = 15
+AbcPop = 10
+AbcOnlooker = 10
+AbcLimit = 10
+AbcIter = 10

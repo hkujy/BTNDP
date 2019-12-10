@@ -40,6 +40,17 @@ class ParaClass:
         self.solve_method = gl.para_dict['SolverIndex']
         self.network_type = gl.para_dict['NetworkType']
 
+    def print_para(self,file_name):
+        with open(file_name, "a+") as f:
+            print ("isRunExe,{0}".format(self.is_run_exe),file=f)
+            print ("NumCase,{0}".format(self.num_cases),file=f)
+            print ("AssignMode,{0}".format(self.assign_mode),file=f)
+            print ("SolveMethod,{0}".format(self.solve_method),file=f)
+            print ("NetworkType,{0}".format(self.network_type),file=f)
+ 
+            
 
+
+        
 
     

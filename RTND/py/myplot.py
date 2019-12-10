@@ -4,6 +4,7 @@
 import pandas as pd
 import mypara
 import matplotlib.pyplot as plt
+import global_para as gl
 
 
 def count_changes(vals):
@@ -35,9 +36,12 @@ def plt_od_cost(mp:mypara.ParaClass(),cases):
             x.append(s.id)
         plt.figure("OD "+str(w))
         plt.plot(x, od)
-        # all_od.append(od)
-        plt.show()
-        # tpt.plot(od)
+        plt.savefig(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"OD_"+str(w)+".png")
+
+        plt.show(block=False)
+        plt.pause(2)
+        plt.close()
+ 
 
 
 def main(mp:mypara.ParaClass(), cases):
@@ -55,10 +59,16 @@ def main(mp:mypara.ParaClass(), cases):
 
     plt.figure("ttc")
     plt.plot(ttc)
-    plt.show()
-    plt.figure("fare")
+    plt.savefig(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"_ttc.png")
+    plt.show(block=False)
+    plt.pause(2)
+    plt.close()
+
     plt.plot(fare)
-    plt.show()
+    plt.savefig(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"_fare.png")
+    plt.show(block=False)
+    plt.pause(2)
+    plt.close()
         
 
     pass

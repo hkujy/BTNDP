@@ -5,9 +5,23 @@
 # remark: the index from fortrain starts from 1
 # exp_id = 1  # given set with given frequency
 # exp_id = 1  # enumerate fleet size
-exp_id = 2  # eumerate fleet size
-# exp_id = 3  # bilevel abc
+# exp_id = 2  # enumerate fleet size
+exp_id = 3  # bilevel abc
 test_index = 0
+# para for enumerate fre
+change_fre_line = 2
+# para for enumerate
+fre_lb = 2  # lower bound of the frequency 
+fre_up = 15 # fre upper bound 
+fleetsize = 11
+incre = 0.01
+base_fre = [6,4,2,12]
+# base_demand = [200, 150]
+# para for abc
+abc_npop = 10
+abc_onlooker = 10
+abc_limit = 10
+abc_iter = 10
 
 para_dict = {
 "NetworkType":0,    # simple network
@@ -18,7 +32,10 @@ para_dict = {
 "SolveMode":0,
 "SolverIndex":1,
 "TuneSolver":0,
-"LoadIndex":0
+"LoadIndex":0,
+"Cap":30,
+"Rio":0.00,
+"Congest":1
 }
 
 is_run_exe = True
@@ -50,9 +67,7 @@ Case 3
 3. ue mode
 4. solve by dp
 """
-
 solve_method = 1 # 1: dp , 2: msa
 # assign_mode = 1  # bpr function
 assign_mode = 2  # transit network 
-
 

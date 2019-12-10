@@ -78,7 +78,7 @@
         case(3)
             capk = value
         case(4)
-           rio = value
+            rio = value
         end select
     enddo
     do i=1, nl
