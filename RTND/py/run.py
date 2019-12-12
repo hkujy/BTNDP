@@ -3,9 +3,9 @@
 """
 import os
 import mypara
-import global_para as gl
+import global_para_class as gpc
 
-def run_exe(mp:mypara.ParaClass()):
+def run_exe(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
     debug_exe = r'c:/GitCodes/BTNDP/RTND/RTND/Debug/RTND.exe'
     release_exe = r'c:/GitCodes/BTNDP/RTND/RTND/Release/RTND.exe'
     if mp.is_run_exe:

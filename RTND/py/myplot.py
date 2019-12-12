@@ -4,7 +4,7 @@
 import pandas as pd
 import mypara
 import matplotlib.pyplot as plt
-import global_para as gl
+import global_para_class as gpc
 
 
 def count_changes(vals):
@@ -21,7 +21,7 @@ def count_changes(vals):
 
 
 
-def plt_od_cost(mp:mypara.ParaClass(),cases):
+def plt_od_cost(mp:mypara.ParaClass(),cases,gl:gpc.GloParaClass):
 
     # all_od = []
     
@@ -44,9 +44,9 @@ def plt_od_cost(mp:mypara.ParaClass(),cases):
  
 
 
-def main(mp:mypara.ParaClass(), cases):
+def main(mp:mypara.ParaClass(), cases,gl:gpc.GloParaClass):
 
-    plt_od_cost(mp, cases)
+    plt_od_cost(mp, cases,gl)
     ttc = []
     fare = []
     with open(mp.output_folder+"\\objects.txt", "w") as f:

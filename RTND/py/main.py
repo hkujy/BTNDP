@@ -13,9 +13,25 @@ import pareto
 import matplotlib.pyplot as plt
 import bileve_tests as bilevel
 import run
-import global_para as gl
+import global_para_class as gpc
 
-def print_paras(mp:mypara.ParaClass()):
+
+def write_test_setting_file(gl:gpc.GloParaClass):
+    """
+        write test setting file of for fortran
+    """
+    with open(r"c:/GitCodes/BTNDP/Input/testsetting.txt","w+") as f:
+        print("{0}".format(gl.para_dict["NetworkType"]),file = f)
+        print("{0}".format(gl.para_dict["AssignMode"]),file = f)
+        print("{0}".format(gl.para_dict["RunExe"]),file = f)
+        print("{0}".format(gl.para_dict["WriteConverge"]),file = f)
+        print("{0}".format(gl.para_dict["SolveMode"]),file = f)
+        print("{0}".format(gl.para_dict["SolverIndex"]),file = f)
+        print("{0}".format(gl.para_dict["TuneSolver"]),file = f)
+        print("{0}".format(gl.para_dict["LoadIndex"]),file = f)
+
+
+def print_paras(mp:mypara.ParaClass,gl:gpc.GloParaClass):
     """
     main program to print parameters uses
     """
@@ -37,7 +53,7 @@ def print_paras(mp:mypara.ParaClass()):
         print("Rio,{0}".format(gl.para_dict["Rio"]),file=f)
         print("BaseFre=[{0},{1},{2},{3}]".format(gl.base_fre[0],gl.base_fre[1],gl.base_fre[2],gl.base_fre[3]),file=f)
 
-def set_test_case_para():
+def set_test_case_para(gl:gpc.GloParaClass):
     """
         set the global case para
     """
@@ -50,21 +66,15 @@ def set_test_case_para():
     else:
         print("The overall test index is not set")
 
-
-def SmallTests():
+def SmallTests(gl:gpc.GloParaClass):
+    """
+        Test on the four node network
+    """
     mp = mypara.ParaClass()
-    set_test_case_para()
-
-    if gl.para_dict['NetworkType'] == 0:
-        mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
-    elif gl.para_dict['NetworkType'] == 1:
-        mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transit_Toy'
-    elif gl.para_dict['NetworkType']  == 2:
-        mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transport_AllOD' 
-    else:
-        print("network folder is not specified")
+    set_test_case_para(gl)
+    mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
     mp.output_folder = r'C:\GitCodes\BTNDP\Results'
-    mp.set_para(mp.input_folder)
+    mp.set_para(mp.input_folder,gl)
     with open(mp.input_folder+"\\testindex.txt","w") as f:
         print(gl.exp_id,file = f)
     with open(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"_notes.txt","w") as f:
@@ -77,19 +87,51 @@ def SmallTests():
         print(gl.para_dict["Cap"],file = f)
         print(gl.para_dict["Rio"],file = f)
 
-
+    write_test_setting_file(gl)
     if gl.exp_id == 1:
-        bilevel.test_incre_fre_case(mp)
+        bilevel.test_incre_fre_case(mp,gl)
     elif gl.exp_id == 2:
-        bilevel.test_enumerate_case(mp)
+        bilevel.test_enumerate_case(mp,gl)
     elif gl.exp_id == 3:
-        bilevel.test_abc_case(mp)
+        bilevel.test_abc_case(mp,gl)
     else:
         print("undefined tests")
 
-    print_paras(mp)
+    print_paras(mp,gl)
+
+
+def TestSiouxFall(gl:gpc.GloParaClass):
+    """
+    """
+ 
+    mp = mypara.ParaClass()
+    mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transit_Toy'
+    # mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transport_AllOD' 
+    mp.output_folder = r'C:\GitCodes\BTNDP\Results'
+    mp.set_para(mp.input_folder,gl)
+    with open(mp.input_folder+"\\testindex.txt","w") as f:
+        print(gl.exp_id,file = f)
+    with open(mp.output_folder+"\\SFExp_"+str(gl.exp_id)+"_notes.txt","w") as f:
+        print("Experiments Log",file=f)
+    with open(mp.input_folder+"\\Para.txt","w") as f:
+        print(gl.para_dict["Congest"],file=f)
+        print("1",file = f)    # not really used for Bs
+        print(gl.para_dict["Cap"],file = f)
+        print(gl.para_dict["Rio"],file = f)
+
+    write_test_setting_file(gl)
+    bilevel.test_abc_case(mp,gl)
+
 
 if __name__ == "__main__":
-
-    SmallTests()
+    gl = gpc.GloParaClass()
+    if gl.test_index == 0:
+        gl.para_dict['NetworkType'] = 0
+        SmallTests(gl)
+    elif gl.test_index == 1:
+        gl.exp_id = 3    # this is fro setting the input for the python program
+        gl.para_dict['NetworkType'] = 1
+        TestSiouxFall(gl)
+    else:
+        print("Test paramters is not set")
     print("Good Luck")

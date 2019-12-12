@@ -4,10 +4,9 @@
 """
 
 import pandas as pd
-import global_para as gl
+import global_para_class as gpc
 
 class ParaClass:
-   
     def __init__(self):
         self.input_folder = 'set input folder'
         self.output_folder = 'set output folder'
@@ -23,7 +22,7 @@ class ParaClass:
         self.num_dest = -1
         self.num_cases = -1
     pass
-    def set_para(self,folder):
+    def set_para(self,folder,gl:gpc.GloParaClass):
         """
         case 0: base small network 
         case 1: sioux fall network 

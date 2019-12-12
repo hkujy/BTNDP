@@ -7,7 +7,8 @@ import mypara
 import pandas as pd
 import read as rd
 import myclass as mc
-import global_para as gl
+# import global_para as gl
+import global_para_class as gpc
 import myplot as mplt
 from shutil import copyfile
 import shutil
@@ -15,7 +16,7 @@ import pareto
 import matplotlib.pyplot as plt
 import run
 
-def create_case(mp:mypara.ParaClass()):
+def create_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
     """
         create all frequency cases at a predefined fixed frequency interval
         write the case file for the frequency 
@@ -67,15 +68,15 @@ def write_case_files(mp:mypara.ParaClass(),fre_list):
     with open(of, 'w') as f:
         print("{0}".format(len(fre_list)), file=f)
 
-def test_incre_fre_case(mp:mypara.ParaClass()):
+def test_incre_fre_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
     
-    cases = create_case(mp)
+    cases = create_case(mp,gl)
     print("Base case id is {0}".format(mc.CaseClass.base_case_id))
     print("Test Case: Enumerate Frequency at a predefined")
 
-    run.run_exe(mp)
+    run.run_exe(mp,gl)
     rd.main(mp, cases)
-    mplt.main(mp, cases)
+    mplt.main(mp, cases,gl)
     notes = mp.output_folder+"\\Exp_1_notes.txt"
     with open(notes, "a") as f:
         print("**********Test Increase Frequency**********",file=f)
@@ -90,7 +91,7 @@ def test_incre_fre_case(mp:mypara.ParaClass()):
         shutil.rmtree(copyinputdir)
     shutil.copytree(mp.input_folder,copyinputdir)
 
-def test_enumerate_case(mp:mypara.ParaClass()):
+def test_enumerate_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
 
     with open(mp.input_folder+"\\testfleetpara.txt","w") as f:
         print("{0}".format(gl.fre_lb),file = f)
@@ -103,7 +104,7 @@ def test_enumerate_case(mp:mypara.ParaClass()):
         for fre in gl.base_fre:
             print(fre,file=f)
 
-    run.run_exe(mp)
+    run.run_exe(mp,gl)
     df = pd.read_csv(mp.input_folder+"\\setfre.txt",header=None)
     cases = []
     # rd.main(mp, cases)
@@ -119,7 +120,7 @@ def test_enumerate_case(mp:mypara.ParaClass()):
         caseid =  caseid + 1
 
     rd.main(mp, cases)
-    mplt.main(mp, cases)        
+    mplt.main(mp, cases,gl)        
 
     notes = mp.output_folder+"\\Exp_2_notes.txt"
     with open(notes, "a") as f:
@@ -178,7 +179,7 @@ def test_enumerate_case(mp:mypara.ParaClass()):
             print("{0}".format(fl),file=f)
 
 
-def test_abc_case(mp:mypara.ParaClass()):
+def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
 
     with open(mp.input_folder+"\\testfleetpara.txt","w") as f:
         print("{0}".format(gl.fre_lb),file = f)
@@ -194,7 +195,7 @@ def test_abc_case(mp:mypara.ParaClass()):
         print("{0}".format(gl.abc_onlooker),file = f)
         print("{0}".format(gl.abc_limit),file = f)
         print("{0}".format(gl.abc_iter),file = f)
-    run.run_exe(mp)
+    run.run_exe(mp,gl)
     notes = mp.output_folder+"\\Exp_3_notes.txt"
     with open(notes, "a") as f:
         print("**********Test ABC**********",file=f)
