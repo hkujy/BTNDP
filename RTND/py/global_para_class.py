@@ -16,6 +16,7 @@ class GloParaClass:
         self.exp_id = 3  # bilevel abc
         # para for enumerate fre
         self.change_fre_line = 2
+        self.numline = 4
         # para for enumerate
         self.fre_lb = 2  # lower bound of the frequency 
         self.fre_up = 15 # fre upper bound 

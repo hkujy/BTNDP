@@ -9,14 +9,14 @@
       subroutine get_fleet_range(nwk,fre)
       use GraphLib
        type(graphclass)::nwk
-       real*8,optional::fre(4)
+       real*8,optional::fre(nline)
       end subroutine get_fleet_range   
     end interface
     integer:: i,l
     type(graphclass)::Basenwk
     integer, allocatable :: seed(:)
     integer::ns
-    real*8::checkfre(4)
+    real*8,ALLOCATABLE::checkfre(:)
     integer::exp_id  ! id for the experiments
     
     open(unit=logfileno,file='c:\gitcodes\btndp\results\log.txt',status='replace',action="write")
@@ -31,10 +31,11 @@
     call Basenwk%inigraph
     call Basenwk%readnwt
     call read_fleet_para
-    checkfre(1) = 6
-    checkfre(2) = 4
-    checkfre(3) = 2
-    checkfre(4) = 12
+
+    ALLOCATE(checkfre(nline))
+    do l = 1, nline
+        checkfre(l) = Basenwk%mylines(l)%fre
+    end do
     call get_fleet_range(Basenwk,checkfre)
     call get_fleet_range(Basenwk)
     write (*,*) "lower bound = ", fleet_lb
@@ -71,7 +72,14 @@
     implicit none 
     integer::val
     integer::row 
-    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testfleetpara.txt')
+    select case (networktype)
+    case(0)
+        open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testfleetpara.txt')
+    case(1)
+        open(1,file='c:\GitCodes\OpenTransportData\SiouxFallNet\Transit_Toy\testfleetpara.txt')
+    case(2)
+        open(1,file='c:\GitCodes\OpenTransportData\SiouxFallNet\Transit_AllOD\testfleetpara.txt')
+    end select
     do row =1, 3
        read(1,*) val
        if (row==1) then 
@@ -96,7 +104,7 @@
       subroutine get_fleet_range(nwk,fre)
       use GraphLib
        type(graphclass)::nwk
-       real*8,optional::fre(4)
+       real*8,optional::fre(nline)
       end subroutine get_fleet_range   
     end interface
     type(graphclass)::basenwk
@@ -189,8 +197,9 @@
     use GraphLib
     implicit none 
     type(graphclass)::nwk
-    real*8,optional::fre(4)
+    real*8,optional::fre(nline)
     integer l
+    real*8::sumval
     
     do l = 1, nline
         call nwk%mylines(l)%get_fleet(fre_lb(l))
@@ -201,10 +210,13 @@
 
     if(PRESENT(fre)) then 
         write(*,*) "check input fre"
+        sumval = 0
         do l = 1, nline
             call nwk%mylines(l)%get_fleet(fre(l))
-            write(*,*) "l=",l,",fre=",nwk%mylines(l)%fleet
+            write(*,*) "l=",l,",","fre=",nwk%mylines(l)%fre,",", "fleet=",nwk%mylines(l)%fleet
+            sumval =  sumval + nwk%mylines(l)%fleet
         enddo
+        write(*,*) "Check Fre Total Fleet Szie = ", sumval
         !pause
     end if
 

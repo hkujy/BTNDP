@@ -131,6 +131,10 @@ if __name__ == "__main__":
     elif gl.test_index == 1:
         gl.exp_id = 3    # this is fro setting the input for the python program
         gl.para_dict['NetworkType'] = 1
+        # gl.fleetsize = 60
+        gl.fleetsize = 56
+        gl.numline = 20
+        gl.base_fre = [6]*gl.numline
         TestSiouxFall(gl)
     else:
         print("Test paramters is not set")

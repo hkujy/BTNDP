@@ -6,8 +6,8 @@
     ! un affected constant para
     !logical,parameter::isWriteDug =.true.
     logical,parameter::isWriteDug =.true.
-    integer,parameter::maxlinestops = 4
-    integer,parameter::maxsecline=4
+    !integer,parameter::maxlinestops = 4
+    integer,parameter::maxsecline=10
     integer::num_line_seg_file_rows
     real*8,parameter::bpr_alpha = 0.15
     real*8,parameter::bpr_beta = 4
@@ -15,8 +15,8 @@
 
     ! variable real para
     real*8,PARAMETER::theta = 0.5
-    real*8,parameter::maxfre = 17
-    real*8,parameter::minfre = 4
+    !real*8,parameter::maxfre = 17
+    !real*8,parameter::minfre = 4
     
     ! variable integer para
     integer::ndest,nod,nn,nl,nline
@@ -36,8 +36,8 @@
     ! number of method to generate_neighbour solutions
     integer,parameter::inputseed = 1
     real*8,parameter::walkcost = 0.01
-    integer,parameter::maxcom = 20
-    integer,parameter::max_total_compete_sec = 100
+    integer,parameter::maxcom = 30
+    integer,parameter::max_total_compete_sec =  2050
     integer,parameter::submax = 0
     real*8,parameter::gama = 60.0d0
     real*8,parameter::maxct = 10

@@ -10,7 +10,7 @@
  NumDest,                   4
  NumOd,                    16
  NumBusLine,               20
- NumLink,                  52
+ NumLink,                 272
  congestion_n,              1
  cap_k,             30.0000000000000     
  rio,              0.000000000000000E+000

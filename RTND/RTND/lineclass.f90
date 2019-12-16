@@ -27,9 +27,10 @@
     subroutine read_lines(mylines)
     use constpara
     implicit none 
-    integer::i,l,lid,ls
+    integer::i,l,lid,ls,num,lend
     real*8::val(5),f
-    INTEGER::ss(4)
+    INTEGER,ALLOCATABLE::ss(:)
+    integer,DIMENSION(nline)::checklinestop
     type(lineclass),dimension(nline)::mylines
     
     select case(networktype) 
@@ -37,12 +38,18 @@
         open(1,file='c:\gitcodes\BTNDP\input\testnetwork\Stops.txt')
         open(2,file='c:\gitcodes\BTNDP\input\testnetwork\LineSegData.txt')
         open(3,file='c:\gitcodes\BTNDP\input\testnetwork\IniFre.txt')
+        OPEN(4,file='c:\GitCodes\BTNDP\Input\TestNetwork\numcases.txt')
         num_line_seg_file_rows = 6
+        ALLOCATE(ss(4))
+        lend = 4
     case(1)
         open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\Stops.txt')
         open(2,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\LineSegData.txt')
         open(3,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\IniFre.txt')
+        open(4,file='c:\GitCodes\OpenTransportData\SiouxFallNet\Transit_Toy\NumLineStops.txt')
         num_line_seg_file_rows = 110
+        ALLOCATE(ss(11))
+        lend = 11
 
     case(2)
         open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\Stops.txt')
@@ -57,26 +64,23 @@
     ! if (networktype.eq.1) then 
     !     open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Stops.txt')
     ! endif
+    do i = 1,nline
+        read(4,*) l,num
+        mylines(l)%numstops=num
+    enddo
 
     do l = 1, nline
        read(1,*) ss
+       write(*,*) l
        lid = ss(1)
-       do i = 2, 4
+       do i = 2, lend
             if (ss(i).gt.0) then 
                 mylines(lid)%stops(i-1) =ss(i)
             endif 
         enddo 
     enddo 
-    do l =1, nline
-        mylines(l)%numstops = 0
-        do i = 1, 10
-            if (mylines(l)%stops(i).gt.0) then 
-                mylines(l)%numstops =  mylines(l)%numstops + 1
-            end if 
-        end do 
-    enddo
 
-
+    
 
     close(1)
 !*****************************************!

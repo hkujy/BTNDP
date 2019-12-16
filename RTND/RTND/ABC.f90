@@ -81,7 +81,7 @@
     this%best_fleet = -1
     write(*,*) "Num of Pop = ", this%npop
     write(*,*) "Num of Onlooker = ", this%onlooker
-    write(*,*) "Num of Limit = ", this%limitcount
+    write(*,*) "Num of Limit = ", this%maxlimit
     write(*,*) "Max iter = ", this%maxiter
     call this%basenwk%inigraph
     call this%basenwk%copynwk(input_basenwk)

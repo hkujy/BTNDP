@@ -715,7 +715,7 @@
     subroutine init_arc_flow(this)
     implicit none 
     class(methods)::this
-    integer::i,o,root,nr,node,arc
+    integer::i,o,root,nr,node,arc,j
 
     if (islogit) then 
         return
@@ -764,7 +764,16 @@
             end do
             do i=1,nod
                 o=this%nwk%origin(i)
+                write(*,*) "wtf: o=",o
                 node=o
+                if (.not.ALLOCATED(this%nwk%pa)) then
+                    write(*,*) "wtf: thispa is not allocated"
+                else 
+                    do j =  1,nn
+                        write(*,*) "wtf: n = ",j,", arc=",this%nwk%pa(j,1)
+                    enddo
+                    write(*,*) this%nwk%anode(34),this%nwk%bnode
+                endif
                 do while (node.ne.root)
                     arc = this%nwk%pa(node,nr)	
                     this%nwk%sublink(arc,nr)=.true.

@@ -264,12 +264,12 @@
     !changeway: 1 reduce, 2 increase 
     integer::ChangeWay
     integer::lindex,l
-    integer::now(4)
+    integer,DIMENSION(nline)::now
     real*8::ran
     integer::cc
-    if(size(now).ne.4) then 
-        write(*,*) "function: Select_aline dimension,file = mutationlib.f90"
-    end if
+    !if(size(now).ne.4) then 
+    !    write(*,*) "function: Select_aline dimension,file = mutationlib.f90"
+    !end if
 10  call random_number(ran)
     lindex = int(nline*ran+1)
     select case (changeway)
