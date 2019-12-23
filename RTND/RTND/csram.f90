@@ -97,7 +97,7 @@
     end if 
     this%h1 = this%c1- this%c0
     this%ncperr = this%getncperr(this%x,this%xfa,this%fx)
-    write(*,*) norm_value(this%h1,nl),this%ncperr
+    ! write(*,*) norm_value(this%h1,nl),this%ncperr
     call cpu_time(time_end)
 		cputime=time_end-time_begin
    

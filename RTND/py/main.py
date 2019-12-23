@@ -15,7 +15,6 @@ import bileve_tests as bilevel
 import run
 import global_para_class as gpc
 
-
 def write_test_setting_file(gl:gpc.GloParaClass):
     """
         write test setting file of for fortran
@@ -103,7 +102,6 @@ def SmallTests(gl:gpc.GloParaClass):
 def TestSiouxFall(gl:gpc.GloParaClass):
     """
     """
- 
     mp = mypara.ParaClass()
     mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transit_Toy'
     # mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transport_AllOD' 
@@ -135,6 +133,7 @@ if __name__ == "__main__":
         gl.fleetsize = 56
         gl.numline = 20
         gl.base_fre = [6]*gl.numline
+        # set_seed(2)
         TestSiouxFall(gl)
     else:
         print("Test paramters is not set")

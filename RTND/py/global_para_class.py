@@ -3,12 +3,13 @@
 """
 class GloParaClass:
     def __init__(self):
-    # test_index = 0
-        # self.is_run_exe = True
-        self.is_run_exe = False
+        self.numseed = 2
+        self.is_run_exe = True
+        # self.is_run_exe = False
         self.is_debug = True
         # self.is_debug = False
         self.test_index = 1   # test index for the sioux fall network
+        # self.test_index = 0   # test index for the small network test
         # remark: the index from fortrain starts from 1
         # exp_id = 1  # given set with given frequency
         # exp_id = 1  # enumerate fleet size
@@ -25,10 +26,10 @@ class GloParaClass:
         self.base_fre = [6,4,2,12]
         # base_demand = [200, 150]
         # para for abc
-        self.abc_npop = 10
-        self.abc_onlooker = 10
-        self.abc_limit = 10
-        self.abc_iter = 10
+        self.abc_npop = 5
+        self.abc_onlooker = 5
+        self.abc_limit = 5
+        self.abc_iter = 5
         self.para_dict = {
             "NetworkType":0,    # simple network
             # "NetworkType":1,     # sioux fall transit toy

@@ -26,6 +26,10 @@
     real*8,allocatable::baselinkflow(:,:)
     type(archivedclass), allocatable::archivesols(:)
     integer::sizeofArchive
+    integer::TotalNumSeed
+    integer::CurrentSeedNum
+    integer,allocatable::SeedVal(:,:)
+    real*8,allocatable::cputime(:)
 
     contains 
     procedure,pass::abcmain=>abcmain
@@ -43,15 +47,30 @@
     end type abcclass
     contains
 
- 
-
     subroutine iniabc(this,input_basenwk)
     implicit none 
     class(abcclass)::this
     type(graphclass),intent(in)::input_basenwk
     integer::val, i
+    integer::ns
     this%LastArchiveIndex = 0
-    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\abcpara.txt')
+    
+    select case(networktype) 
+    case(0) 
+        open(1,file='c:/gitcodes/BTNDP/input/testnetwork/abcpara.txt')
+        open(2, file="c:/GitCodes/BTNDP/Input/TestNetwork/ArchivePara.txt")
+        OPEN(3, file="c:/GitCodes/BTNDP/Input/TestNetwork/Seeds.txt")
+    case(1)
+        open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\abcpara.txt')
+        open(2,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\ArchivePara.txt')
+        open(3,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\Seeds.txt')
+    case(2)
+        open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\abcpara.txt')
+        open(2,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\ArchivePara.txt')
+        open(3,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\Seeds.txt')
+    end select
+    
+   ! read ABC para
     do i = 1, 4
         read(1,*) val
         if (i==1) then 
@@ -61,13 +80,12 @@
             this%onlooker = val
         end if 
         if (i==3) then 
-            this%limitcount = val
+            this%maxlimit = val
         end if 
         if (i==4) then 
             this%maxiter =  val
         end if
     enddo 
-    close(1)
     if (.not.ALLOCATED(this%chrom)) then
         allocate(this%chrom(this%npop))
         allocate(this%limitcount(this%npop))
@@ -85,13 +103,12 @@
     write(*,*) "Max iter = ", this%maxiter
     call this%basenwk%inigraph
     call this%basenwk%copynwk(input_basenwk)
-    ! set and initialize archive
-    open(1, file="c:/GitCodes/BTNDP/Input/TestNetwork/ArchivePara.txt")
+
+    ! read and set archive parameters
     do i = 1, 2
-        if (i.eq.1) read(1,*) this%xnum
-        if (i.eq.2) read(1,*) this%ynum
+        if (i.eq.1) read(2,*) this%xnum
+        if (i.eq.2) read(2,*) this%ynum
     end do 
-    close(1)
     this%sizeofArchive = this%xnum*this%ynum
     if (.not.ALLOCATED(this%archivesols)) then 
         allocate(this%archivesols(this%sizeofArchive)) 
@@ -101,6 +118,34 @@
     end do 
     this%minobj = 100000000000
     this%maxobj = 0
+    
+    ! read seed parameters for the ABC 
+    read(3,*) this%TotalNumSeed  
+    allocate(this%SeedVal(this%TotalNumSeed,2))
+    allocate(this%CpuTime(this%TotalNumSeed))
+    call random_seed(size = ns)
+
+    if (ns.ne.2) then 
+       write(*,*) "Warning: the size of seed does not equal to 2"
+       write(*,*) "File = abc.f90"
+       pause 
+    endif
+    do i = 1, this%TotalNumSeed
+        read(3,*) this%SeedVal(i,:)
+        ! write(*,*) "ReadSeed:", this%SeedVal(i,:)
+    end do
+    if (isWriteDug) then 
+        write(*,*) "Total Number of seed is ", this%TotalNumSeed
+        write(*,*) "Wirte all the seed values below"
+        do i= 1, this%TotalNumSeed
+            write(*,*) this%SeedVal(i,:)
+        enddo
+        write(*,*) "Complete write all the seed values"
+    end if 
+    
+    close(1)
+    close(2)
+    close(3)
     end subroutine
     
     subroutine delabc(this)
@@ -112,6 +157,8 @@
     deallocate(this%BaseODcost)
     deallocate(this%best_fleet)
     deallocate(this%archivesols)
+    deallocate(this%seedval)
+    DEALLOCATE(this%cputime)
     end subroutine
 
     ! get base case OD cost
@@ -140,13 +187,11 @@
         do l = 1, nline
             write(*,*) l, this%BaseCaseSol%mylines(l)%fre
         end do 
-
         write(*,*) "Write initial OD cost"
         do l = 1, nod
             write(*,*) l,this%BaseCaseSol%odcost(l)
         enddo 
     end if
-
     end subroutine
 
     subroutine abcmain(this,input_basenwk)
@@ -155,10 +200,11 @@
         class(abcclass)::this
         type(graphclass),intent(in)::input_basenwk
         integer:: iter
+        integer:: s
         call this%getBaseCaseOd
         call this%gen_sol
         iter = 1
-        do while(iter.lt.this%maxiter) 
+        do while(iter.le.this%maxiter) 
             if(isWriteDug) then
                 write(*,*) "ABC iter = ",iter
             end if
@@ -264,9 +310,11 @@
         integer,intent(in)::xgridnum,ygridnum
         integer::boxnum
 
-        boxnum = (yval-1)*xgridnum + xval + 1
+        !boxnum = (yval-1)*xgridnum + xval + 1
+        boxnum = yval*xgridnum + xval + 1
 
         if (boxnum.gt.xgridnum*ygridnum) then
+            write(*,*) "Warnning:"
             write(*,*) "the computation of the box beyond limit"
             write(*,*)  " computed box value = ", boxnum
             write(*,*) "xval = ",xval,"yval = ",yval
@@ -286,7 +334,6 @@
         real*8::eps(2)      ! esp value of the two objectives
         real*8::distI, distJ     ! distance when compare the two objective values
         ! step 0: read archive parameters
-   
        ! Step 1: define grid of the archive 
        ! step 1.1: find the max and min of the values
        do i = 1, this%npop
@@ -297,8 +344,10 @@
        end do
        do i = 1, this%LastArchiveIndex
             do j = 1, 2
-                this%minobj(j) = min(this%minobj(j),this%archivesols(i)%obj(j))
-                this%maxobj(j) = max(this%maxobj(j),this%archivesols(i)%obj(j))
+                ! slightly increase and reduce the max and min values
+                ! this is to restrict the range of the box positoin values
+                this%minobj(j) = min(this%minobj(j),this%archivesols(i)%obj(j)) - 0.1
+                this%maxobj(j) = max(this%maxobj(j),this%archivesols(i)%obj(j)) + 0.1
             enddo
        enddo
        ! step 1.2. compute the eps values
@@ -307,13 +356,13 @@
        ! step 1.3 compute the box coordinate for all the values
        do i = 1, this%npop
             xpos(i) = floor((this%chrom(i)%obj(1) - this%minobj(1))/eps(1))
-            ypos(i) = ceiling((this%chrom(i)%obj(2) - this%minobj(2))/eps(2))
+            ypos(i) = floor((this%chrom(i)%obj(2) - this%minobj(2))/eps(2))
        enddo
 
        ! step 1.4. update existing archive pos
        do i = 1, this%LastArchiveIndex
             this%archivesols(i)%xpos = floor((this%archivesols(i)%obj(1)- this%minobj(1))/eps(1))
-            this%archivesols(i)%ypos = floor((this%archivesols(i)%obj(2)- this%minobj(2))/eps(2))
+            this%archivesols(i)%ypos = floor((this%archivesols(i)%obj(2)- this%minobj(2))/eps(2))+1
             this%archivesols(i)%BoxNum = get_box_num(this%archivesols(i)%xpos,this%archivesols(i)%ypos,&
                                         this%xnum,this%ynum)
        enddo 
@@ -389,28 +438,41 @@
     end subroutine
 
     subroutine printarchive(this,iter)
+        use constpara
         implicit none 
         class(abcclass)::this
         integer,INTENT(IN)::iter
         integer::i,l
-        real*8::tf(4)
-        open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
+        real*8::tf(nline)
         if (isWriteDug) then 
             write(*,*) "**********print archcive********"
             do i = 1, this%LastArchiveIndex
-                write(*,"(I4,a1,f8.2,a1,f8.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
+                write(*,"(I4,a1,f14.2,a1,f10.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
             enddo
         endif
 
-        do i = 1, this%LastArchiveIndex
-            do l=1, nline
-                tf(l) = this%archivesols(i)%fleet(l)
+        if (nline.eq.4) then 
+            open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
+            do i = 1, this%LastArchiveIndex
+                do l=1, nline
+                    tf(l) = real(this%archivesols(i)%fleet(l))
+                end do
+                write(1,"(I4,a1,I4,a1,f14.2,a1,f8.2,a,f6.2,a,f6.2,a,f6.2,a,f6.2)") this%CurrentSeedNum,",",iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2),",",&
+                            tf(1),",",tf(2),",",tf(3),",",tf(4)
+            enddo
+            close(1)
+        else 
+            open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
+            do i = 1, this%LastArchiveIndex
+                do l = 1, nline
+                    write(1,"(I4,a1,I6,a1,I4,a1,I4,a1,I4,a1,f14.2,a1,f10.2)") this%CurrentSeedNum,",",Iter,",",i,",",l,",",this%archivesols(i)%fleet(l),",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
+                end do
             end do
-            write(1,"(I4,a1,f8.2,a1,f8.2,a,f6.2,a,f6.2,a,f6.2,a,f6.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2),",",&
-                        tf(1),",",tf(2),",",tf(3),",",tf(4)
-        enddo
+            close(1)
 
-        close(1)
+        end if
+
+
     end subroutine
 
 ! the following could delete

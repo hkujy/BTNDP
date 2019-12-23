@@ -112,13 +112,12 @@
     use constpara
     implicit none
     class(dpsolver)::this
-    class(graphclass),optional::set_nwk
+    type(graphclass),optional::set_nwk
     integer::i,j
     integer::mb
     !	step 1 fixed beta ! test other three
     open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_para1.txt',status='old',position='append',action='write')
     open(2,file='c:\gitcodes\BTNDP\results\fortran_dp_para2.txt',status='old',position='append',action='write')
-    !open(17,file='..\..\results\fortran_finalerr.txt',status='old',position='append')
     open(3,file='c:\gitcodes\BTNDP\results\fortran_finalerr.txt',status='old',position='append')
     ! just use the double project method
     this%name ='dp'
@@ -148,19 +147,18 @@
             end do
         enddo
     enddo
-    
     goto 999
     close(1)
     close(2)
     close(3)
 999 write(*,*) "done"
-     end subroutine
+    end subroutine
 
     subroutine dpmain(this,set_nwk)
     use constpara
     implicit none
     class(dpsolver)::this
-    class(graphclass),OPTIONAL::set_nwk
+    type(graphclass),optional::set_nwk
     integer::i,subcounter,j,nr,l,cc
     logical::del_subgraph_link
     real*8::alph,numerator,denominator
@@ -173,8 +171,8 @@
     this%isNCPconverge = .false.
     this%gapfileno = 98
 
-    open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_converge.txt',&
-         status='old',position='append')
+    ! open(1,file='c:\gitcodes\BTNDP\results\fortran_dp_converge.txt',&
+        !  status='old',position='append')
     open (unit=this%gapfileno,file='c:\gitcodes\BTNDP\results\dpgap.txt',&
          status='replace',action="write")
     write(this%gapfileno,"(a5,a6)") "solc,","ncperr"    
@@ -193,7 +191,7 @@
 20  numerator=norm_value2(this%x,this%x_bar,nl,ndest)
     denominator=norm_value2(this%fx,this%fx_bar,nl,ndest)
     if (numerator.eq.0) then
-        write(*,*) "numerator = 0, ncperr = ",this%ncperr 
+        write(*,*) "Warnining: numerator = 0, ncperr = ",this%ncperr 
         if (this%ncperr.le.ncp_eps) then
             goto 1000
         else
@@ -236,7 +234,7 @@
                 if (this%nwk%sublink(l,nr).ne.oldsublink(l,nr)) then 
                     issubequal = .false.
                     cc = cc + 1
-                    WRITE(*,*) cc,l,nr
+                    ! WRITE(*,*) cc,l,nr
                 endif
             enddo 
         enddo 
@@ -247,7 +245,7 @@
     end if
 
     if (this%solc.gt.macsolc) then
-        close(1)
+        ! close(1)
         close(this%gapfileno)
         deallocate(eu,du)
         return
@@ -259,14 +257,13 @@
         !call this%backward_update_fx(this%fx,this%logitprob)
         go to 10
     else
-        close(1)
+        ! close(1)
         close(this%gapfileno)
         deallocate(eu,du)
         return
     end if
 
     end subroutine
-
     
     real*8 function update_alph(eu,du,beta,lama,d1,d2)
     use constpara

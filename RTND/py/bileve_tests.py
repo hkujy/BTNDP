@@ -195,6 +195,17 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
         print("{0}".format(gl.abc_onlooker),file = f)
         print("{0}".format(gl.abc_limit),file = f)
         print("{0}".format(gl.abc_iter),file = f)
+
+    first = list(range(1,100))
+    second = list(range(101,200))
+    if gl.numseed > 99:
+        print("Warnning: the required number of seed is too large")
+        print("Checkfile: bileve_test.py")
+    with open(mp.input_folder+"\\Seeds.txt","w") as f:
+        print(gl.numseed,file=f)  
+        for i in range(0,gl.numseed):
+            print("{0}  {1}".format(first[i],second[i]),file=f)
+
     run.run_exe(mp,gl)
     notes = mp.output_folder+"\\Exp_3_notes.txt"
     with open(notes, "a") as f:

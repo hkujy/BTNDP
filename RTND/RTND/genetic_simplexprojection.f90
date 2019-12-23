@@ -40,7 +40,7 @@
         end if
         counter=counter+1
         if (counter>100) then 
-            write(*,*)  "warning on the projection method and can not get of loop"
+            write(*,*)  "Warning: the projection method and can not get of loop"
             pause
         end if 
     end do 

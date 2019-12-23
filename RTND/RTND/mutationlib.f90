@@ -32,7 +32,7 @@
         NumOfOperators = 5
         call random_number(ran)
         index = int(NumOfOperators*ran + 1)
-        write(*,*) "mutation index = ", index 
+        !write(*,*) "mutation index = ", index 
         select case (index)
         case (1)
             call mute_one_incre_one_reduce(now,nei)
@@ -60,7 +60,7 @@
             write(*,*) "check file: mutationlib.f90"
             pause
         end if
-        write(*,*) nei
+        !write(*,*) nei
     end subroutine
 
     subroutine select_two_dif_line(L1,L2)

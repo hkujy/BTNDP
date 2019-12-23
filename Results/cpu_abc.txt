@@ -1,0 +1,3 @@
+ SeedNum,CpuTime
+   1,          1.70
+   2,          1.06

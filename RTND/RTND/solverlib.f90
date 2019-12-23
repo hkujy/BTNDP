@@ -136,19 +136,7 @@
     call this%initial_x
     call this%forward_update_flow(this%x,d1=nl,d2=ndest)
     call this%nwk%link_time(this%lf,this%lt)
-
-    ! *******the following codes are created to compare with the stoch algorihtm 
-    !this%lt = this%nwk%scost
-    !this%nf = 10
-    !this%x = 1
-    !this%nwk%sublink(5,1)=.false.
-    !this%nwk%sublink(7,1) =.false.
-    !**************************************************************************
-    ! call this%nwk%updatesub(this%lt,.false.,this%xfa)
-    ! this%lt = this%nwk%scost
     call this%backward_update_fx(this%fx,this%logitprob,d1=nl,d2=ndest)
-    
-    !this%ncperr = this%getncperr(this%x,this%xfa,this%fx,this%logitprob,nl,ndest,nn)
     this%ncperr = this%getncperr(this%x,this%xfa,this%fx,this%logitprob)
     this%max_dist_gap = max_dist_err_2(this%x,this%logitprob,this%xfa,ncp_flow_eps,nl,ndest)
 
@@ -158,7 +146,6 @@
         end if
         write(this%gapfileno,'(i4,a,f16.8,a,f16.8)') this%solc,",",this%ncperr,",",this%max_dist_gap
     end if 
-
     
     return 
     end subroutine
@@ -268,17 +255,6 @@
     real*8::link_dest_flow
     !update the label on the subnetwork	
     logitprob = 0
-    ! if (load_index.eq.1) then 
-        ! if load is based on Dial's method
-    !call this%nwk%BFS_torder
-    !if (islogit) then
-    !    call this%nwk%minspantree(this%lt)   
-    !    call this%nwk%bfs_torder
-    !    call this%nwk%getorder
-    !    call this%nwk%getsuebush
-    !end if
-
-    ! endif
     if (.not.islogit) then
         fx1=large
         this%nwk%ndist = large
@@ -420,7 +396,7 @@
     class(methods)::this 
     ! real*8,intent(in)::x0(nl,ndest)
     integer::d1,d2
-    real*8,intent(in),DIMENSION(d1,d2)::x0
+    real*8,intent(in),dimension(d1,d2)::x0
     integer i,j,nr,node,link,o,d
 
     this%xfa = 0.0
@@ -471,18 +447,14 @@
     real*8,optional,dimension(nl,ndest)::logitprob
     real*8::madf
     integer::i,nr,node,j, link, tail, head
-    ! real*8::lf(nl)
     real*8,dimension(nl)::lf
-    ! logical::isupdated(nn,ndest)
     logical,dimension(nn,ndest)::isupdated
-    ! real*8::nodefx(nn,ndest)
     real*8,dimension(nn,ndest)::nodefx
     real*8::lamda, mincost,minfx,bcm,thismdf
     integer::bcmcount
     logical::isbcm(5)
     open(1,file='c:\gitcodes\BTNDP\results\fortran_checkmadf.txt',position="append") 
     madf = 0.0d0 
-    ! Todo: Check Whether i need to update xfa 
     if (islogit) then 
         nodefx = large
         isupdated = .false.
@@ -764,16 +736,7 @@
             end do
             do i=1,nod
                 o=this%nwk%origin(i)
-                write(*,*) "wtf: o=",o
                 node=o
-                if (.not.ALLOCATED(this%nwk%pa)) then
-                    write(*,*) "wtf: thispa is not allocated"
-                else 
-                    do j =  1,nn
-                        write(*,*) "wtf: n = ",j,", arc=",this%nwk%pa(j,1)
-                    enddo
-                    write(*,*) this%nwk%anode(34),this%nwk%bnode
-                endif
                 do while (node.ne.root)
                     arc = this%nwk%pa(node,nr)	
                     this%nwk%sublink(arc,nr)=.true.
