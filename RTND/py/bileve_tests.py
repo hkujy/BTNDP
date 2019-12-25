@@ -225,4 +225,27 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
     shutil.copytree(mp.input_folder,copyinputdir)
  
 
+    # read and print archive solutions
     #TODO: print and read archive solutions from Frotran output
+    archive_output = mp.output_folder +"\\Fortran_archive.txt" 
+    df = pd.read_csv(archive_output)
+    num_row = df.shape[0]
+    num_col = df.shape[1]
+    seed_num = []
+    iter_num = []
+    line_id = []
+    fleet_num = []
+    TTC = [] # TODO: Check the header files of the df data frame
+    Fare = []
+    for i in range(0,num_col):
+        seed_num.append(df["SeedNum"][i])
+        iter_num.append(df["Iter"][i])
+        line_id.append(df["LineId"][i])
+        fleet_num.append(df["Fleet"][i])
+        TTC.append(df["TTC"][i])
+        Fare.append(df["Fare"][i])
+
+
+        
+
+

@@ -38,7 +38,7 @@
         open(1,file='c:\gitcodes\BTNDP\input\testnetwork\Stops.txt')
         open(2,file='c:\gitcodes\BTNDP\input\testnetwork\LineSegData.txt')
         open(3,file='c:\gitcodes\BTNDP\input\testnetwork\IniFre.txt')
-        OPEN(4,file='c:\GitCodes\BTNDP\Input\TestNetwork\numcases.txt')
+        OPEN(4,file='c:\GitCodes\BTNDP\Input\TestNetwork\NumLineStops.txt')
         num_line_seg_file_rows = 6
         ALLOCATE(ss(4))
         lend = 4

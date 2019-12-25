@@ -9,6 +9,7 @@ LoadIndex,0
 Cap,30
 Rio,0.0
 Congest,1
+ArchiveX,10
 ExpId,3
 TestIndex,0
 ChangeFreLin,2

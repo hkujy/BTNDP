@@ -450,27 +450,36 @@
                 write(*,"(I4,a1,f14.2,a1,f10.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
             enddo
         endif
-
-        if (nline.eq.4) then 
-            open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
-            do i = 1, this%LastArchiveIndex
-                do l=1, nline
-                    tf(l) = real(this%archivesols(i)%fleet(l))
-                end do
-                write(1,"(I4,a1,I4,a1,f14.2,a1,f8.2,a,f6.2,a,f6.2,a,f6.2,a,f6.2)") this%CurrentSeedNum,",",iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2),",",&
-                            tf(1),",",tf(2),",",tf(3),",",tf(4)
-            enddo
-            close(1)
-        else 
-            open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
-            do i = 1, this%LastArchiveIndex
-                do l = 1, nline
-                    write(1,"(I4,a1,I6,a1,I4,a1,I4,a1,I4,a1,f14.2,a1,f10.2)") this%CurrentSeedNum,",",Iter,",",i,",",l,",",this%archivesols(i)%fleet(l),",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
-                end do
+        open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
+        do i = 1, this%LastArchiveIndex
+            do l = 1, nline
+                write(1,"(I4,a1,I6,a1,I4,a1,I4,a1,I4,a1,f14.2,a1,f10.2)") &
+                 this%CurrentSeedNum,",",Iter,",",i,",",l,",",this%archivesols(i)%fleet(l),",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
             end do
-            close(1)
+        end do
+        close(1)
 
-        end if
+
+
+        ! if (nline.eq.4) then 
+        !     open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
+        !     do i = 1, this%LastArchiveIndex
+        !         do l=1, nline
+        !             tf(l) = real(this%archivesols(i)%fleet(l))
+        !         end do
+        !         write(1,"(I4,a1,I4,a1,f14.2,a1,f8.2,a,f6.2,a,f6.2,a,f6.2,a,f6.2)") this%CurrentSeedNum,",",iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2),",",&
+        !                     tf(1),",",tf(2),",",tf(3),",",tf(4)
+        !     enddo
+        !     close(1)
+        ! else 
+        !     open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
+        !     do i = 1, this%LastArchiveIndex
+        !         do l = 1, nline
+        !             write(1,"(I4,a1,I6,a1,I4,a1,I4,a1,I4,a1,f14.2,a1,f10.2)") this%CurrentSeedNum,",",Iter,",",i,",",l,",",this%archivesols(i)%fleet(l),",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
+        !         end do
+        !     end do
+        !     close(1)
+        ! end if
 
 
     end subroutine

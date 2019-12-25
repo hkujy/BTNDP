@@ -492,9 +492,9 @@
                     else
                         if (xfa(i,nr).gt.0.1.and.(fx(i,nr)-this%nwk%ndist(this%nwk%anode(i),nr))>madf) then 
                             madf = fx(i,nr) - this%nwk%ndist(this%nwk%anode(i),nr) 
-                            write(1,'(i5,a,i5,a,i5,a,i5,a,f6.2,a,f6.2,a,f6.2,a,f6.2)') & 
-                                caseindex,',',i,',',this%nwk%anode(i),',',nr,',',xfa(i,nr),',',fx(i,nr),',', &
-                                this%nwk%ndist(this%nwk%anode(i),nr),',',madf 
+                            !write(1,'(i5,a,i5,a,i5,a,i5,a,f6.2,a,f6.2,a,f6.2,a,f6.2)') & 
+                            !    caseindex,',',i,',',this%nwk%anode(i),',',nr,',',xfa(i,nr),',',fx(i,nr),',', &
+                            !    this%nwk%ndist(this%nwk%anode(i),nr),',',madf 
                         end if 
                     endif   ! if to check whether it is logit 
                 endif

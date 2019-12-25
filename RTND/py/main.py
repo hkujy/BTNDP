@@ -109,7 +109,7 @@ def TestSiouxFall(gl:gpc.GloParaClass):
     mp.set_para(mp.input_folder,gl)
     with open(mp.input_folder+"\\testindex.txt","w") as f:
         print(gl.exp_id,file = f)
-    with open(mp.output_folder+"\\SFExp_"+str(gl.exp_id)+"_notes.txt","w") as f:
+    with open(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"_notes.txt","w") as f:
         print("Experiments Log",file=f)
     with open(mp.input_folder+"\\Para.txt","w") as f:
         print(gl.para_dict["Congest"],file=f)
