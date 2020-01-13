@@ -65,14 +65,19 @@ def set_test_case_para(gl:gpc.GloParaClass):
     else:
         print("The overall test index is not set")
 
-def SmallTests(gl:gpc.GloParaClass):
+
+
+
+def Case_Test_Fre_Incre(gl:gpc.GloParaClass):
     """
-        Test on the four node network
+        test the first case: increase frequency
     """
+    print("*********Start to test Incre Fre**********")
+    gl.exp_id = 1
     mp = mypara.ParaClass()
     set_test_case_para(gl)
     mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
-    mp.output_folder = r'C:\GitCodes\BTNDP\Results'
+    mp.output_folder = r'C:\GitCodes\BTNDP\Results\Test_IncreFre'
     mp.set_para(mp.input_folder,gl)
     with open(mp.input_folder+"\\testindex.txt","w") as f:
         print(gl.exp_id,file = f)
@@ -85,27 +90,121 @@ def SmallTests(gl:gpc.GloParaClass):
         print("1",file = f)    # not really used for Bs
         print(gl.para_dict["Cap"],file = f)
         print(gl.para_dict["Rio"],file = f)
-
     write_test_setting_file(gl)
-    if gl.exp_id == 1:
-        bilevel.test_incre_fre_case(mp,gl)
-    elif gl.exp_id == 2:
-        bilevel.test_enumerate_case(mp,gl)
-    elif gl.exp_id == 3:
-        bilevel.test_abc_case(mp,gl)
-    else:
-        print("undefined tests")
-
+    bilevel.test_incre_fre_case(mp,gl)
     print_paras(mp,gl)
 
+    print("************Complete Test Incre Fre**********")
+
+    pass
+
+
+def Case_Test_Enumerate(gl:gpc.GloParaClass):
+    """
+    Test the second case: enumerate all integer fre
+    """
+    print("*********Start to test enumerate fre**********")
+    gl.exp_id = 2
+    mp = mypara.ParaClass()
+    set_test_case_para(gl)
+    mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
+    mp.output_folder = r'C:\GitCodes\BTNDP\Results\Test_Enumerate'
+    mp.set_para(mp.input_folder,gl)
+    with open(mp.input_folder+"\\testindex.txt","w") as f:
+        print(gl.exp_id,file = f)
+    with open(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"_notes.txt","w") as f:
+        print("Experiments Log",file=f)
+    # set parameters related to congestion..    
+    with open(mp.input_folder+"\\Para.txt","w") as f:
+        print(gl.para_dict["Congest"],file=f)
+        print("1",file = f)    # not really used for Bs
+        print(gl.para_dict["Cap"],file = f)
+        print(gl.para_dict["Rio"],file = f)
+    write_test_setting_file(gl)
+    bilevel.test_enumerate_case(mp,gl)
+    print_paras(mp,gl)
+    print("************Complete Test Enumerate Fre**********")
+
+    pass
+
+
+
+def Case_Test_ABC_BenchMark(gl:gpc.GloParaClass):
+    """
+    Test the second case: enumerate all integer fre
+    """
+    print("*********Start to test small ABC**********")
+    gl.exp_id = 3
+    mp = mypara.ParaClass()
+    set_test_case_para(gl)
+    mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
+    mp.output_folder = r'C:\GitCodes\BTNDP\Results\Test_SmallAbc'
+    mp.set_para(mp.input_folder,gl)
+    with open(mp.input_folder+"\\testindex.txt","w") as f:
+        print(gl.exp_id,file = f)
+    with open(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"_notes.txt","w") as f:
+        print("Experiments Log",file=f)
+    # set parameters related to congestion..    
+    with open(mp.input_folder+"\\Para.txt","w") as f:
+        print(gl.para_dict["Congest"],file=f)
+        print("1",file = f)    # not really used for Bs
+        print(gl.para_dict["Cap"],file = f)
+        print(gl.para_dict["Rio"],file = f)
+    write_test_setting_file(gl)
+    bilevel.test_abc_case(mp,gl)
+    print_paras(mp,gl)
+    print("************Complete Test Small ABC**********")
+
+ 
+
+
+def SmallTests(gl:gpc.GloParaClass):
+    """
+        Test on the four node network
+    """
+    Case_Test_Fre_Incre(gl)
+    Case_Test_Enumerate(gl)
+    Case_Test_ABC_BenchMark(gl)
+
+
+
+    # mp = mypara.ParaClass()
+    # set_test_case_para(gl)
+    # mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
+    # mp.output_folder = r'C:\GitCodes\BTNDP\Results'
+    # mp.set_para(mp.input_folder,gl)
+    # with open(mp.input_folder+"\\testindex.txt","w") as f:
+    #     print(gl.exp_id,file = f)
+    # with open(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"_notes.txt","w") as f:
+    #     print("Experiments Log",file=f)
+
+    # # set parameters related to congestion..    
+    # with open(mp.input_folder+"\\Para.txt","w") as f:
+    #     print(gl.para_dict["Congest"],file=f)
+    #     print("1",file = f)    # not really used for Bs
+    #     print(gl.para_dict["Cap"],file = f)
+    #     print(gl.para_dict["Rio"],file = f)
+
+    # write_test_setting_file(gl)
+    # if gl.exp_id == 1:
+    #     bilevel.test_incre_fre_case(mp,gl)
+    # elif gl.exp_id == 2:
+    #     bilevel.test_enumerate_case(mp,gl)
+    # elif gl.exp_id == 3:
+    #     bilevel.test_abc_case(mp,gl)
+    # else:
+    #     print("undefined tests")
+
+    # print_paras(mp,gl)
 
 def TestSiouxFall(gl:gpc.GloParaClass):
     """
+        Test SiouxFall netowrk
     """
     mp = mypara.ParaClass()
     mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transit_Toy'
     # mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transport_AllOD' 
-    mp.output_folder = r'C:\GitCodes\BTNDP\Results'
+    mp.output_folder = r'C:\GitCodes\BTNDP\Results\Test_SiouxFall'
     mp.set_para(mp.input_folder,gl)
     with open(mp.input_folder+"\\testindex.txt","w") as f:
         print(gl.exp_id,file = f)

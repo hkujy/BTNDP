@@ -46,7 +46,4 @@ class GloParaClass:
             "ArchiveX":10
         }
 
-       # self.solve_method = 1 # 1: dp , 2: msa
-            # assign_mode = 1  # bpr function
-        # self.assign_mode = 2  # transit network 
 
