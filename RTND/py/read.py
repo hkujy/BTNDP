@@ -26,7 +26,7 @@ def rd_link_sol(pa,cases):
     """
         read link
     """
-    file = pa.output_folder +'\\fortran_output_link.txt'
+    file = pa.rd_output_folder +'\\fortran_output_link.txt'
     df = pd.read_csv(file)
     num_row = df.shape[0]
     # print(df)
@@ -62,7 +62,7 @@ def rd_link_sol(pa,cases):
     pass
 
 def rd_node(pa,cases):
-    file = pa.output_folder +'\\fortran_output_node.txt'
+    file = pa.rd_output_folder +'\\fortran_output_node.txt'
     df = pd.read_csv(file)
     num_row = df.shape[0]
     for i in range(num_row):
@@ -82,7 +82,7 @@ def pr_nwk(pa:mypara.ParaClass,nwk:mc.NwkClass,sols):
     """
         print network after read
     """
-    file = pa.output_folder + '\\cases.txt'
+    file = pa.rd_output_folder + '\\cases.txt'
     with open(file,'a') as f:
         for nr in nwk.dest:
             for nn in nwk.nodes:
@@ -99,7 +99,7 @@ def pr_nwk(pa:mypara.ParaClass,nwk:mc.NwkClass,sols):
 
 
 def rd_od(pa,cases):
-    file = pa.output_folder +'\\fortran_output_od.txt'
+    file = pa.rd_output_folder +'\\fortran_output_od.txt'
     df = pd.read_csv(file)
     num_row = df.shape[0]
     now = 0

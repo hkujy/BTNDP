@@ -15,6 +15,17 @@ import bileve_tests as bilevel
 import run
 import global_para_class as gpc
 
+def copy_folder_files(fromDir,toDir):
+    if not os.path.exists(toDir):
+        os.makedirs(toDir)
+
+    ls = os.listdir(fromDir)
+    for line in ls:
+        filePath = os.path.join(fromDir, line)
+        if os.path.isfile(filePath):
+            shutil.copy(filePath, toDir)
+
+
 def write_test_setting_file(gl:gpc.GloParaClass):
     """
         write test setting file of for fortran
@@ -77,7 +88,11 @@ def Case_Test_Fre_Incre(gl:gpc.GloParaClass):
     mp = mypara.ParaClass()
     set_test_case_para(gl)
     mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
-    mp.output_folder = r'C:\GitCodes\BTNDP\Results\Test_IncreFre'
+    mp.output_folder = r'C:\GitCodes\BTNDP\Tests\Test_IncreFre'
+    mp.rd_output_folder = r'C:\GitCodes\BTNDP\Results'
+    if not os.path.exists(mp.output_folder):
+        os.makedirs(mp.output_folder)
+
     mp.set_para(mp.input_folder,gl)
     with open(mp.input_folder+"\\testindex.txt","w") as f:
         print(gl.exp_id,file = f)
@@ -95,7 +110,9 @@ def Case_Test_Fre_Incre(gl:gpc.GloParaClass):
     print_paras(mp,gl)
 
     print("************Complete Test Incre Fre**********")
+    # shutil.copytree(mp.rd_output_folder,mp.output_folder)
 
+    copy_folder_files(mp.rd_output_folder,mp.output_folder+"\\Results")
     pass
 
 
@@ -108,7 +125,11 @@ def Case_Test_Enumerate(gl:gpc.GloParaClass):
     mp = mypara.ParaClass()
     set_test_case_para(gl)
     mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
-    mp.output_folder = r'C:\GitCodes\BTNDP\Results\Test_Enumerate'
+    mp.output_folder = r'C:\GitCodes\BTNDP\Tests\Test_Enumerate'
+    mp.rd_output_folder = r'C:\GitCodes\BTNDP\Results'
+    if not os.path.exists(mp.output_folder):
+        os.makedirs(mp.output_folder)
+
     mp.set_para(mp.input_folder,gl)
     with open(mp.input_folder+"\\testindex.txt","w") as f:
         print(gl.exp_id,file = f)
@@ -125,20 +146,26 @@ def Case_Test_Enumerate(gl:gpc.GloParaClass):
     print_paras(mp,gl)
     print("************Complete Test Enumerate Fre**********")
 
+    copy_folder_files(mp.rd_output_folder,mp.output_folder+"\\Results")
     pass
 
 
 
 def Case_Test_ABC_BenchMark(gl:gpc.GloParaClass):
     """
-    Test the second case: enumerate all integer fre
+        Test the second case: enumerate all integer fre
     """
     print("*********Start to test small ABC**********")
     gl.exp_id = 3
     mp = mypara.ParaClass()
     set_test_case_para(gl)
     mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
-    mp.output_folder = r'C:\GitCodes\BTNDP\Results\Test_SmallAbc'
+    mp.output_folder = r'C:\GitCodes\BTNDP\Tests\Test_SmallAbc'
+    mp.rd_output_folder = r'C:\GitCodes\BTNDP\Results'
+
+    if not os.path.exists(mp.output_folder):
+        os.makedirs(mp.output_folder)
+
     mp.set_para(mp.input_folder,gl)
     with open(mp.input_folder+"\\testindex.txt","w") as f:
         print(gl.exp_id,file = f)
@@ -153,17 +180,17 @@ def Case_Test_ABC_BenchMark(gl:gpc.GloParaClass):
     write_test_setting_file(gl)
     bilevel.test_abc_case(mp,gl)
     print_paras(mp,gl)
+    
+    copy_folder_files(mp.rd_output_folder,mp.output_folder+"\\Results")
     print("************Complete Test Small ABC**********")
 
  
-
-
 def SmallTests(gl:gpc.GloParaClass):
     """
         Test on the four node network
     """
-    Case_Test_Fre_Incre(gl)
-    Case_Test_Enumerate(gl)
+    # Case_Test_Fre_Incre(gl)
+    # Case_Test_Enumerate(gl)
     Case_Test_ABC_BenchMark(gl)
 
 
@@ -204,7 +231,12 @@ def TestSiouxFall(gl:gpc.GloParaClass):
     mp = mypara.ParaClass()
     mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transit_Toy'
     # mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transport_AllOD' 
-    mp.output_folder = r'C:\GitCodes\BTNDP\Results\Test_SiouxFall'
+    mp.output_folder = r'C:\GitCodes\BTNDP\Tests\Test_SiouxFall'
+    mp.rd_output_folder = r'C:\GitCodes\BTNDP\Results'
+
+    if not os.path.exists(mp.output_folder):
+        os.makedirs(mp.output_folder)
+
     mp.set_para(mp.input_folder,gl)
     with open(mp.input_folder+"\\testindex.txt","w") as f:
         print(gl.exp_id,file = f)
@@ -219,6 +251,8 @@ def TestSiouxFall(gl:gpc.GloParaClass):
     write_test_setting_file(gl)
     bilevel.test_abc_case(mp,gl)
 
+    print("************Complete Test Small ABC**********")
+    copy_folder_files(mp.rd_output_folder,mp.output_folder+"\\Results")
 
 if __name__ == "__main__":
     gl = gpc.GloParaClass()

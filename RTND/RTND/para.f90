@@ -49,7 +49,7 @@
     real*8, parameter::inf1 = 10d15
     real*8, parameter::ncp_eps = 0.01
     real*8, parameter::flow_eps = 0.0001d0
-    real*8, parameter::ncp_flow_eps = 0.0001
+    real*8, parameter::ncp_flow_eps = 0.001
     real*8, PARAMETER::bcmratio = 0.5
     integer, PARAMETER::npath = 4
     real*8:: path_link(4,4)   ! path incidencen matrix

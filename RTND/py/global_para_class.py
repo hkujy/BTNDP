@@ -46,4 +46,3 @@ class GloParaClass:
             "ArchiveX":10
         }
 
-

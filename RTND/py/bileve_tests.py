@@ -163,7 +163,7 @@ def test_enumerate_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
         print("need to check the case id, which are is not equal")
         input()
 
-    fleet_df= pd.read_csv(mp.output_folder+"\\enumeratefleet.txt",header=None)
+    fleet_df= pd.read_csv(mp.rd_output_folder+"\\enumeratefleet.txt",header=None)
 
     with open(pp, "w") as f:
         for i in range(0,len(px)):
@@ -227,7 +227,7 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
 
     # read and print archive solutions
     #TODO: print and read archive solutions from Frotran output
-    archive_output = mp.output_folder +"\\Fortran_archive.txt" 
+    archive_output = mp.rd_output_folder +"\\Fortran_archive.txt" 
     df = pd.read_csv(archive_output)
     num_row = df.shape[0]
     num_col = df.shape[1]
@@ -238,7 +238,7 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
     TTC = [] # TODO: Check the header files of the df data frame
     Fare = []
     for i in range(0,num_col):
-        seed_num.append(df["SeedNum"][i])
+        seed_num.append(df[df.keys()[0]][i])   # Seed Num for the key
         iter_num.append(df["Iter"][i])
         line_id.append(df["LineId"][i])
         fleet_num.append(df["Fleet"][i])

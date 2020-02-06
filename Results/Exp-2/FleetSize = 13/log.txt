@@ -1,1 +1,0 @@
- read_pare: use the same bs value for all

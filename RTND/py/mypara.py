@@ -10,6 +10,7 @@ class ParaClass:
     def __init__(self):
         self.input_folder = 'set input folder'
         self.output_folder = 'set output folder'
+        self.rd_output_folder ='set read output folder'
         self.links = 0
         self.od = 0
         self.nodes = 0
