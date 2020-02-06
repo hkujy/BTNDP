@@ -12,7 +12,6 @@
         integer::i
         integer::subfe
         LOGICAL::isOk
-        
         subfe = sum(fe)
         if(subfe.gt.fleetsize) then 
             isOk = .false.
@@ -35,7 +34,7 @@
         !write(*,*) "mutation index = ", index 
         select case (index)
         case (1)
-            call mute_one_incre_one_reduce(now,nei)
+            call mute_1_transfer(now,nei)
         case (2)
             call mute_swap(now,nei)
         case (3)
@@ -109,7 +108,7 @@
         nei(L2) = min(nei(L2) + num,fleet_ub(L2))
     end subroutine
 
-    subroutine mute_one_incre_one_reduce(now,nei)
+    subroutine mute_1_transfer(now,nei)
     ! increase one line and reduce other line
     implicit none 
     integer,intent(in)::now(nline)
@@ -156,7 +155,75 @@
 
     end subroutine
 
+
+    subroutine mute_n_transfer(now,nei)
+    ! increase one line and reduce other line
+    implicit none 
+    integer,intent(in)::now(nline)
+    integer,intent(out)::nei(nline)
+    integer::count
+    real*8::ran
+    integer::rl,il    !reduce and increase line
+    logical::FindRemove,FindIncrease
+    integer::maxgap, changeval
+
+    nei =  now
+    count = 0 
+    FindRemove =.True.
+    FindIncrease = .True.
+10  call random_number(ran)
+    rl = int(nline*ran+1)
+    if (nei(rl)-1.lt.fleet_lb(rl)) then
+        if (count.lt.101) then 
+            count = count + 1
+            goto 10
+        else
+            write(*,*) " can not find a line to remove"
+            FindRemove = .False.
+        end if 
+    end if 
+    count = 0
+15  call random_number(ran)
+    il = int(nline*ran + 1)
+    if ((il.eq.rl).or.(nei(il) + 1.ge.fleet_ub(il))) then 
+        if (count.lt.101) then 
+            count = count + 1
+            goto 15
+        else
+            write(*,*) "can not find a line to increase"
+            FindIncrease = .False.
+        end if 
+    end if 
+    if (FindRemove.and.FindIncrease) then 
+        ! generate a random integer
+        maxgap = max(nei(rl)-fleet_lb(rl),fleet_ub(il)-nei(il))
+        maxgap = min(maxgap, nei(rl)-1)
+        call random_number(ran)
+        changeval = int(maxgap*ran + 1)
+        nei(rl) = nei(rl) - changeval
+        nei(il) = nei(il) + changeval
+        if ((nei(rl).lt.0).or.(nei(il).lt.0)) then 
+            write(*,*) "wtf. after reduction the fleet value is zero"
+        endif 
+        if (nei(rl).eq.0) then
+            write(*,*) "wtf"
+        endif
+    endif
+
+    end subroutine
+
+ 
     
+
+
+
+
+
+
+
+
+
+
     subroutine mute_reduce_by_1(now,nei)
     ! increase one line and reduce other line
     implicit none 
