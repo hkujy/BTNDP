@@ -16,6 +16,18 @@ import pareto
 import matplotlib.pyplot as plt
 import run
 
+
+class SeedParetoClass:
+    """
+        This is the class for the record the pareto frontier from the abc fortran results
+    """
+    def __init__(self,_seedid):
+        self.seed_num = _seedid
+        self.TTC = []
+        self.Fair = []
+
+
+
 def create_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
     """
         create all frequency cases at a predefined fixed frequency interval
@@ -230,20 +242,43 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
     archive_output = mp.rd_output_folder +"\\Fortran_archive.txt" 
     df = pd.read_csv(archive_output)
     num_row = df.shape[0]
-    num_col = df.shape[1]
+    # num_col = df.shape[1]
     seed_num = []
     iter_num = []
     line_id = []
     fleet_num = []
     TTC = [] # TODO: Check the header files of the df data frame
-    Fare = []
-    for i in range(0,num_col):
+    Fair = []
+    for i in range(0,num_row):
         seed_num.append(df[df.keys()[0]][i])   # Seed Num for the key
         iter_num.append(df["Iter"][i])
         line_id.append(df["LineId"][i])
         fleet_num.append(df["Fleet"][i])
         TTC.append(df["TTC"][i])
-        Fare.append(df["Fare"][i])
+        Fair.append(df["Fare"][i])
+    
+    abc_pareto = []
+    abc_pareto.append(SeedParetoClass(1))
+    for i in range(0,num_row):
+        if abc_pareto[-1].seed_num != seed_num[i]:
+            abc_pareto.append(SeedParetoClass(seed_num[i]))
+        if iter_num[i] == gl.abc_iter:
+            abc_pareto[-1].TTC.append(TTC[i]) 
+            abc_pareto[-1].Fair.append(Fair[i])
+
+    for s in abc_pareto:
+        print("s = {0}, TTC = {1}, Fair = {2}".format(s.seed_num, s.TTC, s.Fair))
+        (px,py) = pareto.pareto_frontier(s.TTC,s.Fair,maxX=False,maxY=True)
+        plt.figure("pareto")     
+        plt.scatter(px,py)
+
+    plt.show()
+    # plt.savefig(mp.output_folder+"\\Exp_2_pareto.png")
+
+
+
+
+
 
 
         

@@ -11,25 +11,25 @@
             "program": "${file}",
             "console": "integratedTerminal"
         },
-        {
-            "name": "Fortran Launch",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "C:\\GitCodes\\BTNDP\\RTND\\RTND\\Debug\\RTND.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "miDebuggerPath": "gdb.exe",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        }
+        // {
+        //     "name": "Fortran Launch",
+        //     "type": "cppdbg",
+        //     "request": "launch",
+        //     "program": "C:\\GitCodes\\BTNDP\\RTND\\RTND\\Debug\\RTND.exe",
+        //     "args": [],
+        //     "stopAtEntry": false,
+        //     "cwd": "${workspaceFolder}",
+        //     "environment": [],
+        //     "externalConsole": false,
+        //     "MIMode": "gdb",
+        //     "miDebuggerPath": "gdb.exe",
+        //     "setupCommands": [
+        //         {
+        //             "description": "Enable pretty-printing for gdb",
+        //             "text": "-enable-pretty-printing",
+        //             "ignoreFailures": true
+        //         }
+        //     ]
+        // }
     ]
 }
