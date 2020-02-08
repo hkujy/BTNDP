@@ -201,6 +201,10 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
     with open(mp.input_folder + "\\inifre.txt","w") as f:
         for fre in gl.base_fre:
             print(fre, file = f)
+    
+    with open(mp.input_folder + "\\ArchivePara.txt","w") as f:
+        print("{0}".format(gl.para_dict["ArchiveX"]),file=f)
+        print("{0}".format(gl.para_dict["ArchiveY"]),file=f)
 
     with open(mp.input_folder +"\\abcpara.txt","w") as f:
         print("{0}".format(gl.abc_npop),file = f)

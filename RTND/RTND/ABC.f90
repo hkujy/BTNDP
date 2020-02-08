@@ -109,6 +109,8 @@
         if (i.eq.1) read(2,*) this%xnum
         if (i.eq.2) read(2,*) this%ynum
     end do 
+    this%xnum = this%xnum+1
+    this%ynum = this%ynum+1
     this%sizeofArchive = this%xnum*this%ynum
     if (.not.ALLOCATED(this%archivesols)) then 
         allocate(this%archivesols(this%sizeofArchive)) 
@@ -260,15 +262,25 @@
         class(abcclass):: this
         real*8,allocatable::fits(:)
         integer::p,id
+        logical::isAllFitZero
         integer,allocatable::selectedList(:) ! select list
         logical::isIncreaLimit
 
         allocate(fits(this%npop))
         allocate(selectedList(this%onlooker))
     
+        isAllFitZero = .true.
         do p = 1, this%npop
             fits(p) = this%chrom(p)%fitness
+            if (fits(p).gt.0) then 
+                isAllFitZero = .false.
+            end if
         enddo
+    
+        if (isAllFitZero) then 
+            write(*,*) "WTF: all fit = zero"
+        end if
+
 
         call roulette(fits,this%npop,selectedList,this%onlooker) 
         do p = 1, this%onlooker
@@ -309,9 +321,9 @@
         integer,intent(in)::xval,yval 
         integer,intent(in)::xgridnum,ygridnum
         integer::boxnum
-
+    
         !boxnum = (yval-1)*xgridnum + xval + 1
-        boxnum = yval*xgridnum + xval + 1
+        boxnum = yval*xgridnum + xval
 
         if (boxnum.gt.xgridnum*ygridnum) then
             write(*,*) "Warnning:"
@@ -363,6 +375,10 @@
        do i = 1, this%LastArchiveIndex
             this%archivesols(i)%xpos = floor((this%archivesols(i)%obj(1)- this%minobj(1))/eps(1))
             this%archivesols(i)%ypos = floor((this%archivesols(i)%obj(2)- this%minobj(2))/eps(2))+1
+            
+            if ((this%archivesols(i)%xPos.gt.this%xnum).or.(this%archivesols(i)%yPos.gt.this%ynum)) then 
+                write(*,*) "WTF: The position number is higher"
+            end if
             this%archivesols(i)%BoxNum = get_box_num(this%archivesols(i)%xpos,this%archivesols(i)%ypos,&
                                         this%xnum,this%ynum)
        enddo 

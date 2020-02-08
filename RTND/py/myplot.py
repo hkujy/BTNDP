@@ -36,12 +36,14 @@ def plt_od_cost(mp:mypara.ParaClass(),cases,gl:gpc.GloParaClass):
             x.append(s.id)
         plt.figure("OD "+str(w))
         plt.plot(x, od)
-        plt.savefig(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"OD_"+str(w)+".png")
-
+        plt.savefig(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"_OD_"+str(w)+".png")
         plt.show(block=False)
         plt.pause(2)
         plt.close()
- 
+        filename = mp.output_folder+"\\Exp_"+str(gl.exp_id)+"OD_"+str(w)+".txt"
+        with open(filename,"w+") as f:
+            for oc in od:
+                print("{0}".format(oc), file=f)
 
 
 def main(mp:mypara.ParaClass(), cases,gl:gpc.GloParaClass):

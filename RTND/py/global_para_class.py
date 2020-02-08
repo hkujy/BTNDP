@@ -4,8 +4,8 @@
 class GloParaClass:
     def __init__(self):
         self.numseed = 5
-        # self.is_run_exe = True
-        self.is_run_exe = False
+        self.is_run_exe = True
+        # self.is_run_exe = False
         self.is_debug = True
         # self.is_debug = False
         self.test_index = 0   # test index for the sioux fall network
@@ -28,8 +28,8 @@ class GloParaClass:
         # para for abc
         self.abc_npop = 10
         self.abc_onlooker = 10
-        self.abc_limit = 10
-        self.abc_iter = 10
+        self.abc_limit = 20
+        self.abc_iter = 50
         self.para_dict = {
             "NetworkType":0,    # simple network
             # "NetworkType":1,     # sioux fall transit toy
@@ -43,6 +43,7 @@ class GloParaClass:
             "Cap":30,
             "Rio":0.00,
             "Congest":1,
-            "ArchiveX":10
+            "ArchiveX":30,
+            "ArchiveY":30
         }
 

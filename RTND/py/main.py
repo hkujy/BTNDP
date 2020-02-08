@@ -190,8 +190,8 @@ def SmallTests(gl:gpc.GloParaClass):
         Test on the four node network
     """
     # Case_Test_Fre_Incre(gl)
-    # Case_Test_Enumerate(gl)
-    Case_Test_ABC_BenchMark(gl)
+    Case_Test_Enumerate(gl)
+    # Case_Test_ABC_BenchMark(gl)
 
 
 

@@ -28,7 +28,7 @@
         integer::index
         real*8::ran
         integer::NumOfOperators
-        NumOfOperators = 5
+        NumOfOperators = 7
         call random_number(ran)
         index = int(NumOfOperators*ran + 1)
         !write(*,*) "mutation index = ", index 
@@ -38,14 +38,16 @@
         case (2)
             call mute_swap(now,nei)
         case (3)
-            call mute_incre_decre(now,nei,2)
+            ! call mute_incre_decre(now,nei,2)
+            call mute_n_transfer(now, nei)
         case (4)
             call mute_reduce_by_1(now,nei)
-            !call mute_incre_decre(now,nei,3)
-        !case (5)
-            !call mute_reduce_by_1(now,nei)
         case (5)
-            call mute_onlyincrea_by_1(now,nei)
+            call mute_increa_by_1(now,nei)
+        case (6)
+            call mute_reduce_by_n(now,nei)
+        case (7)
+            call mute_increa_by_n(now,nei)
         end select
         
         !nei(1) = 1 
@@ -212,17 +214,6 @@
 
     end subroutine
 
- 
-    
-
-
-
-
-
-
-
-
-
 
     subroutine mute_reduce_by_1(now,nei)
     ! increase one line and reduce other line
@@ -255,8 +246,50 @@
     endif
 
     end subroutine
+
     
-    subroutine mute_onlyincrea_by_1(now,nei)
+
+    subroutine mute_reduce_by_n(now,nei)
+    ! increase one line and reduce other line
+    implicit none 
+    integer,intent(in)::now(nline)
+    integer,intent(out)::nei(nline)
+    integer::count,removenum
+    real*8::ran
+    integer::rl,il    !reduce and increase line
+    logical::FindRemove
+    nei =  now
+    count = 0 
+    FindRemove =.True.
+10  call random_number(ran)
+    rl = int(nline*ran+1)
+    if (nei(rl)-1.lt.fleet_lb(rl)) then 
+        if (count.lt.101) then 
+            count = count + 1
+            goto 10
+        else
+            write(*,*) " can not find a line to remove"
+            FindRemove = .False.
+        end if 
+    end if 
+    if (FindRemove) then 
+        call random_number(ran)
+        removenum =  int(ran*(nei(rl)-fleet_lb(rl))+1) 
+        nei(rl) = nei(rl) - removenum
+        if (nei(rl).le.0) then
+            write(*,*) "WTF: mutation_reduce_by n is le 0"
+            pause
+        endif
+        if (nei(rl).lt.fleet_lb(rl)) then 
+            write(*,*) "WFT: mutation_reduce_by n is le than lower bound"
+            pause
+        end if
+    endif
+    end subroutine
+
+
+
+    subroutine mute_increa_by_1(now,nei)
     ! increase one line and reduce other line
     implicit none 
     integer,intent(in)::now(nline)
@@ -284,7 +317,44 @@
     endif
 
     end subroutine
-    
+ 
+ 
+
+    subroutine mute_increa_by_n(now,nei)
+    ! increase one line and reduce other line
+    implicit none 
+    integer,intent(in)::now(nline)
+    integer,intent(out)::nei(nline)
+    integer::count,incrnum
+    real*8::ran
+    integer::rl,il    !reduce and increase line
+    logical::FindIncrease
+
+    nei =  now
+    count = 0 
+    FindIncrease = .True.
+15  call random_number(ran)
+    il = int(nline*ran + 1)
+    if (((nei(il)+1.gt.fleet_ub(il))).and.(count.lt.101)) then 
+        count = count + 1
+        if (count.ge.100) then 
+            write(*,*) "can not find a line to increase"
+            FindIncrease = .False.
+        end if 
+        goto 15
+    end if 
+    if (FindIncrease) then 
+        call random_number(ran)
+        incrnum = int(ran*(fleet_ub(il)-nei(il))+1)
+        nei(il) = nei(il) + incrnum
+    endif
+    if (nei(il).gt.fleet_ub(il)) then 
+        write(*,*) "WTF: mutation_increa_by_n is larger than upper bound"
+    end if
+
+    end subroutine   
+
+
     !call roulette(fits,this%npop,selectedList,this%onlooker) 
     subroutine roulette(fits,popsize,ListSelect,ListSelectSize) 
       implicit none 
@@ -295,7 +365,13 @@
       integer::ListSelect(ListSelectSize)
     
       ts = sum(fits)
-      prob(:) = fits(:)/ts
+      if (ts.eq.0) then 
+        ! all the chrome has the same value of probability
+        prob(:) = 1.0/popsize
+      else 
+        prob(:) = fits(:)/ts
+      end if 
+
       cum_sum(1) = prob(1)
       do p = 2, popsize
           cum_sum(p)= cum_sum(p-1) + prob(p)

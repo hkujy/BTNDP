@@ -3,7 +3,7 @@ Experiments Log
 Base Frequency:  [6, 4, 2, 12]
 Fre lower bound = 2
 Fre upper bound = 15
-AbcPop = 10
-AbcOnlooker = 10
-AbcLimit = 10
-AbcIter = 10
+AbcPop = 5
+AbcOnlooker = 5
+AbcLimit = 20
+AbcIter = 50
