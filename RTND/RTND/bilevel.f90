@@ -20,11 +20,7 @@
     integer::ns
     real*8,ALLOCATABLE::checkfre(:)
     integer::exp_id  ! id for the experiments
-    
     open(unit=logfileno,file='c:\gitcodes\btndp\results\log.txt',status='replace',action="write")
-    open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testindex.txt')
-    read(1,*) exp_id
-    close(1)
    
     call read_test_para
     call cleanfiles
@@ -41,7 +37,25 @@
     call get_fleet_range(Basenwk)
     write (*,*) "Lowerbound = ", fleet_lb
     write (*,*) "Upperbound = ", fleet_ub
+    write(*,*) "minium fleetsize  = ", sum(fleet_lb)
+    write(*,*) "maximum fleetsize  = ", sum(fleet_ub)
     call Basenwk%printnwk
+   
+    select case(networktype) 
+    case(0) 
+         open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testindex.txt')
+         read(1,*) exp_id
+         close (1)
+    case(1)
+         open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_Toy\testindex.txt')
+         read(1,*) exp_id
+         close (1)
+    case(2)
+         open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\testindex.txt')
+         read(1,*) exp_id
+         close (1)
+    end select
+    
 
     if (exp_id == 1) then 
         write(*,*) "*******Experiment: Given frequency"

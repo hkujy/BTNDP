@@ -190,8 +190,8 @@ def SmallTests(gl:gpc.GloParaClass):
         Test on the four node network
     """
     # Case_Test_Fre_Incre(gl)
-    Case_Test_Enumerate(gl)
-    # Case_Test_ABC_BenchMark(gl)
+    # Case_Test_Enumerate(gl)
+    Case_Test_ABC_BenchMark(gl)
 
 
 
@@ -263,9 +263,9 @@ if __name__ == "__main__":
         gl.exp_id = 3    # this is fro setting the input for the python program
         gl.para_dict['NetworkType'] = 1
         # gl.fleetsize = 60
-        gl.fleetsize = 56
+        gl.fleetsize = 40
         gl.numline = 20
-        gl.base_fre = [6]*gl.numline
+        gl.base_fre = [4]*gl.numline
         # set_seed(2)
         TestSiouxFall(gl)
     else:

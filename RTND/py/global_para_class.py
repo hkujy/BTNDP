@@ -3,13 +3,13 @@
 """
 class GloParaClass:
     def __init__(self):
-        self.numseed = 5
+        self.numseed = 10
         self.is_run_exe = True
         # self.is_run_exe = False
-        self.is_debug = True
-        # self.is_debug = False
-        self.test_index = 0   # test index for the sioux fall network
-        # self.test_index = 0   # test index for the small network test
+        # self.is_debug = True
+        self.is_debug = False
+        # self.test_index = 0   # test index for the small network
+        self.test_index = 1   # test index for the sioux fall network
         # remark: the index from fortrain starts from 1
         # exp_id = 1  # given set with given frequency
         # exp_id = 1  # enumerate fleet size
@@ -43,7 +43,7 @@ class GloParaClass:
             "Cap":30,
             "Rio":0.00,
             "Congest":1,
-            "ArchiveX":30,
-            "ArchiveY":30
+            "ArchiveX":20,
+            "ArchiveY":20
         }
 

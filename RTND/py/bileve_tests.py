@@ -276,8 +276,29 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
         plt.figure("pareto")     
         plt.scatter(px,py)
 
-    plt.show()
-    # plt.savefig(mp.output_folder+"\\Exp_2_pareto.png")
+    plt.show(block=False)
+    plt.pause(2)
+    plt.savefig(mp.output_folder+"\\pareto.png")
+    plt.close()
+
+    # plot the pareto froniter for all
+    all_ttc = []
+    all_fair = []
+
+    for s in abc_pareto:
+        for i in range(0,len(s.TTC)):
+            all_ttc.append(s.TTC[i])
+            all_fair.append(s.Fair[i])
+
+    (px,py) = pareto.pareto_frontier(all_ttc,all_fair,maxX=False,maxY=True)
+    plt.figure("AllPareto")
+    plt.scatter(px,py)
+    plt.show(block=False)
+    plt.pause(2)
+    plt.savefig(mp.output_folder+"\\all_seed_pareto.png")
+    plt.close()
+
+
 
 
 

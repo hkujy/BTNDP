@@ -374,7 +374,7 @@
        ! step 1.4. update existing archive pos
        do i = 1, this%LastArchiveIndex
             this%archivesols(i)%xpos = floor((this%archivesols(i)%obj(1)- this%minobj(1))/eps(1))
-            this%archivesols(i)%ypos = floor((this%archivesols(i)%obj(2)- this%minobj(2))/eps(2))+1
+            this%archivesols(i)%ypos = floor((this%archivesols(i)%obj(2)- this%minobj(2))/eps(2))
             
             if ((this%archivesols(i)%xPos.gt.this%xnum).or.(this%archivesols(i)%yPos.gt.this%ynum)) then 
                 write(*,*) "WTF: The position number is higher"

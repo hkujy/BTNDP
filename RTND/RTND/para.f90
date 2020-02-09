@@ -4,8 +4,8 @@
     module constpara
     implicit none
     ! un affected constant para
+    logical,parameter::isWriteDug =.false.
     !logical,parameter::isWriteDug =.true.
-    logical,parameter::isWriteDug =.true.
     !integer,parameter::maxlinestops = 4
     integer,parameter::maxsecline=10
     integer::num_line_seg_file_rows
