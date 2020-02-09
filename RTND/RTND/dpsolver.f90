@@ -84,7 +84,7 @@
                     
                     write(dp_converge_file,'(f4.2,a,f4.2,a,f4.2,a,f4.2,a,f4.2,a,i6,a,f8.4,a,f10.6)') this%lama,",",this%miu,",",this%v,",",&
                         beta0,",",this%betastep,",",this%solc,",",this%cputime,",",this%ncperr
-                    if (this%isNCPconverge) then
+                    if (this%isNCPconverge.and.isWriteDug) then
                         write(*,*) "Ncp Converge = True"
                         ! write(dp_converge_file,'(f4.2,a,f4.2,a,f4.2,a,f4.2,a,f4.2,a,i6,a,f8.4,a,f10.6)') this%lama,",",this%miu,",",this%v,",",&
                         ! beta0,",",this%betastep,",",this%solc,",",this%cputime,",",this%ncperr
@@ -105,8 +105,10 @@
     close(dp_tune_para_file_part1)
     close(dp_tune_para_file_part2)
     close(dp_converge_file)
-999 write(*,*) "done"
-    end subroutine
+!999 if(isdebug) then 
+!        write(*,*) "done"
+!    endif 
+999 end subroutine
 
     subroutine solver(this,set_nwk)
     use constpara
@@ -151,8 +153,10 @@
     close(1)
     close(2)
     close(3)
-999 write(*,*) "done"
-    end subroutine
+!999 if (isdebug) then 
+!        write(*,*) "done"
+!    endif
+999 end subroutine
 
     subroutine dpmain(this,set_nwk)
     use constpara
@@ -191,7 +195,9 @@
 20  numerator=norm_value2(this%x,this%x_bar,nl,ndest)
     denominator=norm_value2(this%fx,this%fx_bar,nl,ndest)
     if (numerator.eq.0) then
-        write(*,*) "Warnining: numerator = 0, ncperr = ",this%ncperr 
+        if (isdebug) then
+            write(*,*) "Warning: numerator = 0, ncperr = ",this%ncperr 
+        end if 
         if (this%ncperr.le.ncp_eps) then
             goto 1000
         else

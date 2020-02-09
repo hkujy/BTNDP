@@ -33,7 +33,11 @@ def write_test_setting_file(gl:gpc.GloParaClass):
     with open(r"c:/GitCodes/BTNDP/Input/testsetting.txt","w+") as f:
         print("{0}".format(gl.para_dict["NetworkType"]),file = f)
         print("{0}".format(gl.para_dict["AssignMode"]),file = f)
-        print("{0}".format(gl.para_dict["RunExe"]),file = f)
+        if (gl.is_debug):
+            print("{0}".format(1),file = f)
+        else:
+            print("{0}".format(0),file = f)
+        
         print("{0}".format(gl.para_dict["WriteConverge"]),file = f)
         print("{0}".format(gl.para_dict["SolveMode"]),file = f)
         print("{0}".format(gl.para_dict["SolverIndex"]),file = f)
@@ -263,9 +267,12 @@ if __name__ == "__main__":
         gl.exp_id = 3    # this is fro setting the input for the python program
         gl.para_dict['NetworkType'] = 1
         # gl.fleetsize = 60
-        gl.fleetsize = 40
+        gl.fleetsize = 30
         gl.numline = 20
-        gl.base_fre = [4]*gl.numline
+        gl.base_fre = [3]*gl.numline
+        gl.para_dict["Cap"] = 50
+        gl.para_dict["Rio"] = 0.05
+   
         # set_seed(2)
         TestSiouxFall(gl)
     else:

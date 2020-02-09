@@ -3,7 +3,7 @@
 """
 class GloParaClass:
     def __init__(self):
-        self.numseed = 10
+        self.numseed = 20
         self.is_run_exe = True
         # self.is_run_exe = False
         # self.is_debug = True
@@ -29,13 +29,13 @@ class GloParaClass:
         self.abc_npop = 10
         self.abc_onlooker = 10
         self.abc_limit = 20
-        self.abc_iter = 50
+        self.abc_iter = 100
         self.para_dict = {
             "NetworkType":0,    # simple network
             # "NetworkType":1,     # sioux fall transit toy
             "AssignMode":2,    # 1: tranport nwk, 2:compete nwk
             "RunExe":1,
-            "WriteConverge":1,
+            "WriteConverge":0,  # 1 true, 2. false
             "SolveMode":0,
             "SolverIndex":1,    # 1 , dp, 2 msa
             "TuneSolver":0,
@@ -43,7 +43,7 @@ class GloParaClass:
             "Cap":30,
             "Rio":0.00,
             "Congest":1,
-            "ArchiveX":20,
-            "ArchiveY":20
+            "ArchiveX":70,
+            "ArchiveY":70
         }
 

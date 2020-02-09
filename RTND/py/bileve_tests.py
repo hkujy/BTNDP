@@ -275,6 +275,12 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
         (px,py) = pareto.pareto_frontier(s.TTC,s.Fair,maxX=False,maxY=True)
         plt.figure("pareto")     
         plt.scatter(px,py)
+    
+    with open(mp.output_folder+"\\pareto.txt","w+") as f:
+        print("Seed,ttc,fair")
+        for i in range(0, len(abc_pareto)):
+            for j in range(0, len(abc_pareto[i].TTC)):
+                print("{0},{1},{2}".format(i,abc_pareto[i].TTC[j],abc_pareto[i].Fair[j]),file=f)
 
     plt.show(block=False)
     plt.pause(2)
@@ -297,6 +303,10 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
     plt.pause(2)
     plt.savefig(mp.output_folder+"\\all_seed_pareto.png")
     plt.close()
+
+    with open (mp.output_folder+"\\all_seed_pareto.txt","w+") as f:
+        for i in range(0, len(px)):
+            print("{0},{1}".format(px[i],py[i]), file=f)
 
 
 

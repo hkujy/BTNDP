@@ -1,0 +1,34 @@
+**********Test ABC**********
+Base Frequency:  [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+Fre lower bound = 2
+Fre upper bound = 15
+AbcPop = 10
+AbcOnlooker = 10
+AbcLimit = 20
+AbcIter = 100
+        self.para_dict = {
+            "NetworkType":0,    # simple network
+            # "NetworkType":1,     # sioux fall transit toy
+            "AssignMode":2,    # 1: tranport nwk, 2:compete nwk
+            "RunExe":1,
+            "WriteConverge":0,  # 1 true, 2. false
+            "SolveMode":0,
+            "SolverIndex":1,    # 1 , dp, 2 msa
+            "TuneSolver":0,
+            "LoadIndex":0,
+            "Cap":30,
+            "Rio":0.00,
+            "Congest":1,
+            "ArchiveX":50,
+            "ArchiveY":50
+        }
+
+        gl.exp_id = 3    # this is fro setting the input for the python program
+        gl.para_dict['NetworkType'] = 1
+        # gl.fleetsize = 60
+        gl.fleetsize = 30
+        gl.numline = 20
+        gl.base_fre = [3]*gl.numline
+        gl.para_dict["Cap"] = 50
+        gl.para_dict["Rio"] = 0.05
+   
