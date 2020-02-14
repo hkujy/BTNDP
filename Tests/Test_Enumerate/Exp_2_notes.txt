@@ -1,0 +1,6 @@
+Experiments Log
+**********Test Enumerate All Feasible Fleet Cases******
+Base Frequency:  [6, 4, 2, 12]
+Fre lower bound = 2
+Fre upper bound = 15
+Fleet Size = 11

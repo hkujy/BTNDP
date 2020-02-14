@@ -224,7 +224,12 @@
     integer::w
     this%obj(2) = 100000 
     do w = 1, nod
-        this%obj(2) = min(this%obj(2), BaseSol%odcost(w)-this%odcost(w))
+        ! this%obj(2) = min(this%obj(2), BaseSol%odcost(w)-this%odcost(w))
+        ! change the fairness objective to be the ratio
+        this%obj(2) = min(this%obj(2), (BaseSol%odcost(w)-this%odcost(w))/this%odcost(w))
+        !if (this%obj(2).gt.38) then
+        !    write(*,*) "wtf: mysolclass, line 231"
+        !end if
     end do 
      
     end subroutine
