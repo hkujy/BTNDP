@@ -1,7 +1,7 @@
  NetworkType,           0
  AssignMode,           2
- RunExe, T
- WriteConvegeFile, T
+ RunExe, F
+ WriteConvegeFile, F
  SovlveMode,           1
  SolverIndex,               1
  TuneSolver,                0
@@ -16,5 +16,5 @@
  rio,              0.100000000000000     
  theta,            0.500000000000000     
  islogit,         F
- isdebug,         T
- iswriteconverge, T
+ isdebug,         F
+ iswriteconverge, F

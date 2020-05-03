@@ -55,7 +55,6 @@
          read(1,*) exp_id
          close (1)
     end select
-    
 
     if (exp_id == 1) then 
         write(*,*) "*******Experiment: Given frequency"
@@ -73,7 +72,6 @@
     end if
     write(*,*) "Good Luck"
     end program
-
     
     subroutine read_fleet_para
     use GraphLib
@@ -123,20 +121,6 @@
     integer::row
 
     call read_fleet_para
-    ! open(1,file='c:\gitcodes\BTNDP\input\testnetwork\testfleetpara.txt')
-    ! do row =1, 3
-    !    read(1,*) val
-    !    if (row == 1) then 
-    !     fre_lb = real(val)
-    !    endif 
-    !    if (row == 2) then 
-    !     fre_ub = real(val)
-    !    end if 
-    !    if (row==3) then 
-    !     fleetsize = val
-    !    end if
-    ! enddo 
-    ! close(1)
     call get_fleet_range(Basenwk)
     ! write (*,*) "lower bound = ", fleet_lb
     ! write (*,*) "upper bound = ", fleet_ub

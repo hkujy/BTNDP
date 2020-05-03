@@ -1,7 +1,7 @@
 NetworkType,0
 AssignMode,2
 RunExe,1
-WriteConverge,1
+WriteConverge,0
 SolveMode,0
 SolverIndex,1
 TuneSolver,0
@@ -9,15 +9,15 @@ LoadIndex,0
 Cap,30
 Rio,0.0
 Congest,1
-ArchiveX,30
-ArchiveY,30
+ArchiveX,50
+ArchiveY,50
 ExpId,2
 TestIndex,0
 ChangeFreLin,2
 FreLb,2
 FreUb,15
 FleetSize,11
-IncreFreStep,0.01
+IncreFreStep,0.1
 AbcPop,10
 AbcOnlooker,10
 AbcLimit,20

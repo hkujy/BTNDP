@@ -6,4 +6,4 @@ Fre upper bound = 15
 AbcPop = 10
 AbcOnlooker = 10
 AbcLimit = 20
-AbcIter = 100
+AbcIter = 50

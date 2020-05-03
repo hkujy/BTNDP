@@ -15,7 +15,7 @@ def rd_get_fair_obj(cs):
         if c.id!=mc.CaseClass.base_case_id:
             improve = []
             for w in c.od:
-                improve.append(cs[mc.CaseClass.base_case_id].od[w.id].mincost-w.mincost)
+                improve.append((cs[mc.CaseClass.base_case_id].od[w.id].mincost-w.mincost)/cs[mc.CaseClass.base_case_id].od[w.id].mincost)
                 # c.fair=min(c.fair, w.mincost-cs[mc.CaseClass.base_case_id].od[w.id].mincost )
             c.fair = min(improve)
         else:

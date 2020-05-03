@@ -13,7 +13,7 @@
  NumLink,                   6
  congestion_n,              1
  cap_k,             30.0000000000000     
- rio,              0.000000000000000E+000
+ rio,              0.100000000000000     
  theta,            0.500000000000000     
  islogit,         F
  isdebug,         F

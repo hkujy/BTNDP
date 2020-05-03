@@ -17,10 +17,10 @@ ChangeFreLin,2
 FreLb,2
 FreUb,15
 FleetSize,11
-IncreFreStep,0.01
+IncreFreStep,0.1
 AbcPop,10
 AbcOnlooker,10
 AbcLimit,20
-AbcIter,100
+AbcIter,50
 Rio,0.0
 BaseFre=[6,4,2,12]

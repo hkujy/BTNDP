@@ -12,7 +12,7 @@
     ! real*8,intent(in)::fx0(nl,ndest)
     real*8,DIMENSION(d1,d2),INTENT(IN)::fx0
     type(graphclass),intent(in)::nwk
-    integer,parameter::max_out_links=10
+    integer,parameter::max_out_links=20
     integer::i,n,j,nr,node
     real*8::alph
     real*8::proj_vector(max_out_links),proj_result(max_out_links)

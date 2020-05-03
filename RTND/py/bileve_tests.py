@@ -164,10 +164,24 @@ def test_enumerate_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
 
     plt.figure("pareto")     
     plt.scatter(px,py)
-    plt.savefig(mp.output_folder+"\\Exp_2_pareto.png")
+    plt.xlabel('TTC',fontsize=10,fontname='Times New Roman')
+    plt.ylabel('Fair',fontsize=10,fontname='Times New Roman')
 
-    plt.show(block=False)
-    plt.pause(2)
+    axes = plt.gca()
+    xtick = axes.get_xticks()
+    ytick = axes.get_yticks()
+    axes.set_xticklabels(xtick, fontsize=10, fontname='Times New Roman')
+    axes.set_yticklabels(ytick, fontsize=10, fontname='Times New Roman')
+    plt.ylim(min(py)-0.005,max(py)+0.005)
+    ymajorFormatter = plt.FormatStrFormatter('%.3f')
+    xmajorFormatter = plt.FormatStrFormatter('%.1f')
+    axes.yaxis.set_major_formatter(ymajorFormatter)
+    axes.xaxis.set_major_formatter(xmajorFormatter)
+    plt.savefig(mp.output_folder+"\\Exp_2_pareto.png",bbox_inches='tight',dpi=600)
+
+    if gpc.is_show_fig:
+        plt.show(block=False)
+        plt.pause(2)
     plt.close()
     pp = mp.output_folder+"\\Exp_2_pareto.txt"
 
@@ -275,16 +289,27 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
         (px,py) = pareto.pareto_frontier(s.TTC,s.Fair,maxX=False,maxY=True)
         plt.figure("pareto")     
         plt.scatter(px,py)
+        plt.xlabel('TTC',fontsize=10,fontname='Times New Roman')
+        plt.ylabel('Fair',fontsize=10,fontname='Times New Roman')
+        axes=plt.gca()
+        xtick = axes.get_xticks()
+        ytick = axes.get_yticks()
+        axes.set_xticklabels(xtick, fontsize=10,fontname='Times New Roman')
+        axes.set_yticklabels(ytick, fontsize=10,fontname='Times New Roman')
+        xmajorFormatter = plt.FormatStrFormatter('%.1f')
+        ymajorFormatter = plt.FormatStrFormatter('%.2f')
+        axes.yaxis.set_major_formatter(ymajorFormatter)
+        axes.xaxis.set_major_formatter(xmajorFormatter)
     
     with open(mp.output_folder+"\\pareto.txt","w+") as f:
         print("Seed,ttc,fair")
         for i in range(0, len(abc_pareto)):
             for j in range(0, len(abc_pareto[i].TTC)):
                 print("{0},{1},{2}".format(i,abc_pareto[i].TTC[j],abc_pareto[i].Fair[j]),file=f)
-
-    plt.show(block=False)
-    plt.pause(2)
-    plt.savefig(mp.output_folder+"\\pareto.png")
+    if gpc.is_show_fig:
+        plt.show(block=False)
+        plt.pause(2)
+    plt.savefig(mp.output_folder+"\\pareto.png",bbox_inches='tight',dpi=600)
     plt.close()
 
     # plot the pareto froniter for all
@@ -299,9 +324,22 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
     (px,py) = pareto.pareto_frontier(all_ttc,all_fair,maxX=False,maxY=True)
     plt.figure("AllPareto")
     plt.scatter(px,py)
-    plt.show(block=False)
-    plt.pause(2)
-    plt.savefig(mp.output_folder+"\\all_seed_pareto.png")
+    plt.xlabel('TTC',fontsize=10,fontname='Times New Roman')
+    plt.ylabel('Fair',fontsize=10,fontname='Times New Roman')
+    axes=plt.gca()
+    xtick = axes.get_xticks()
+    ytick = axes.get_yticks()
+    axes.set_xticklabels(xtick, fontsize=10,fontname='Times New Roman')
+    axes.set_yticklabels(ytick, fontsize=10,fontname='Times New Roman')
+    xmajorFormatter = plt.FormatStrFormatter('%.1f')
+    ymajorFormatter = plt.FormatStrFormatter('%.2f')
+    axes.yaxis.set_major_formatter(ymajorFormatter)
+    axes.xaxis.set_major_formatter(xmajorFormatter)
+
+    if gpc.is_show_fig:
+        plt.show(block=False)
+        plt.pause(2)
+    plt.savefig(mp.output_folder+"\\all_seed_pareto.png",bbox_inches='tight',dpi=600)
     plt.close()
 
     with open (mp.output_folder+"\\all_seed_pareto.txt","w+") as f:

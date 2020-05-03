@@ -81,8 +81,6 @@ def set_test_case_para(gl:gpc.GloParaClass):
         print("The overall test index is not set")
 
 
-
-
 def Case_Test_Fre_Incre(gl:gpc.GloParaClass):
     """
         test the first case: increase frequency
@@ -193,48 +191,22 @@ def SmallTests(gl:gpc.GloParaClass):
     """
         Test on the four node network
     """
-    # Case_Test_Fre_Incre(gl)
+    Case_Test_Fre_Incre(gl)
     # Case_Test_Enumerate(gl)
-    Case_Test_ABC_BenchMark(gl)
-
-
-
-    # mp = mypara.ParaClass()
-    # set_test_case_para(gl)
-    # mp.input_folder = r'C:\GitCodes\BTNDP\Input\TestNetwork'
-    # mp.output_folder = r'C:\GitCodes\BTNDP\Results'
-    # mp.set_para(mp.input_folder,gl)
-    # with open(mp.input_folder+"\\testindex.txt","w") as f:
-    #     print(gl.exp_id,file = f)
-    # with open(mp.output_folder+"\\Exp_"+str(gl.exp_id)+"_notes.txt","w") as f:
-    #     print("Experiments Log",file=f)
-
-    # # set parameters related to congestion..    
-    # with open(mp.input_folder+"\\Para.txt","w") as f:
-    #     print(gl.para_dict["Congest"],file=f)
-    #     print("1",file = f)    # not really used for Bs
-    #     print(gl.para_dict["Cap"],file = f)
-    #     print(gl.para_dict["Rio"],file = f)
-
-    # write_test_setting_file(gl)
-    # if gl.exp_id == 1:
-    #     bilevel.test_incre_fre_case(mp,gl)
-    # elif gl.exp_id == 2:
-    #     bilevel.test_enumerate_case(mp,gl)
-    # elif gl.exp_id == 3:
-    #     bilevel.test_abc_case(mp,gl)
-    # else:
-    #     print("undefined tests")
-
-    # print_paras(mp,gl)
+    # Case_Test_ABC_BenchMark(gl)
 
 def TestSiouxFall(gl:gpc.GloParaClass):
     """
         Test SiouxFall netowrk
     """
+    gl.exp_id = 3
     mp = mypara.ParaClass()
-    mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transit_Toy'
-    # mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transport_AllOD' 
+    if gl.allODSiouxFall:
+        gl.para_dict['NetworkType'] = 2
+        mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transit_AllOD' 
+    else:
+        gl.para_dict['NetworkType'] = 1
+        mp.input_folder = r'C:\GitCodes\OpenTransportData\SiouxFallNet\Transit_Toy'
     mp.output_folder = r'C:\GitCodes\BTNDP\Tests\Test_SiouxFall'
     mp.rd_output_folder = r'C:\GitCodes\BTNDP\Results'
 
@@ -258,6 +230,7 @@ def TestSiouxFall(gl:gpc.GloParaClass):
     print("************Complete Test Small ABC**********")
     copy_folder_files(mp.rd_output_folder,mp.output_folder+"\\Results")
 
+
 if __name__ == "__main__":
     gl = gpc.GloParaClass()
     if gl.test_index == 0:
@@ -265,16 +238,16 @@ if __name__ == "__main__":
         SmallTests(gl)
     elif gl.test_index == 1:
         gl.exp_id = 3    # this is fro setting the input for the python program
-        gl.para_dict['NetworkType'] = 1
-        # gl.fleetsize = 60
-        gl.fleetsize = 30
+        gl.fleetsize = 60
+        # gl.fleetsize = 30
         gl.numline = 20
-        gl.base_fre = [3]*gl.numline
-        gl.para_dict["Cap"] = 50
+        gl.base_fre = [4]*gl.numline
+        # gl.para_dict["Cap"] = 50
         gl.para_dict["Rio"] = 0.05
    
         # set_seed(2)
         TestSiouxFall(gl)
     else:
         print("Test paramters is not set")
+    
     print("Good Luck")

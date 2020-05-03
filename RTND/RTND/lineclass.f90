@@ -55,6 +55,9 @@
         open(1,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\Stops.txt')
         open(2,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\LineSegData.txt')
         open(3,file='c:\gitcodes\OpenTransportData\SiouxFallNet\Transit_AllOD\IniFre.txt')
+        open(4,file='c:\GitCodes\OpenTransportData\SiouxFallNet\Transit_AllOD\NumLineStops.txt')
+        ALLOCATE(ss(11))
+        lend = 11
         num_line_seg_file_rows = 110
     end select
     
@@ -71,7 +74,6 @@
 
     do l = 1, nline
        read(1,*) ss
-       write(*,*) l
        lid = ss(1)
        do i = 2, lend
             if (ss(i).gt.0) then 
