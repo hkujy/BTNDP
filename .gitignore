@@ -1,3 +1,6 @@
 Tests/
 Debug/
+Release/
+x64/
+Results/
 *.opensdf
