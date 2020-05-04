@@ -12,7 +12,7 @@ test_net = 'SiouFallAllOD'
 is_show_fig = True
 class GloParaClass:
     def __init__(self):
-        self.numseed = 20
+        self.numseed = 2
         self.is_run_exe = True
         # self.is_run_exe = False
         # self.is_debug = True
