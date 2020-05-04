@@ -29,7 +29,6 @@ Tests/
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
 ## ignore my check results oupu
