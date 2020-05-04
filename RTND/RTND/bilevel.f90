@@ -34,7 +34,7 @@
         checkfre(l) = Basenwk%mylines(l)%fre
     end do
     call get_fleet_range(Basenwk,checkfre)
-    call get_fleet_range(Basenwk)
+    !call get_fleet_range(Basenwk)
     write (*,*) "Lowerbound = ", fleet_lb
     write (*,*) "Upperbound = ", fleet_ub
     write(*,*) "minium fleetsize  = ", sum(fleet_lb)

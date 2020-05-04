@@ -168,6 +168,7 @@
     subroutine getBaseCaseOd(this)
     implicit none 
     class(abcclass)::this
+    real*8::check_ttc
     integer l
 
     call this%BaseCaseSol%inisol(this%basenwk)
@@ -176,24 +177,25 @@
     ! call this%BaseCaseSol%dp%solver(this%basenwk)
     ! call get_od_cost(this%BaseCaseSol%dp,this%BaseCaseSol%odcost)
     
-    if (isWriteDug) then
-        write(*,*) "base case OD cost = "
-        do l = 1, nod
-            write(*,*) this%BaseCaseSol%odcost(l)
-        end do
-        write(*,*) "Write initial fleet szie"
-        do l = 1, nline 
-            write(*,*) l, this%BaseCaseSol%mylines(l)%fleet 
-        enddo
-        write(*,*) "Write initial frequency"
-        do l = 1, nline
-            write(*,*) l, this%BaseCaseSol%mylines(l)%fre
-        end do 
-        write(*,*) "Write initial OD cost"
-        do l = 1, nod
-            write(*,*) l,this%BaseCaseSol%odcost(l)
-        enddo 
-    end if
+    open(1,file="c:/GitCodes/BTNDP/Results/BaseCaseSumnary.txt",action="write")
+    check_ttc = 0
+    do l = 1, nod
+        check_ttc = check_ttc + this%BaseCaseSol%odcost(l)* this%BaseCaseSol%dp%nwk%demand(l)
+    end do
+    write(1,*) "****BaseCase TTC = ", check_ttc
+    write(1,*) "OD,Cost"
+    do l = 1, nod
+        write(1,*) l,this%BaseCaseSol%odcost(l)
+    end do
+    write(*,*) "****Write initial fleet szie****"
+    do l = 1, nline 
+        write(*,*) l, this%BaseCaseSol%mylines(l)%fleet 
+    enddo
+    write(1,*) "*****Write initial frequency*****"
+    do l = 1, nline
+        write(1,*) l, this%BaseCaseSol%mylines(l)%fre
+    end do 
+    close(1)
     end subroutine
 
     subroutine abcmain(this,input_basenwk)

@@ -4,7 +4,7 @@
 def prn_obj(obj):
     print ('\n'.join(['%s:%s' % item for item in obj.__dict__.items()])) 
 
-Siou_fall_all_od_cap = 100
+Siou_fall_all_od_cap = 150
 # test_net = 'FourNode'
 # test_net = 'SiouFallToyOD'
 test_net = 'SiouFallAllOD'

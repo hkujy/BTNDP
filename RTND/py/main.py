@@ -238,10 +238,11 @@ if __name__ == "__main__":
         SmallTests(gl)
     elif gl.test_index == 1:
         gl.exp_id = 3    # this is fro setting the input for the python program
-        gl.fleetsize = 60
+        gl.fleetsize = 80
         # gl.fleetsize = 30
         gl.numline = 20
-        gl.base_fre = [4]*gl.numline
+        # gl.base_fre = [6]*gl.numline
+        gl.base_fre = [3,4,5,5,8,3,6,8,5,6,6,8,7,6,4,4,7,4,3,8]
         # gl.para_dict["Cap"] = 50
         gl.para_dict["Rio"] = 0.05
    
