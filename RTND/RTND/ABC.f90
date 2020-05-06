@@ -218,7 +218,7 @@
             call this%onlooker_bee
             call this%scouts
             call this%update_archive
-            call this%printarchive(iter)
+            !call this%printarchive(iter)
             iter = iter + 1
         enddo 
 

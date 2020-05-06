@@ -12,7 +12,7 @@
  NumBusLine,               20
  NumLink,                 272
  congestion_n,              1
- cap_k,             100.000000000000     
+ cap_k,             150.000000000000     
  rio,              5.000000000000000E-002
  theta,            0.500000000000000     
  islogit,         F

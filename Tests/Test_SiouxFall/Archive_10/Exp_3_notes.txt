@@ -1,9 +1,9 @@
 Experiments Log
 **********Test ABC**********
-Base Frequency:  [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+Base Frequency:  [3, 4, 5, 5, 8, 3, 6, 8, 5, 6, 6, 8, 7, 6, 4, 4, 7, 4, 3, 8]
 Fre lower bound = 2
 Fre upper bound = 15
 AbcPop = 20
 AbcOnlooker = 20
 AbcLimit = 50
-AbcIter = 500
+AbcIter = 1000

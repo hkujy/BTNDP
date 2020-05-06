@@ -12,7 +12,7 @@ test_net = 'SiouFallAllOD'
 is_show_fig = True
 class GloParaClass:
     def __init__(self):
-        self.numseed = 2
+        self.numseed = 20
         self.is_run_exe = True
         # self.is_run_exe = False
         # self.is_debug = True
@@ -36,15 +36,13 @@ class GloParaClass:
         self.abc_npop = 20
         self.abc_onlooker = 20
         self.abc_limit = 50
-        self.abc_iter = 500
+        self.abc_iter = 1000
         self.allODSiouxFall = False
         # self.allODSiouxFall = True
         # self.test_index = 0   # test index for the small network
         self.test_index = 1   # test index for the sioux fall network
  
         self.para_dict = {
-            "NetworkType":0,    # simple network
-            # "NetworkType":1,     # sioux fall transit toy
             "AssignMode":2,    # 1: tranport nwk, 2:compete nwk
             "RunExe":1,
             "WriteConverge":0,  # 1 true, 2. false
@@ -55,8 +53,12 @@ class GloParaClass:
             "Cap":30,
             "Rio":0.1,
             "Congest":1,
-            "ArchiveX":10,
-            "ArchiveY":10
+            "ArchiveX":50,
+            "ArchiveY":50,
+
+            # The following variables are not really changed
+            # "NetworkType":1,     # sioux fall transit toy
+            "NetworkType":0    # simple network
         }
         if test_net=="FourNode":
             self.para_dict['NetworkType'] = 0
