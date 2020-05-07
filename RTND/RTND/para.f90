@@ -12,6 +12,7 @@
     real*8,parameter::bpr_alpha = 0.15
     real*8,parameter::bpr_beta = 4
     logical,parameter::isConstBcm =.true.
+    logical::isWriteArchiveSolForAbc 
 
     ! variable real para
     real*8,PARAMETER::theta = 0.5
@@ -80,7 +81,7 @@
     INTEGER::i 
     integer::i_val
     open(1,file='c:\gitcodes\btndp\input\testsetting.txt') 
-    do i = 1,8
+    do i = 1,9
         read(1,*) i_val
         select case (i)
         case(1)
@@ -165,6 +166,12 @@
             else
                 write(*,*) "Loading method:    Dial Stoch"
             endif 
+        case (9)  
+           if (i_val.eq.1) then 
+                isWriteArchiveSolForAbc = .true.
+           else
+                isWriteArchiveSolForAbc = .false.
+           end if
         end select
     enddo
  

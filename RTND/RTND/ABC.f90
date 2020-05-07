@@ -218,7 +218,9 @@
             call this%onlooker_bee
             call this%scouts
             call this%update_archive
-            !call this%printarchive(iter)
+            if (isWriteArchiveSolForAbc) then 
+                call this%printarchive(iter)
+            end if
             iter = iter + 1
         enddo 
 

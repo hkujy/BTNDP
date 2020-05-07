@@ -248,13 +248,16 @@ def test_abc_case(mp:mypara.ParaClass(),gl:gpc.GloParaClass):
         print("AbcOnlooker = {0}".format(gl.abc_onlooker),file = f)
         print("AbcLimit = {0}".format(gl.abc_limit),file = f)
         print("AbcIter = {0}".format(gl.abc_iter),file = f)
-    
+        print("ArchiveX = {0}".format(gl.para_dict["ArchiveX"]),file=f)
+        print("ArchiveY = {0}".format(gl.para_dict["ArchiveY"]),file=f)
+
     copyinputdir = mp.output_folder+"\\Input_exp_"+str(gl.exp_id)
     if os.path.isdir(copyinputdir):
         shutil.rmtree(copyinputdir)
     shutil.copytree(mp.input_folder,copyinputdir)
  
-
+    if not gl.is_write_archive_sol:
+        return
     # read and print archive solutions
     #TODO: print and read archive solutions from Frotran output
     archive_output = mp.rd_output_folder +"\\Fortran_archive.txt" 

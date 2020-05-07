@@ -10,10 +10,13 @@ Siou_fall_all_od_cap = 150
 test_net = 'SiouFallAllOD'
 # is_show_fig = False
 is_show_fig = True
+is_write_archive_sol = True
+# is_write_archive_sol = False
 class GloParaClass:
     def __init__(self):
-        self.numseed = 20
+        self.numseed = 30
         self.is_run_exe = True
+        self.is_write_archive_sol = is_write_archive_sol
         # self.is_run_exe = False
         # self.is_debug = True
         self.is_debug = False
@@ -41,7 +44,6 @@ class GloParaClass:
         # self.allODSiouxFall = True
         # self.test_index = 0   # test index for the small network
         self.test_index = 1   # test index for the sioux fall network
- 
         self.para_dict = {
             "AssignMode":2,    # 1: tranport nwk, 2:compete nwk
             "RunExe":1,
@@ -55,7 +57,6 @@ class GloParaClass:
             "Congest":1,
             "ArchiveX":50,
             "ArchiveY":50,
-
             # The following variables are not really changed
             # "NetworkType":1,     # sioux fall transit toy
             "NetworkType":0    # simple network

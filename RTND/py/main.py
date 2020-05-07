@@ -37,13 +37,15 @@ def write_test_setting_file(gl:gpc.GloParaClass):
             print("{0}".format(1),file = f)
         else:
             print("{0}".format(0),file = f)
-        
         print("{0}".format(gl.para_dict["WriteConverge"]),file = f)
         print("{0}".format(gl.para_dict["SolveMode"]),file = f)
         print("{0}".format(gl.para_dict["SolverIndex"]),file = f)
         print("{0}".format(gl.para_dict["TuneSolver"]),file = f)
         print("{0}".format(gl.para_dict["LoadIndex"]),file = f)
-
+        if gl.is_write_archive_sol:
+            print("1",file=f)
+        else:
+            print("0",file=f)
 
 def print_paras(mp:mypara.ParaClass,gl:gpc.GloParaClass):
     """
@@ -197,7 +199,7 @@ def SmallTests(gl:gpc.GloParaClass):
 
 def TestSiouxFall(gl:gpc.GloParaClass):
     """
-        Test SiouxFall netowrk
+        Test SiouxFall network
     """
     gl.exp_id = 3
     mp = mypara.ParaClass()
@@ -229,6 +231,36 @@ def TestSiouxFall(gl:gpc.GloParaClass):
 
     print("************Complete Test Small ABC**********")
     copy_folder_files(mp.rd_output_folder,mp.output_folder+"\\Results")
+    return mp
+
+def test_one_sioux_fall_case(_caseName:str,gl):   
+    """
+        test a single case
+    """
+    mp=TestSiouxFall(gl)
+    copy_folder_files(mp.rd_output_folder,mp.output_folder+"\\Summary\\"+_caseName)
+    if not gl.is_write_archive_sol:
+        return
+    shutil.copy(mp.output_folder+"\\pareto.txt", mp.output_folder+"\\Summary\\"+_caseName)
+    shutil.copy(mp.output_folder+"\\pareto.png", mp.output_folder+"\\Summary\\"+_caseName)
+    shutil.copy(mp.output_folder+"\\all_seed_pareto.png", mp.output_folder+"\\Summary\\"+_caseName)
+    shutil.copy(mp.output_folder+"\\all_seed_pareto.txt", mp.output_folder+"\\Summary\\"+_caseName)
+    shutil.copy(mp.output_folder+"\\Exp_3_notes.txt", mp.output_folder+"\\Summary\\"+_caseName)
+    # with open(mp.output_folder+"\\pareto.txt","w+") as f:
+    # plt.savefig(mp.output_folder+"\\pareto.png",bbox_inches='tight',dpi=600)
+    # plt.savefig(mp.output_folder+"\\all_seed_pareto.png",bbox_inches='tight',dpi=600)
+    # with open (mp.output_folder+"\\all_seed_pareto.txt","w+") as f:
+    # notes = mp.output_folder+"\\Exp_3_notes.txt
+
+
+
+def test_abc_arch_para(gl):
+    for i in range(0,2):
+        gl.para_dict["ArchiveX"] = 10*(i+1)
+        gl.para_dict["ArchiveY"] = 10*(i+1)
+        test_one_sioux_fall_case(str(10*(i+1)),gl)
+
+ 
 
 
 if __name__ == "__main__":
@@ -245,9 +277,8 @@ if __name__ == "__main__":
         gl.base_fre = [3,4,5,5,8,3,6,8,5,6,6,8,7,6,4,4,7,4,3,8]
         # gl.para_dict["Cap"] = 50
         gl.para_dict["Rio"] = 0.05
-   
-        # set_seed(2)
-        TestSiouxFall(gl)
+        test_abc_arch_para(gl)
+        # TestSiouxFall(gl)
     else:
         print("Test paramters is not set")
     
