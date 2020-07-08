@@ -260,8 +260,6 @@ def test_abc_arch_para(gl):
         gl.para_dict["ArchiveY"] = 10*(i+1)
         test_one_sioux_fall_case(str(10*(i+1)),gl)
 
- 
-
 
 if __name__ == "__main__":
     gl = gpc.GloParaClass()

@@ -16,9 +16,9 @@
     type(graphclass)::basenwk
     real*8::best_fit
     integer::best_id
-    integer::xnum,ynum
+    integer::xnum,ynum,znum
     integer::LastArchiveIndex
-    real*8::minobj(2),maxobj(2)
+    real*8::minobj(3),maxobj(3)
     type(solclass),allocatable::chrom(:)
     integer,allocatable::limitcount(:)   ! count the number of limints
     integer,allocatable::best_fleet(:)
@@ -40,7 +40,7 @@
     procedure,pass::onlooker_bee=>onlooker_bee
     procedure,pass::scouts=>scouts
     procedure,pass::gen_sol=>gen_sol
-    procedure,pass::getfitness=>gitfitness
+    procedure,pass::getfitness=>getfitness
     procedure,pass::update_archive=>update_archive
     procedure,pass::update_global_best=>update_global_best
     procedure,pass::printarchive=>printarchive
@@ -105,13 +105,15 @@
     call this%basenwk%copynwk(input_basenwk)
 
     ! read and set archive parameters
-    do i = 1, 2
+    do i = 1, 3
         if (i.eq.1) read(2,*) this%xnum
         if (i.eq.2) read(2,*) this%ynum
+        if (i.eq.3) read(3,*) this%znum
     end do 
     this%xnum = this%xnum+1
     this%ynum = this%ynum+1
-    this%sizeofArchive = this%xnum*this%ynum
+    this%znum = this%znum+1
+    this%sizeofArchive = this%xnum*this%ynum*this%znum
     if (.not.ALLOCATED(this%archivesols)) then 
         allocate(this%archivesols(this%sizeofArchive)) 
     end if
@@ -241,7 +243,6 @@
         addArchiveSatus = this%chrom(i)%add_to_Archive(this%archivesols,this%sizeofArchive,this%LastArchiveIndex)
         ! call this%update_global_best(i)
     end do 
-
     end subroutine
 
     subroutine employ_bee(this)
@@ -319,22 +320,25 @@
     end subroutine
 
     ! function to return the box num location of the archive
-    function get_box_num(xval,yval,xgridnum,ygridnum) result(boxnum)
-        ! 沿着x 轴， 1,2,3,4,...一层一层的叠加 box
+    ! function get_box_num(xval,yval,xgridnum,ygridnum) result(boxnum)
+    ! 沿着x 轴， 1,2,3,4,...一层一层的叠加 box
+
+    function get_box_num(xval,yval,zval,xgridnum,ygridnum,zgridnum) result(boxnum)
         implicit none
-        integer,intent(in)::xval,yval 
-        integer,intent(in)::xgridnum,ygridnum
+        integer,intent(in)::xval,yval,zval
+        integer,intent(in)::xgridnum,ygridnum,zgridnum
         integer::boxnum
     
         !boxnum = (yval-1)*xgridnum + xval + 1
-        boxnum = yval*xgridnum + xval
+        boxnum = yval*xgridnum + xval*ygridnum + zval
 
-        if (boxnum.gt.xgridnum*ygridnum) then
+        if (boxnum.gt.xgridnum*ygridnum*zgridnum) then
             write(*,*) "Warnning:"
             write(*,*) "the computation of the box beyond limit"
             write(*,*)  " computed box value = ", boxnum
-            write(*,*) "xval = ",xval,"yval = ",yval
-            write(*,*) "xgridnum = ",xgridnum, "ygridnum = ",ygridnum
+            write(*,*) "xval = ",xval,"yval = ",yval,"zval =",zval
+            write(*,*) "xgridnum = ",xgridnum, "ygridnum = ",ygridnum,&
+                        "zgridnum = ",zgridnum
             pause
         end if
     end function
@@ -344,10 +348,10 @@
         class(abcclass):: this
         integer::i, j
         logical,dimension(this%lastarchiveindex)::iskeep
-        integer::xpos(this%npop),ypos(this%npop)
+        integer::xpos(this%npop),ypos(this%npop),zpos(this%npop)
         type(archivedclass),dimension(this%LastArchiveIndex)::TempAc
         integer::AcNum
-        real*8::eps(2)      ! esp value of the two objectives
+        real*8::eps(3)      ! esp value of the two objectives
         real*8::distI, distJ     ! distance when compare the two objective values
         ! step 0: read archive parameters
        ! Step 1: define grid of the archive 
@@ -355,58 +359,67 @@
        do i = 1, this%npop
             this%minobj(1) = min(this%minobj(1), this%chrom(i)%obj(1))
             this%minobj(2) = min(this%minobj(2), this%chrom(i)%obj(2))
+            this%minobj(3) = min(this%minobj(3), this%chrom(i)%obj(3))
+
             this%maxobj(1) = max(this%maxobj(1), this%chrom(i)%obj(1))
             this%maxobj(2) = max(this%maxobj(2), this%chrom(i)%obj(2))
+            this%maxobj(3) = max(this%maxobj(3), this%chrom(i)%obj(3))
        end do
+
        do i = 1, this%LastArchiveIndex
-            do j = 1, 2
-                ! slightly increase and reduce the max and min values
-                ! this is to restrict the range of the box positoin values
+            do j = 1, 3
+                !! slightly increase and reduce the max and min values
+                !! this is to restrict the range of the box positoin values
                 this%minobj(j) = min(this%minobj(j),this%archivesols(i)%obj(j)) - 0.1
                 this%maxobj(j) = max(this%maxobj(j),this%archivesols(i)%obj(j)) + 0.1
             enddo
        enddo
+       
        ! step 1.2. compute the eps values
        eps(1) = (this%maxobj(1) - this%minobj(1))/this%xnum
        eps(2) = (this%maxobj(2) - this%minobj(2))/this%ynum
+       eps(3) = (this%maxobj(3) - this%minobj(3))/this%znum
        ! step 1.3 compute the box coordinate for all the values
        do i = 1, this%npop
             xpos(i) = floor((this%chrom(i)%obj(1) - this%minobj(1))/eps(1))
             ypos(i) = floor((this%chrom(i)%obj(2) - this%minobj(2))/eps(2))
+            zpos(i) = floor((this%chrom(i)%obj(3) - this%minobj(3))/eps(3))
        enddo
 
        ! step 1.4. update existing archive pos
        do i = 1, this%LastArchiveIndex
             this%archivesols(i)%xpos = floor((this%archivesols(i)%obj(1)- this%minobj(1))/eps(1))
             this%archivesols(i)%ypos = floor((this%archivesols(i)%obj(2)- this%minobj(2))/eps(2))
+            this%archivesols(i)%zpos = floor((this%archivesols(i)%obj(3)- this%minobj(3))/eps(3))
             
-            if ((this%archivesols(i)%xPos.gt.this%xnum).or.(this%archivesols(i)%yPos.gt.this%ynum)) then 
+            if ((this%archivesols(i)%xPos.gt.this%xnum).or.(this%archivesols(i)%yPos.gt.this%ynum).or.&
+                (this%archivesols(i)%zPos.gt.this%znum)) then 
                 write(*,*) "WTF: The position number is higher"
             end if
-            this%archivesols(i)%BoxNum = get_box_num(this%archivesols(i)%xpos,this%archivesols(i)%ypos,&
-                                        this%xnum,this%ynum)
-       enddo 
+            !this%archivesols(i)%BoxNum = get_box_num(this%archivesols(i)%xpos,this%archivesols(i)%ypos,&
+            !                            this%xnum,this%ynum)
+            this%archivesols(i)%BoxNum = get_box_num(this%archivesols(i)%xpos,this%archivesols(i)%ypos,this%archivesols(i)%zPos,&
+            this%xnum,this%ynum,this%znum)
+        end do
        ! step 3: update the solutions in each box
        iskeep = .true.  
        do i =1, this%LastArchiveIndex - 1
             do j = i + 1, this%LastArchiveIndex
                 if (iskeep(i).and.iskeep(j)) then   
-                    if (this%archivesols(i)%BoxNum.eq.this%archivesols(j)%BoxNum) then
+                    if (this%archivesols(i)%BoxNum.eq.this%archivesols(j)%BoxNum) then 
                         distI = (this%archivesols(i)%obj(1) - this%minobj(1))**2 + &
-                                (this%archivesols(i)%obj(2) - this%maxobj(2))**2
-                        distJ = (this%archivesols(j)%obj(1) - this%minobj(1))**2 + &
-                                (this%archivesols(j)%obj(2) - this%maxobj(2))**2
+                        (this%archivesols(i)%obj(2) - this%maxobj(2))**2 + &
+                        (this%archivesols(i)%obj(3)-this%minobj(3))**2
+
+                        distJ = (this%archivesols(j)%obj(1) - this%minobj(1))**2 + & 
+                        (this%archivesols(j)%obj(2) - this%maxobj(2))**2 + &
+                        (this%archivesols(j)%obj(3) - this%minobj(3))**2
                         if (distI.gt.distJ) then 
-                            iskeep(i) = .false.
-                        else if (distI.lt.distJ) then
+                            iskeep(i) = .false. 
+                        else if (distI.lt.distJ) then 
                             iskeep(j) = .false.
                         else if (distI.eq.distJ) then
                             iskeep(i) = .false.
-                            !remark: only the two objective values are matter
-                            !write(*,*) " the two points in one box has equal distance"
-                            !write(*,*) " have not prepared for this"
-                            !write(*,*) " file = abc.f90"
-                            !pause
                         endif
                     end if 
                 end if
@@ -427,13 +440,13 @@
        this%LastArchiveIndex = AcNum - 1
     end subroutine
 
-    subroutine gitfitness(this)
+    subroutine getfitness(this)
       implicit none
       class(abcclass)::this
       integer::i,j, statval
       do i = 1, this%npop
-          this%chrom(i)%NumBeat = 0
-          this%chrom(i)%NumLoss = 0
+          this%chrom(i)%NumBeat = 1
+          this%chrom(i)%NumLoss = 1
           this%chrom(i)%fitness = 0
       end do
       do i = 1, this%npop-1
@@ -467,19 +480,20 @@
         if (isWriteDug) then 
             write(*,*) "**********print archcive********"
             do i = 1, this%LastArchiveIndex
-                write(*,"(I4,a1,f14.2,a1,f10.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
+                ! write(*,"(I4,a1,f14.2,a1,f10.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
+                write(*,"(I4,a1,f14.2,a1,f10.2,a1,f10.2)") iter,",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2),",",&
+                this%archivesols(i)%obj(3)
             enddo
         endif
         open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")
         do i = 1, this%LastArchiveIndex
             do l = 1, nline
-                write(1,"(I4,a1,I6,a1,I4,a1,I4,a1,I4,a1,f14.2,a1,f10.2)") &
-                 this%CurrentSeedNum,",",Iter,",",i,",",l,",",this%archivesols(i)%fleet(l),",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2)
+                write(1,"(I4,a1,I6,a1,I4,a1,I4,a1,I4,a1,f14.2,a1,f10.2,a1,f10.2)") &
+                 this%CurrentSeedNum,",",Iter,",",i,",",l,",",this%archivesols(i)%fleet(l),",",this%archivesols(i)%obj(1),",",this%archivesols(i)%obj(2),&
+                 ",",this%archivesols(i)%obj(3)
             end do
         end do
         close(1)
-
-
 
         ! if (nline.eq.4) then 
         !     open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt",position="append", action="write")

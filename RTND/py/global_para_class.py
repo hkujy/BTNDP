@@ -6,18 +6,18 @@ def prn_obj(obj):
 
 Siou_fall_all_od_cap = 150
 # test_net = 'FourNode'
-# test_net = 'SiouFallToyOD'
-test_net = 'SiouFallAllOD'
+test_net = 'SiouFallToyOD'
+# test_net = 'SiouFallAllOD'
 # is_show_fig = False
 is_show_fig = True
 is_write_archive_sol = True
 # is_write_archive_sol = False
 class GloParaClass:
     def __init__(self):
-        self.numseed = 30
-        self.is_run_exe = True
+        self.numseed = 2
+        # self.is_run_exe = True
+        self.is_run_exe = False
         self.is_write_archive_sol = is_write_archive_sol
-        # self.is_run_exe = False
         # self.is_debug = True
         self.is_debug = False
         # remark: the index from fortrain starts from 1
@@ -36,10 +36,10 @@ class GloParaClass:
         self.base_fre = [6,4,2,12]
         # base_demand = [200, 150]
         # para for abc
-        self.abc_npop = 20
-        self.abc_onlooker = 20
+        self.abc_npop = 5
+        self.abc_onlooker = 5
         self.abc_limit = 50
-        self.abc_iter = 1000
+        self.abc_iter = 10
         self.allODSiouxFall = False
         # self.allODSiouxFall = True
         # self.test_index = 0   # test index for the small network
@@ -55,8 +55,9 @@ class GloParaClass:
             "Cap":30,
             "Rio":0.1,
             "Congest":1,
-            "ArchiveX":50,
-            "ArchiveY":50,
+            "ArchiveX":10,
+            "ArchiveY":10,
+            "ArchiveZ":10,
             # The following variables are not really changed
             # "NetworkType":1,     # sioux fall transit toy
             "NetworkType":0    # simple network

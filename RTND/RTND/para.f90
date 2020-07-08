@@ -32,6 +32,7 @@
     integer::congestion_n
     integer,parameter::macsolc = 100000
     real*8::capk
+    real*8::operation_cost = 1000
     real*8::rio  ! variance is not considered
     integer::fleetsize
     ! number of method to generate_neighbour solutions

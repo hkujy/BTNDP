@@ -172,7 +172,7 @@
     write(1,"(a5,a2,a6,a5,a2,a2,a6,a6)") "case,","i,","anode,","dest,","x,","y,","ndest,","maxdif"
     close(1)
     open(1,file="c:/GitCodes/BTNDP/Results/Fortran_archive.txt")
-    write(1,*) "SeedNum,Iter,SolId,LineId,Fleet,TTC,Fare"
+    write(1,*) "SeedNum,Iter,SolId,LineId,Fleet,TTC,Fare,OpCost"
     close(1)
 
     open(1,file='c:\gitcodes\BTNDP\results\fortran_output_od.txt')

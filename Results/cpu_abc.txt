@@ -1,2 +1,2 @@
  SeedNum,CpuTime
-   1,          8.05
+   1,          0.42

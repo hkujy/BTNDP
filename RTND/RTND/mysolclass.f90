@@ -11,8 +11,9 @@
         type(dpsolver)::dp
         integer::NumBeat ! Number of solutions dominated by this
         integer::NumLoss ! Number of solution  that are noted domintaed
-        real*8::obj(2)  ! Two objectives
+        real*8::obj(3)  ! Two objectives
                         ! 1: Total cost, 2: fairness values
+                        ! 3: operatioin cost of the operators
         real*8,allocatable::odcost(:)
     contains 
     procedure, pass::update_fleet_and_fre=>update_fleet_and_fre
@@ -20,6 +21,7 @@
     procedure, pass::evaluate=>evaluate
     procedure, pass::get_obj_ttc=>get_obj_ttc
     procedure, pass::get_obj_fare=>get_obj_fare
+    procedure, pass::get_obj_opcost=>get_obj_opcost
     procedure, pass::assign_remain_fleet=>assign_remain_fleet
     procedure, pass::remedy=>remedy
     procedure, pass::get_neigh=>get_neigh
@@ -33,20 +35,62 @@
     
     type, public::ArchivedClass
         integer::id
-        integer::xPos, yPos  ! Postion of the boxes
+        integer::xPos, yPos, zPos  ! Postion of the boxes
         integer::BoxNum
-        real*8::obj(2)   ! objectvive values
+        real*8::obj(3)   ! objectvive values
         integer,allocatable::fleet(:)
     contains
         procedure,pass::iniarchive=>iniarchive
-        procedure,pass::ClearArchive=>clearArchive
+        procedure,pass::clearArchive=>clearArchive
         procedure,pass::copyAcs => copyAcs
         procedure,pass::set => set
     end type 
     
     contains 
-   
-    function comparevec(vec1,vec2) result(status)
+
+    function comparevec_3D(vec1,vec2) result(status)
+    implicit none 
+    !  compare the vector of 3 dimension
+    real*8,INTENT(IN)::vec1(3)
+    real*8,INTENT(IN)::vec2(3)
+
+    ! 1 : win, 2:lose , 3: both nondominated 
+    integer::status
+    ! status = -1
+    status = 3
+    ! case 1 
+    if ((vec1(1).le.vec2(1)).and.(vec1(2).ge.vec2(2)).and.&
+        (vec1(3).le.vec2(3))) then 
+        status = 1
+        return 
+    end if 
+    if ((vec1(1).gt.vec2(1)).and.(vec1(2).lt.vec2(2)).and.&
+        vec1(3).gt.vec2(3)) then 
+        status = 2
+        return 
+    end if
+
+   if ((abs(vec1(1)-vec2(1)).lt.1E-6).and.(abs(vec1(2)-vec2(2)).lt.1E-6).and.&
+    (abs(vec1(3)-vec2(3)).lt.1E-6)) then 
+        status = 3 
+        return 
+    end if
+
+    if (status.eq.-1) then
+        write(*,*) "this =",vec1(1), vec1(2),vec1(3)
+        write(*,*) "rhs =",vec2(1), vec2(2),vec2(3)
+        write(*,*) "undetermined dominate relationship"
+        pause
+    end if
+end function
+
+
+
+
+
+
+
+    function comparevec_2D(vec1,vec2) result(status)
         implicit none 
         real*8,INTENT(IN)::vec1(2)
         real*8,INTENT(IN)::vec2(2)
@@ -83,7 +127,7 @@
             return 
         end if
         if (status.eq.-1) then
-            write(*,*) "this =",vec1(1), vec1(2) 
+            write(*,*) "this =",vec1(1), vec1(2)
             write(*,*) "rhs =",vec2(1), vec2(2)
             write(*,*) "undetermined dominate relationship"
             pause
@@ -97,7 +141,8 @@
         type(solclass),intent(in)::rhs 
         integer::status
         status = -1
-        status = comparevec(this%obj,RHS%obj)
+        ! status = comparevec_2D(this%obj,RHS%obj)
+        status = comparevec_3D(this%obj,RHS%obj)
     end function
 
     subroutine inisol(this,basenwk)
@@ -160,6 +205,7 @@
       call this%dp%solver(basenwk)
       call get_od_cost(this%dp, this%odcost)
       call this%get_obj_ttc
+      call this%get_obj_opcost
       if (present(basesol)) then 
           call this%get_obj_fare(BaseSol)
       end if
@@ -215,6 +261,20 @@
     enddo 
 
     end subroutine
+
+    subroutine get_obj_opcost(this)    
+    use GraphLib
+    use dpsolverlib
+    implicit none
+    class(solclass):: this
+    integer::l
+    this%obj(3) = 0
+    do l = 1, nline
+        this%obj(3) = this%obj(3) + this%mylines(l)%fre * operation_cost
+    enddo
+
+    end subroutine
+
 
     subroutine get_obj_fare(this,BaseSol)
     implicit none
@@ -338,7 +398,7 @@
         type(lineclass),dimension(nline)::templines
         type(graphclass)::basenwk
         integer::LastIndex,l
-        real*8::oldobj(2)
+        real*8::oldobj(3)
         integer::neigh_fleet(nline),now_fleet(nline)
         integer::stausval
         logical::addArchiveSatus
@@ -353,7 +413,7 @@
         call this%evaluate(basenwk,baseSol)
 
         !domStatus = comparevec(oldobj,this%obj)
-        domStatus = comparevec(this%obj,oldobj)
+        domStatus = comparevec_2D(this%obj,oldobj)
         select case (domStatus)
         case(1)
             addArchiveSatus = this%add_to_Archive(AcSols,AcDim,LastIndex)
@@ -388,6 +448,8 @@
         enddo
         write(*,*) "obj(1)=",this%obj(1)
         write(*,*) "obj(2)=",this%obj(2)
+        write(*,*) "obj(3)=",this%obj(3)
+
     end subroutine
 
 
@@ -413,7 +475,8 @@
         isAdd = .true.
         do i = 1, LastIndex
             ! compare with the AcSol
-            statuval = comparevec(this%obj,acsols(i)%obj)
+            ! statuval = comparevec_2D(this%obj,acsols(i)%obj)
+            statuval = comparevec_3D(this%obj,acsols(i)%obj)
             ! 1 : win, 2:lose , 3: both nondominated 
             select case (statuval)
             case(1)
@@ -459,6 +522,7 @@
         this%BoxNum = -1
         this%xPos = -1
         this%yPos = -1
+        this%zPos = -1
         this%obj = -1
         if (.not.ALLOCATED(this%fleet)) then
             allocate(this%fleet(nline))
@@ -471,6 +535,7 @@
         this%BoxNum = -1
         this%xPos = -1
         this%yPos = -1
+        this%zPos = -1
         this%obj = -1
         this%fleet = -1
     end subroutine
@@ -485,7 +550,6 @@
         do l = 1, nline
             this%fleet(l) = sol%mylines(l)%fleet
         end do 
-
     end subroutine 
     
     subroutine copyAcs(this, rhs)
@@ -494,11 +558,11 @@
         type(ArchivedClass)::rhs
         this%xPos = rhs%xPos
         this%yPos = rhs%yPos
+        this%zPos = rhs%zPos
         this%BoxNum = rhs%BoxNum
         this%obj = rhs%obj
         this%fleet= rhs%fleet
     end subroutine
-
 
     end module 
 
